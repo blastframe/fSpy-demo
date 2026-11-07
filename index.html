@@ -1,0 +1,2566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>fSpy — Signal Readout Web Calibration Engine</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css">
+<style>
+:root {
+  color-scheme: dark;
+  --bg: #171916;
+  --panel: #242720;
+  --surface: #30342c;
+  --line: #41463b;
+  --text: #ebede6;
+  --muted: #a0aa9e;
+  --amber: #efb648;
+  --red: #ed7265;
+  --blue: #65b4eb;
+  --green: #8fd1a0;
+  --purple: #c792ea;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: #111411;
+  color: var(--text);
+  font: 12px/1.45 Inter, Arial, sans-serif;
+  font-variant-numeric: tabular-nums;
+}
+.app {
+  height: min(880px, 96dvh);
+  min-height: 560px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--line);
+  overflow: hidden;
+  background: var(--bg);
+  position: relative;
+}
+.app:fullscreen { height: 100dvh; width: 100vw; border: 0; }
+button, select, input { font: inherit; }
+button { cursor: pointer; border: 0; color: inherit; background: none; }
+button:hover { background: #43483e; }
+button:focus-visible, select:focus-visible, input:focus-visible {
+  outline: 2px solid var(--amber);
+  outline-offset: 1px;
+}
+.top {
+  height: 54px;
+  flex: 0 0 54px;
+  background: #272a24;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+  gap: 8px;
+}
+.row { display: flex; align-items: center; gap: 6px; min-width: 0; }
+.brand { font-weight: 800; font-size: 20px; letter-spacing: -1px; white-space: nowrap; }
+.brand b { color: var(--amber); }
+.tag { font-size: 9px; letter-spacing: 1.4px; font-weight: 700; color: var(--muted); }
+.iconbtn {
+  height: 34px;
+  width: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 6px;
+  flex: 0 0 auto;
+}
+.iconbtn i { font-size: 19px; }
+.iconbtn.active { background: #56472e; color: #ffd084; }
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 0 11px;
+  height: 34px;
+  background: var(--surface);
+  border-radius: 6px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.btn i { font-size: 16px; }
+.primary { background: var(--amber); color: #241d12; }
+.primary:hover { background: #ffd27a; }
+.sep { height: 22px; width: 1px; background: var(--line); margin: 0 4px; }
+.body { display: flex; flex: 1; min-height: 0; }
+.sidebar {
+  flex: 0 0 268px;
+  width: 268px;
+  background: var(--panel);
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid var(--line);
+}
+.sidebar.right {
+  border-left: 1px solid var(--line);
+  border-right: 0;
+  flex-basis: 280px;
+  width: 280px;
+}
+.sidebar[hidden] { display: none; }
+.sidehead {
+  height: 45px;
+  padding: 0 13px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--line);
+  flex-shrink: 0;
+}
+.caps { font-size: 10px; letter-spacing: 1.35px; text-transform: uppercase; font-weight: 800; }
+.scroll {
+  padding: 2px 14px 20px;
+  overflow: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #5d6556 transparent;
+}
+.section { padding: 14px 0; border-bottom: 1px solid var(--line); }
+.section:last-child { border: 0; }
+.section h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin: 0 0 11px;
+}
+.section h3 i { color: var(--amber); font-size: 16px; }
+.field { margin: 10px 0; }
+.field label {
+  display: block;
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .9px;
+  margin: 0 0 5px;
+}
+.field select, .field input[type=number] {
+  height: 32px;
+  width: 100%;
+  border-radius: 6px;
+  border: 1px solid #4a5245;
+  color: var(--text);
+  background: #171b16;
+  padding: 0 8px;
+}
+.field input[type=range] { width: 100%; accent-color: var(--amber); }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.rowlabel { display: flex; align-items: center; justify-content: space-between; }
+.rowlabel strong { color: var(--amber); font-weight: 700; }
+.toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 7px 0;
+  color: #d5dbd0;
+  gap: 10px;
+  cursor: pointer;
+}
+.toggle input { accent-color: var(--amber); }
+.stage { display: flex; flex-direction: column; flex: 1; min-width: 0; }
+.toolstrip {
+  height: 43px;
+  flex: 0 0 43px;
+  background: #1e211d;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+  gap: 6px;
+  border-bottom: 1px solid var(--line);
+}
+.viewport {
+  flex: 1;
+  min-height: 0;
+  position: relative;
+  overflow: hidden;
+  background-color: #161916;
+  background-image: radial-gradient(#363e35 .7px, transparent .7px);
+  background-size: 18px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+svg { width: 100%; height: 100%; touch-action: none; user-select: none; cursor: crosshair; }
+svg [data-drag] { cursor: grab; }
+svg [data-drag]:active { cursor: grabbing; }
+.floating {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: #171b18e8;
+  border: 1px solid #414b3c;
+  border-radius: 6px;
+  padding: 7px 9px;
+  font-size: 10px;
+  font-weight: 800;
+  pointer-events: none;
+}
+.floating i { color: var(--amber); }
+.diag-banner {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  max-width: 360px;
+  background: #3d221ee8;
+  border: 1px solid var(--red);
+  color: #ffcfca;
+  border-radius: 6px;
+  padding: 8px 11px;
+  font-size: 11px;
+  line-height: 1.4;
+  pointer-events: none;
+}
+.diag-banner.hidden { display: none; }
+.zoomtools { position: absolute; bottom: 12px; right: 12px; display: grid; gap: 5px; }
+.zoomtools button { background: #20251fcc; border: 1px solid var(--line); }
+.loupe {
+  position: absolute;
+  top: 52px;
+  left: 12px;
+  width: 116px;
+  height: 116px;
+  border-radius: 50%;
+  border: 2px solid var(--amber);
+  background: #111411;
+  overflow: hidden;
+  pointer-events: none;
+  box-shadow: 0 6px 20px #000a;
+  display: none;
+}
+.loupe.active { display: block; }
+.status {
+  height: 32px;
+  flex: 0 0 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 12px;
+  background: #232721;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 10px;
+  gap: 8px;
+}
+.status i { color: var(--green); }
+.status i.warn-icon { color: var(--amber); }
+.metricgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
+.metric { background: #191d19; border-radius: 6px; padding: 9px 8px; }
+.metric .k { color: var(--muted); font-size: 9px; text-transform: uppercase; font-weight: 700; letter-spacing: .75px; }
+.metric .v { font-size: 17px; font-weight: 800; letter-spacing: -.4px; margin-top: 4px; }
+.readout {
+  display: flex;
+  justify-content: space-between;
+  gap: 5px;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--line);
+}
+.readout span { color: var(--muted); }
+.readout strong { text-align: right; font-family: 'JetBrains Mono', monospace; font-size: 11px; }
+.matrix-box {
+  background: #151814;
+  border: 1px solid #383e33;
+  border-radius: 6px;
+  padding: 7px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9.5px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+  text-align: right;
+  margin-top: 6px;
+}
+.matrix-box span { padding: 2px 3px; background: #1e231c; border-radius: 3px; }
+.badge { background: #304334; color: #9fddb0; padding: 4px 7px; font-size: 9px; font-weight: 800; border-radius: 4px; }
+.badge.warn { background: #51402b; color: #ffd184; }
+.badge.err { background: #582824; color: #ffb3ab; }
+.note { padding: 9px; background: #191e18; border-radius: 6px; color: var(--muted); font-size: 10px; line-height: 1.55; margin-top: 6px; }
+.foot {
+  height: 28px;
+  flex: 0 0 28px;
+  padding: 0 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #22261f;
+  border-top: 1px solid var(--line);
+  font-size: 9px;
+  color: var(--muted);
+  letter-spacing: .7px;
+}
+.foot a { color: var(--amber); text-decoration: none; }
+.title { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 280px; font-weight: 600; }
+.hidefile { display: none; }
+.modal {
+  position: absolute;
+  inset: 0;
+  background: #000b;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
+  padding: 20px;
+}
+.modal.shown { display: flex; }
+.dialog {
+  width: min(680px, 100%);
+  max-height: 85vh;
+  overflow: auto;
+  background: #242922;
+  padding: 20px;
+  border: 1px solid #5a6555;
+  border-radius: 8px;
+  line-height: 1.6;
+}
+.dialog h2 { font-size: 16px; margin: 0 0 10px; display: flex; align-items: center; justify-content: space-between; }
+.test-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--line);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+}
+.test-pass { color: var(--green); font-weight: 700; }
+.test-fail { color: var(--red); font-weight: 700; }
+@media(max-width: 1050px) {
+  .sidebar { flex-basis: 230px; width: 230px; }
+  .sidebar.right { flex-basis: 240px; width: 240px; }
+}
+@media(max-width: 770px) {
+  .sidebar {
+    position: absolute; z-index: 10; left: 0; top: 54px; bottom: 28px;
+    width: min(300px, 88vw); flex-basis: auto; box-shadow: 12px 0 30px #0009;
+  }
+  .sidebar.right { left: auto; right: 0; width: min(300px, 88vw); box-shadow: -12px 0 30px #0009; }
+  .title, .tag, .btn .btntxt, .desktop { display: none; }
+  .top .btn { width: 34px; padding: 0; }
+}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+  <header class="top">
+    <div class="row">
+      <button class="iconbtn active" id="lefttoggle" title="Toggle settings"><i class="ri-layout-left-line"></i></button>
+      <div class="sep"></div>
+      <span class="brand">f<b>Spy</b></span>
+      <span class="tag">SIGNAL READOUT / SOLVER ENGINE</span>
+    </div>
+    <div class="row">
+      <i class="ri-image-line desktop" style="color:var(--amber)"></i>
+      <span class="title" id="filename">Modern office · perspective study</span>
+      <span class="badge" id="imgdim-badge">1000×662</span>
+    </div>
+    <div class="row">
+      <button class="btn" id="openImgBtn" title="Open image"><i class="ri-image-add-line"></i><span class="btntxt">Image</span></button>
+      <button class="btn" id="openFspyBtn" title="Open native .fspy or JSON project"><i class="ri-folder-open-line"></i><span class="btntxt">Open .fspy</span></button>
+      <button class="btn primary" id="exportFspyBtn" title="Export native .fspy binary file"><i class="ri-download-2-line"></i><span class="btntxt">Save .fspy</span></button>
+      <button class="btn" id="runTestsBtn" title="Run Mathematical Parity Suite"><i class="ri-flask-line"></i><span class="btntxt">Verify</span></button>
+      <div class="sep"></div>
+      <button class="iconbtn" id="helpbtn" title="Help"><i class="ri-question-line"></i></button>
+      <button class="iconbtn" id="fullscreen" title="Enter full screen"><i class="ri-fullscreen-line"></i></button>
+      <button class="iconbtn active" id="righttoggle" title="Toggle camera results"><i class="ri-layout-right-line"></i></button>
+    </div>
+  </header>
+
+  <div class="body">
+    <!-- LEFT SIDEBAR: CALIBRATION SETTINGS -->
+    <aside class="sidebar" id="left">
+      <div class="sidehead">
+        <span class="caps">Calibration Settings</span>
+        <button class="iconbtn" id="closeleft" aria-label="Close settings"><i class="ri-close-line"></i></button>
+      </div>
+      <div class="scroll">
+        <section class="section">
+          <h3><i class="ri-focus-3-line"></i>Vanishing Points</h3>
+          <div class="field">
+            <label>Calibration mode</label>
+            <select id="mode">
+              <option value="TwoVanishingPoints">2 vanishing points</option>
+              <option value="OneVanishingPoint">1 vanishing point</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>VP 1 Axis (<span style="color:var(--red)">Red</span>)</label>
+            <select id="axis1">
+              <option value="xPositive" selected>+X</option>
+              <option value="xNegative">-X</option>
+              <option value="yPositive">+Y</option>
+              <option value="yNegative">-Y</option>
+              <option value="zPositive">+Z</option>
+              <option value="zNegative">-Z</option>
+            </select>
+          </div>
+          <div class="field" id="axis2Wrap">
+            <label>VP 2 Axis (<span style="color:var(--blue)">Blue</span>)</label>
+            <select id="axis2">
+              <option value="xPositive">+X</option>
+              <option value="xNegative">-X</option>
+              <option value="yPositive" selected>+Y</option>
+              <option value="yNegative">-Y</option>
+              <option value="zPositive">+Z</option>
+              <option value="zNegative">-Z</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Guide drag behavior</label>
+            <select id="editmode">
+              <option value="free">Independent endpoints</option>
+              <option value="linked">Translate whole segment</option>
+            </select>
+          </div>
+        </section>
+
+        <section class="section">
+          <h3><i class="ri-camera-lens-line"></i>Camera Data &amp; Principal Point</h3>
+          <div class="field">
+            <label>Principal point mode</label>
+            <select id="principalMode">
+              <option value="Default">Image midpoint</option>
+              <option value="Manual">Manual position</option>
+              <option value="FromMidpoint">From 3rd vanishing point (2VP)</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Camera Preset / Sensor</label>
+            <select id="cameraPreset">
+              <option value="custom">Custom sensor size</option>
+              <option value="fullframe" selected>35mm Full Frame (36 × 24 mm)</option>
+              <option value="apsc_canon">APS-C Canon (22.3 × 14.9 mm)</option>
+              <option value="apsc_nikon">APS-C Sony/Nikon (23.5 × 15.6 mm)</option>
+              <option value="mft">Micro Four Thirds (17.3 × 13.0 mm)</option>
+              <option value="one_inch">1-inch Sensor (13.2 × 8.8 mm)</option>
+            </select>
+          </div>
+          <div class="grid2">
+            <div class="field">
+              <label>Sensor W (mm)</label>
+              <input id="sensorWidth" type="number" step="0.1" min="1" max="200" value="36">
+            </div>
+            <div class="field">
+              <label>Sensor H (mm)</label>
+              <input id="sensorHeight" type="number" step="0.1" min="1" max="200" value="24">
+            </div>
+          </div>
+          <div id="oneVpFocalWrap" hidden>
+            <div class="field">
+              <label>1-VP Focal Specification</label>
+              <select id="absoluteFocalLength">
+                <option value="true">Focal length (mm)</option>
+                <option value="false">Relative focal length</option>
+              </select>
+            </div>
+            <div class="field">
+              <label id="focalInputLabel">Known Focal Length (mm)</label>
+              <input type="number" id="knownFocal" value="35" min="1" max="1000" step="0.5">
+            </div>
+          </div>
+        </section>
+
+        <section class="section">
+          <h3><i class="ri-ruler-2-line"></i>Reference Distance</h3>
+          <div class="field">
+            <label>Measure along</label>
+            <select id="referenceAxis">
+              <option value="None">None (Unit camera distance)</option>
+              <option value="xAxis">X axis</option>
+              <option value="yAxis">Y axis</option>
+              <option value="zAxis" selected>Z axis</option>
+              <option value="xyPlane">XY plane (free direction)</option>
+              <option value="yzPlane">YZ plane (free direction)</option>
+              <option value="zxPlane">ZX plane (free direction)</option>
+            </select>
+          </div>
+          <div id="distanceWrap">
+            <div class="grid2">
+              <div class="field">
+                <label>Distance</label>
+                <input type="number" id="distance" min="0.01" value="2.0" step="0.1">
+              </div>
+              <div class="field">
+                <label>Unit</label>
+                <select id="distanceUnit">
+                  <option value="Meters" selected>Meters (m)</option>
+                  <option value="Centimeters">cm</option>
+                  <option value="Millimeters">mm</option>
+                  <option value="Feet">Feet (ft)</option>
+                  <option value="Inches">Inches (in)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section">
+          <h3><i class="ri-box-3-line"></i>3D Guide Geometry</h3>
+          <div class="field">
+            <label>3D Guide Overlay</label>
+            <select id="guide">
+              <option value="Box" selected>3D Reference Box</option>
+              <option value="XYGrid">XY Floor Grid</option>
+              <option value="YZGrid">YZ Wall Grid</option>
+              <option value="ZXGrid">ZX Wall Grid</option>
+              <option value="None">Axes Only</option>
+            </select>
+          </div>
+          <div class="grid2" id="boxDimsWrap">
+            <div class="field">
+              <label>Box X / Y</label>
+              <input type="number" id="boxWidth" min="0.1" max="50" step="0.2" value="1.6">
+            </div>
+            <div class="field">
+              <label>Box Z Height</label>
+              <input type="number" id="boxHeight" min="0.1" max="50" step="0.2" value="1.2">
+            </div>
+          </div>
+          <div class="field">
+            <div class="rowlabel"><label>Overlay Opacity</label><strong id="opacityval">90%</strong></div>
+            <input type="range" id="opacity" min="15" max="100" step="5" value="90">
+          </div>
+          <label class="toggle">Vanishing point lines<input type="checkbox" id="showVP" checked></label>
+          <label class="toggle">3D projected wireframe<input type="checkbox" id="showGrid" checked></label>
+          <label class="toggle">Horizon line<input type="checkbox" id="showHorizon" checked></label>
+          <label class="toggle">Image dim overlay<input type="checkbox" id="dimImage"></label>
+        </section>
+
+        <section class="section">
+          <button class="btn" id="reset" style="width:100%"><i class="ri-restart-line"></i>Reset Default Calibration</button>
+        </section>
+      </div>
+    </aside>
+
+    <!-- MAIN STAGE & VIEWPORT -->
+    <main class="stage">
+      <div class="toolstrip">
+        <div class="row">
+          <button id="guideTool" class="iconbtn active" title="Edit calibration guides"><i class="ri-drag-move-2-line"></i></button>
+          <button id="panTool" class="iconbtn" title="Pan viewport"><i class="ri-hand"></i></button>
+          <div class="sep"></div>
+          <button id="vpToggle" class="iconbtn active" title="Toggle perspective lines"><i class="ri-git-branch-line"></i></button>
+          <button id="gridToggle" class="iconbtn active" title="Toggle 3D projected guide"><i class="ri-grid-line"></i></button>
+          <button id="horizonToggle" class="iconbtn active" title="Toggle horizon line"><i class="ri-separator"></i></button>
+        </div>
+        <div class="row">
+          <span class="caps" id="zoomtop">100%</span>
+          <button class="iconbtn" id="fit" title="Fit image to viewport"><i class="ri-aspect-ratio-line"></i></button>
+        </div>
+      </div>
+
+      <div class="viewport" id="viewportContainer">
+        <svg id="svg" viewBox="0 0 1000 662" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <clipPath id="crop"><rect id="cropRect" width="1000" height="662"/></clipPath>
+          </defs>
+          <rect id="bgRect" width="1000" height="662" fill="#232823"/>
+          <image id="image" x="0" y="0" width="1000" height="662" preserveAspectRatio="none" crossorigin="anonymous" href="https://images.pexels.com/photos/8606292/pexels-photo-8606292.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1600"/>
+          <rect id="dimRect" width="1000" height="662" fill="#0d100d" opacity="0" pointer-events="none"/>
+          <g id="overlay"></g>
+        </svg>
+        <div class="floating">
+          <i class="ri-camera-3-line"></i> FSPY SOLVER <span id="viewstate" style="margin-left:8px;color:var(--muted)">2-VP MODE</span>
+        </div>
+        <div class="diag-banner hidden" id="diagBanner"></div>
+        <div class="zoomtools">
+          <button class="iconbtn" id="zin" title="Zoom in"><i class="ri-add-line"></i></button>
+          <button class="iconbtn" id="zout" title="Zoom out"><i class="ri-subtract-line"></i></button>
+          <button class="iconbtn" id="zfit" title="Reset zoom"><i class="ri-expand-diagonal-line"></i></button>
+        </div>
+      </div>
+
+      <div class="status">
+        <span><i id="statusIcon" class="ri-checkbox-circle-fill"></i> <span id="statustext">EXACT FSPY SOLVER ACTIVE</span></span>
+        <span id="cursor" class="desktop">IMG: 500, 331 px · SOLVER: (0.000, 0.000)</span>
+        <span id="zoomstatus">100%</span>
+      </div>
+    </main>
+
+    <!-- RIGHT SIDEBAR: SOLVED CAMERA PARAMETERS -->
+    <aside class="sidebar right" id="right">
+      <div class="sidehead">
+        <span class="caps">Camera Solution</span>
+        <div class="row">
+          <span class="badge" id="badge">SOLVED</span>
+          <button class="iconbtn" id="closeright" title="Close results"><i class="ri-close-line"></i></button>
+        </div>
+      </div>
+      <div class="scroll">
+        <section class="section">
+          <h3><i class="ri-camera-lens-line"></i>Intrinsics &amp; FOV</h3>
+          <div class="metricgrid">
+            <div class="metric">
+              <div class="k">Focal Length</div>
+              <div id="focal" class="v">—</div>
+            </div>
+            <div class="metric">
+              <div class="k">Horiz. FOV</div>
+              <div id="hfov" class="v">—</div>
+            </div>
+          </div>
+          <div class="readout"><span>Relative Focal (fSpy)</span><strong id="relFocal">—</strong></div>
+          <div class="readout"><span>Focal Length (px)</span><strong id="pxFocal">—</strong></div>
+          <div class="readout"><span>Vertical FOV</span><strong id="vfov">—</strong></div>
+          <div class="readout"><span>Principal Point (px)</span><strong id="ppPx">—</strong></div>
+          <div class="readout"><span>Blender Lens Shift (X, Y)</span><strong id="blenderShift">—</strong></div>
+        </section>
+
+        <section class="section">
+          <h3><i class="ri-compass-3-line"></i>Orientation &amp; Pose</h3>
+          <div class="readout"><span>Yaw (Z)</span><strong id="yaw">—</strong></div>
+          <div class="readout"><span>Pitch (X)</span><strong id="pitch">—</strong></div>
+          <div class="readout"><span>Roll (Y)</span><strong id="roll">—</strong></div>
+          <div class="readout"><span>Quaternion (w,x,y,z)</span><strong id="quatOut">—</strong></div>
+        </section>
+
+        <section class="section">
+          <h3><i class="ri-map-pin-line"></i>World Camera Position</h3>
+          <div class="readout"><span>X</span><strong id="posx">—</strong></div>
+          <div class="readout"><span>Y</span><strong id="posy">—</strong></div>
+          <div class="readout"><span>Z</span><strong id="posz">—</strong></div>
+          <div class="readout"><span>Origin Distance</span><strong id="camDist">—</strong></div>
+          <div style="margin-top:8px;font-size:9px;color:var(--muted);text-transform:uppercase;font-weight:700">Camera Transform Matrix (cam → world)</div>
+          <div class="matrix-box" id="matrixBox"></div>
+        </section>
+
+        <section class="section">
+          <h3><i class="ri-crosshair-2-line"></i>Vanishing Points (px)</h3>
+          <div class="readout"><span style="color:var(--red)">VP 1</span><strong id="vp1">—</strong></div>
+          <div class="readout"><span style="color:var(--blue)">VP 2</span><strong id="vp2">—</strong></div>
+          <div class="readout"><span style="color:var(--purple)">VP 3 (Orthogonal)</span><strong id="vp3">—</strong></div>
+        </section>
+
+        <section class="section" style="display:grid;gap:7px">
+          <button class="btn" id="copyJsonBtn"><i class="ri-file-copy-line"></i>Copy Camera JSON</button>
+          <button class="btn" id="exportBlenderBtn"><i class="ri-code-s-slash-line"></i>Export Blender .py Script</button>
+          <button class="btn" id="exportJsonBtn"><i class="ri-braces-line"></i>Export Debug JSON</button>
+        </section>
+      </div>
+    </aside>
+  </div>
+
+  <footer class="foot">
+    <span>FSPY WEB ENGINE · GPL-3.0 PORT OF PER GANTELIUS'S FSPY SOLVER</span>
+    <span>ORIGINAL REPO <a href="https://github.com/perarnia/fSpy" target="_blank" rel="noopener">GITHUB/PERARNIA/FSPY <i class="ri-external-link-line"></i></a></span>
+  </footer>
+
+  <!-- HELP MODAL -->
+  <div class="modal" id="helpModal">
+    <div class="dialog">
+      <h2><span>fSpy Camera Solver &amp; Workflow</span><button id="closeHelp" class="iconbtn"><i class="ri-close-line"></i></button></h2>
+      <p>This application runs a faithful mathematical port of the original open-source <b>fSpy</b> solver (`src/gui/solver/solver.ts`, `math-util.ts`, `coordinates-util.ts`). All geometry is computed in fSpy's normalized solver frame and projected using the authoritative $4\times 4$ `cameraTransform` matrix.</p>
+      <ul>
+        <li><b>Vanishing Point Guides:</b> Align the two <span style="color:var(--red)">Red</span> segments with edges parallel to the first world axis, and the two <span style="color:var(--blue)">Blue</span> segments with edges parallel to an orthogonal world axis. Hold <code>Shift</code> while dragging for precision movement.</li>
+        <li><b>3rd Vanishing Point Mode:</b> When Principal Point is set to <i>From 3rd vanishing point</i> in 2-VP mode, two <span style="color:var(--purple)">Purple</span> guide segments appear to compute the orthocenter of the vanishing-point triangle.</li>
+        <li><b>Reference Distance:</b> Select an axis (X, Y, or Z) or plane to measure along, and drag the amber ruler markers along the projected world axis to establish real-world metric scale.</li>
+        <li><b>Native `.fspy` &amp; Blender Compatibility:</b> Use <b>Save .fspy</b> to generate a binary `.fspy` project file (`fspy` magic bytes, version 1 header, JSON state + embedded image) compatible with the desktop fSpy app and the official <code>fSpy-Blender</code> add-on.</li>
+      </ul>
+      <button class="btn primary" id="doneHelp"><i class="ri-check-line"></i>Close</button>
+    </div>
+  </div>
+
+  <!-- PARITY TEST SUITE MODAL -->
+  <div class="modal" id="testModal">
+    <div class="dialog">
+      <h2><span>Automated Mathematical Parity &amp; Verification Suite</span><button id="closeTest" class="iconbtn"><i class="ri-close-line"></i></button></h2>
+      <div id="testSummary" style="margin-bottom:10px;font-weight:700;color:var(--amber)">Running tests...</div>
+      <div id="testResultsList"></div>
+      <div style="margin-top:14px;display:flex;justify-content:flex-end">
+        <button class="btn primary" id="doneTest"><i class="ri-check-line"></i>Done</button>
+      </div>
+    </div>
+  </div>
+
+  <input class="hidefile" id="imagefile" type="file" accept="image/*">
+  <input class="hidefile" id="projectfile" type="file" accept=".fspy,.json,application/json,application/octet-stream">
+</div>
+
+<script>
+/**
+ * ============================================================================
+ * fSpy Mathematical Calibration Engine — Authentic Port of perarnia/fSpy
+ * Original Author: Per Gantelius (https://github.com/perarnia/fSpy)
+ * License: GNU General Public License v3.0 (GPL-3.0)
+ * ============================================================================
+ */
+(() => {
+  'use strict';
+
+  // --------------------------------------------------------------------------
+  // 1. LINEAR ALGEBRA & TYPES (Ported from vector-3d.ts, matrix-3x3.ts, matrix-4x4.ts, transform.ts)
+  // --------------------------------------------------------------------------
+  class Vector3D {
+    constructor(x = 0, y = 0, z = 0) {
+      this.x = x;
+      this.y = y;
+      this.z = z;
+    }
+    copy() { return new Vector3D(this.x, this.y, this.z); }
+    get length() { return Math.hypot(this.x, this.y, this.z); }
+    add(v) { return new Vector3D(this.x + v.x, this.y + v.y, this.z + v.z); }
+    subtracted(v) { return new Vector3D(this.x - v.x, this.y - v.y, this.z - v.z); }
+    multipliedByScalar(s) { return new Vector3D(this.x * s, this.y * s, this.z * s); }
+    negated() { return new Vector3D(-this.x, -this.y, -this.z); }
+    normalized() {
+      const l = this.length;
+      return l > 0 ? new Vector3D(this.x / l, this.y / l, this.z / l) : new Vector3D(0, 0, 0);
+    }
+    normalize() {
+      const l = this.length;
+      if (l > 0) { this.x /= l; this.y /= l; this.z /= l; }
+      return this;
+    }
+    static dot(a, b) { return a.x * b.x + a.y * b.y + a.z * b.z; }
+    static cross(a, b) {
+      return new Vector3D(
+        a.y * b.z - a.z * b.y,
+        a.z * b.x - a.x * b.z,
+        a.x * b.y - a.y * b.x
+      );
+    }
+    toArray() { return [this.x, this.y, this.z]; }
+  }
+
+  class Matrix4x4 {
+    constructor(rows) {
+      this.matrix = rows || [
+        [1, 0, 0, 0],
+        [0, 1, 0, 0],
+        [0, 0, 1, 0],
+        [0, 0, 0, 1]
+      ];
+    }
+    static get identity() { return new Matrix4x4(); }
+    copy() {
+      return new Matrix4x4(this.matrix.map(r => [...r]));
+    }
+    multipliedBy(other) {
+      const res = Matrix4x4.identity;
+      for (let r = 0; r < 4; r++) {
+        for (let c = 0; c < 4; c++) {
+          let sum = 0;
+          for (let k = 0; k < 4; k++) sum += this.matrix[r][k] * other.matrix[k][c];
+          res.matrix[r][c] = sum;
+        }
+      }
+      return res;
+    }
+    // Rigid body inverse (orthonormal 3x3 rotation R^T + translation -R^T * t)
+    invertedRigid() {
+      const m = this.matrix;
+      const r00 = m[0][0], r01 = m[1][0], r02 = m[2][0];
+      const r10 = m[0][1], r11 = m[1][1], r12 = m[2][1];
+      const r20 = m[0][2], r21 = m[1][2], r22 = m[2][2];
+      const tx = m[0][3], ty = m[1][3], tz = m[2][3];
+      return new Matrix4x4([
+        [r00, r01, r02, -(r00 * tx + r01 * ty + r02 * tz)],
+        [r10, r11, r12, -(r10 * tx + r11 * ty + r12 * tz)],
+        [r20, r21, r22, -(r20 * tx + r21 * ty + r22 * tz)],
+        [0,   0,   0,   1]
+      ]);
+    }
+    transformVector(v) {
+      const m = this.matrix;
+      return new Vector3D(
+        m[0][0] * v.x + m[0][1] * v.y + m[0][2] * v.z + m[0][3],
+        m[1][0] * v.x + m[1][1] * v.y + m[1][2] * v.z + m[1][3],
+        m[2][0] * v.x + m[2][1] * v.y + m[2][2] * v.z + m[2][3]
+      );
+    }
+    transformDirection(v) {
+      const m = this.matrix;
+      return new Vector3D(
+        m[0][0] * v.x + m[0][1] * v.y + m[0][2] * v.z,
+        m[1][0] * v.x + m[1][1] * v.y + m[1][2] * v.z,
+        m[2][0] * v.x + m[2][1] * v.y + m[2][2] * v.z
+      );
+    }
+  }
+
+  // --------------------------------------------------------------------------
+  // 2. COORDINATE SYSTEM CONVERSIONS (Ported from src/gui/solver/coordinates-util.ts)
+  // --------------------------------------------------------------------------
+  const CoordinatesUtil = {
+    /**
+     * Converts between normalized image plane coordinates [0, 1] x [0, 1] (top-left origin)
+     * and solver coordinates [-1, 1] x [-h/w, h/w] (midpoint origin, Y up)
+     * or vice versa. Matches original fSpy CoordinatesUtil.convert().
+     */
+    imagePlaneToSolver(point, width, height) {
+      const aspectRatio = width / height;
+      return {
+        x: 2 * point.x - 1,
+        y: (1 - 2 * point.y) / aspectRatio
+      };
+    },
+    solverToImagePlane(point, width, height) {
+      const aspectRatio = width / height;
+      return {
+        x: 0.5 * (point.x + 1),
+        y: 0.5 * (1 - aspectRatio * point.y)
+      };
+    },
+    pixelToImagePlane(px, width, height) {
+      return { x: px.x / width, y: px.y / height };
+    },
+    imagePlaneToPixel(pt, width, height) {
+      return { x: pt.x * width, y: pt.y * height };
+    },
+    pixelToSolver(px, width, height) {
+      return this.imagePlaneToSolver(this.pixelToImagePlane(px, width, height), width, height);
+    },
+    solverToPixel(pt, width, height) {
+      return this.imagePlaneToPixel(this.solverToImagePlane(pt, width, height), width, height);
+    }
+  };
+
+  // --------------------------------------------------------------------------
+  // 3. MATHEMATICAL SOLVER UTILITIES (Ported from src/gui/solver/math-util.ts)
+  // --------------------------------------------------------------------------
+  const MathUtil = {
+    EPSILON: 1e-8,
+
+    lineSegmentMidpoint(segment) {
+      return {
+        x: 0.5 * (segment[0].x + segment[1].x),
+        y: 0.5 * (segment[0].y + segment[1].y)
+      };
+    },
+
+    /**
+     * Port of MathUtil.lineIntersection(line1, line2)
+     */
+    lineIntersection(line1, line2) {
+      const d1x = line1[1].x - line1[0].x;
+      const d1y = line1[1].y - line1[0].y;
+      const d2x = line2[1].x - line2[0].x;
+      const d2y = line2[1].y - line2[0].y;
+
+      const denom = d1x * d2y - d1y * d2x;
+      if (Math.abs(denom) < this.EPSILON) {
+        return null;
+      }
+
+      const ax = line2[0].x - line1[0].x;
+      const ay = line2[0].y - line1[0].y;
+      const t = (ax * d2y - ay * d2x) / denom;
+
+      return {
+        x: line1[0].x + t * d1x,
+        y: line1[0].y + t * d1y
+      };
+    },
+
+    /**
+     * Port of MathUtil.triangleOrthocenter(k, l, m)
+     * Computes the orthocenter of the triangle with vertices k, l, m (the 3 vanishing points).
+     */
+    triangleOrthocenter(k, l, m) {
+      const a = k.x, b = k.y;
+      const c = l.x, d = l.y;
+      const e = m.x, f = m.y;
+
+      const N = b * c + d * e + f * a - c * f - b * e - a * d;
+      if (Math.abs(N) < this.EPSILON) {
+        return { x: 0, y: 0 };
+      }
+      const x = ((d - f) * b * b + (f - b) * d * d + (b - d) * f * f + a * c * (c - a) + c * e * (e - c) + e * a * (a - e)) / N;
+      const y = ((e - c) * a * a + (a - e) * c * c + (c - a) * e * e + b * d * (b - d) + d * f * (d - f) + f * b * (f - b)) / N;
+      return { x, y };
+    },
+
+    /**
+     * Port of MathUtil.computeFocalLength(Fu, Fv, P)
+     * Computes relative focal length f from two orthogonal vanishing points Fu, Fv and principal point P.
+     */
+    computeFocalLength(Fu, Fv, P) {
+      // Vector P -> Fu and Fv -> Fu
+      const vPFux = Fu.x - P.x, vPFuy = Fu.y - P.y;
+      const vPFvx = Fv.x - P.x, vPFvy = Fv.y - P.y;
+      const fSq = -(vPFux * vPFvx + vPFuy * vPFvy);
+      if (fSq <= 0 || !Number.isFinite(fSq)) {
+        return null;
+      }
+      return Math.sqrt(fSq);
+    },
+
+    /**
+     * Port of MathUtil.computeCameraRotationMatrix(Fu, Fv, f, P)
+     * Computes the camera rotation matrix where column 0 is along u (towards Fu),
+     * column 1 is along v (towards Fv), and column 2 is u x v.
+     */
+    computeCameraRotationMatrix(Fu, Fv, f, P) {
+      const u = new Vector3D(Fu.x - P.x, Fu.y - P.y, -f).normalized();
+      const vRaw = new Vector3D(Fv.x - P.x, Fv.y - P.y, -f);
+      // Gram-Schmidt orthogonalization to guarantee exact orthonormality
+      const vProj = vRaw.subtracted(u.multipliedByScalar(Vector3D.dot(vRaw, u)));
+      const v = vProj.normalized();
+      const w = Vector3D.cross(u, v).normalized();
+
+      return new Matrix4x4([
+        [u.x, v.x, w.x, 0],
+        [u.y, v.y, w.y, 0],
+        [u.z, v.z, w.z, 0],
+        [0,   0,   0,   1]
+      ]);
+    },
+
+    /**
+     * Port of MathUtil.perspectiveProject(point, cameraTransform, principalPoint, horizontalFieldOfView)
+     * Projects a 3D world point into 2D solver coordinates.
+     */
+    perspectiveProject(pointWorld, cameraTransform, principalPoint, horizontalFieldOfView) {
+      const worldToCam = cameraTransform.invertedRigid();
+      const pCam = worldToCam.transformVector(pointWorld);
+      // Camera looks down -Z in fSpy / OpenGL / Blender camera space
+      if (pCam.z >= -1e-5) {
+        return null; // Behind or on camera plane
+      }
+      const f = 1 / Math.tan(0.5 * horizontalFieldOfView);
+      return {
+        x: f * (pCam.x / -pCam.z) + principalPoint.x,
+        y: f * (pCam.y / -pCam.z) + principalPoint.y
+      };
+    },
+
+    /**
+     * Port of MathUtil.viewPlaneIntersection
+     * Unprojects a 2D solver coordinate onto a plane passing through planePoint with planeNormal.
+     */
+    rayFromSolverPoint(point2D, cameraTransform, principalPoint, f) {
+      const rayCam = new Vector3D(point2D.x - principalPoint.x, point2D.y - principalPoint.y, -f).normalized();
+      const rayWorld = cameraTransform.transformDirection(rayCam).normalized();
+      const camOrigin = new Vector3D(
+        cameraTransform.matrix[0][3],
+        cameraTransform.matrix[1][3],
+        cameraTransform.matrix[2][3]
+      );
+      return { origin: camOrigin, direction: rayWorld };
+    },
+
+    /**
+     * Projects a 3D world axis onto 2D solver space starting from the projected 3D origin,
+     * and finds the closest point on that 2D ray to a user handle.
+     */
+    closestPointOnProjectedAxis(handle2D, origin2D, axisVanishingPoint2D) {
+      const dx = axisVanishingPoint2D.x - origin2D.x;
+      const dy = axisVanishingPoint2D.y - origin2D.y;
+      const lenSq = dx * dx + dy * dy;
+      if (lenSq < 1e-12) return { point: origin2D, t: 0 };
+      const t = ((handle2D.x - origin2D.x) * dx + (handle2D.y - origin2D.y) * dy) / lenSq;
+      return {
+        point: { x: origin2D.x + t * dx, y: origin2D.y + t * dy },
+        t
+      };
+    },
+
+    /**
+     * Matrix to Quaternion [w, x, y, z]
+     */
+    matrixToQuaternion(m) {
+      const r = m.matrix;
+      const trace = r[0][0] + r[1][1] + r[2][2];
+      let w, x, y, z;
+      if (trace > 0) {
+        const s = 0.5 / Math.sqrt(trace + 1.0);
+        w = 0.25 / s;
+        x = (r[2][1] - r[1][2]) * s;
+        y = (r[0][2] - r[2][0]) * s;
+        z = (r[1][0] - r[0][1]) * s;
+      } else if (r[0][0] > r[1][1] && r[0][0] > r[2][2]) {
+        const s = 2.0 * Math.sqrt(1.0 + r[0][0] - r[1][1] - r[2][2]);
+        w = (r[2][1] - r[1][2]) / s;
+        x = 0.25 * s;
+        y = (r[0][1] + r[1][0]) / s;
+        z = (r[0][2] + r[2][0]) / s;
+      } else if (r[1][1] > r[2][2]) {
+        const s = 2.0 * Math.sqrt(1.0 + r[1][1] - r[0][0] - r[2][2]);
+        w = (r[0][2] - r[2][0]) / s;
+        x = (r[0][1] + r[1][0]) / s;
+        y = 0.25 * s;
+        z = (r[1][2] + r[2][1]) / s;
+      } else {
+        const s = 2.0 * Math.sqrt(1.0 + r[2][2] - r[0][0] - r[1][1]);
+        w = (r[1][0] - r[0][1]) / s;
+        x = (r[0][2] + r[2][0]) / s;
+        y = (r[1][2] + r[2][1]) / s;
+        z = 0.25 * s;
+      }
+      const len = Math.hypot(w, x, y, z) || 1;
+      return [w / len, x / len, y / len, z / len];
+    },
+
+    /**
+     * Extracts Blender-compatible Euler angles (XYZ order, in radians) from a 4x4 rotation matrix.
+     */
+    matrixToEulerXYZ(m) {
+      const r = m.matrix;
+      const sy = Math.hypot(r[0][0], r[1][0]);
+      const singular = sy < 1e-6;
+      let x, y, z;
+      if (!singular) {
+        x = Math.atan2(r[2][1], r[2][2]);
+        y = Math.atan2(-r[2][0], sy);
+        z = Math.atan2(r[1][0], r[0][0]);
+      } else {
+        x = Math.atan2(-r[1][2], r[1][1]);
+        y = Math.atan2(-r[2][0], sy);
+        z = 0;
+      }
+      return { x, y, z };
+    }
+  };
+
+  // --------------------------------------------------------------------------
+  // 4. AUTHORITATIVE FSPY SOLVER (Ported from src/gui/solver/solver.ts)
+  // --------------------------------------------------------------------------
+  const AxisVectorMap = {
+    xPositive: new Vector3D(1, 0, 0),
+    xNegative: new Vector3D(-1, 0, 0),
+    yPositive: new Vector3D(0, 1, 0),
+    yNegative: new Vector3D(0, -1, 0),
+    zPositive: new Vector3D(0, 0, 1),
+    zNegative: new Vector3D(0, 0, -1)
+  };
+
+  const UnitFactorToMeters = {
+    Millimeters: 0.001,
+    Centimeters: 0.01,
+    Meters: 1.0,
+    Feet: 0.3048,
+    Inches: 0.0254
+  };
+
+  const Solver = {
+    /**
+     * Computes the 4x4 basis permutation matrix mapping assigned axes (axis1, axis2)
+     * to canonical world X, Y, Z axes. Matches Solver.axisAssignmentMatrix() in fSpy.
+     */
+    axisAssignmentMatrix(axis1, axis2) {
+      const u = AxisVectorMap[axis1];
+      const v = AxisVectorMap[axis2];
+      if (!u || !v) return null;
+      const w = Vector3D.cross(u, v);
+      if (w.length < 0.5) {
+        return null; // Parallel / contradictory axis assignments (e.g. +X and -X)
+      }
+      // Columns are u, v, w; transpose maps from (u,v,w) frame to world frame
+      return new Matrix4x4([
+        [u.x, u.y, u.z, 0],
+        [v.x, v.y, v.z, 0],
+        [w.x, w.y, w.z, 0],
+        [0,   0,   0,   1]
+      ]);
+    },
+
+    /**
+     * Computes vanishing point in solver coordinates from a pair of line segments
+     * stored in normalized image plane coordinates [0, 1]^2.
+     */
+    computeVanishingPoint(vpControlState, width, height) {
+      const seg1 = [
+        CoordinatesUtil.imagePlaneToSolver(vpControlState.lineSegments[0][0], width, height),
+        CoordinatesUtil.imagePlaneToSolver(vpControlState.lineSegments[0][1], width, height)
+      ];
+      const seg2 = [
+        CoordinatesUtil.imagePlaneToSolver(vpControlState.lineSegments[1][0], width, height),
+        CoordinatesUtil.imagePlaneToSolver(vpControlState.lineSegments[1][1], width, height)
+      ];
+      const len1 = Math.hypot(seg1[1].x - seg1[0].x, seg1[1].y - seg1[0].y);
+      const len2 = Math.hypot(seg2[1].x - seg2[0].x, seg2[1].y - seg2[0].y);
+      if (len1 < 1e-6 || len2 < 1e-6) {
+        return { vp: null, error: 'Degenerate vanishing-point line segment (coincident endpoints).' };
+      }
+      const vp = MathUtil.lineIntersection(seg1, seg2);
+      if (!vp) {
+        return { vp: null, error: 'Guide lines are parallel and do not intersect at a finite vanishing point.' };
+      }
+      return { vp, error: null };
+    },
+
+    /**
+     * Complete fSpy calibration entry point (1VP and 2VP).
+     */
+    solve(globalSettings, calSettingsBase, calSettings1VP, calSettings2VP, controlPointsBase, controlPoints1VP, controlPoints2VP) {
+      const warnings = [];
+      const errors = [];
+      const width = globalSettings.imageWidth;
+      const height = globalSettings.imageHeight;
+
+      if (!width || !height || width <= 0 || height <= 0) {
+        return { valid: false, errors: ['Invalid image dimensions.'], warnings, cameraParameters: null };
+      }
+
+      const mode = globalSettings.calibrationMode;
+      const vp1Res = this.computeVanishingPoint(controlPointsBase.firstVanishingPoint, width, height);
+      if (vp1Res.error) errors.push(`VP 1: ${vp1Res.error}`);
+      const Fu = vp1Res.vp;
+
+      let Fv = null;
+      let Fw = null;
+
+      // Determine Principal Point in solver space
+      let principalPoint = { x: 0, y: 0 };
+      const ppMode = mode === 'OneVanishingPoint'
+        ? calSettings1VP.principalPointMode
+        : calSettings2VP.principalPointMode;
+
+      if (ppMode === 'Manual') {
+        principalPoint = CoordinatesUtil.imagePlaneToSolver(controlPointsBase.principalPoint, width, height);
+      }
+
+      // Compute sensor size incorporating image aspect ratio (matching fSpy solver.ts)
+      let sensorWidth = calSettingsBase.customSensorWidth;
+      let sensorHeight = calSettingsBase.customSensorHeight;
+      const imageAspect = width / height;
+      const sensorAspect = sensorWidth / sensorHeight;
+      if (imageAspect >= 1) {
+        sensorHeight = sensorWidth / imageAspect;
+      } else {
+        sensorWidth = sensorHeight * imageAspect;
+      }
+
+      let fRelative = null;
+      let camRotMatrix = null;
+      let axisMatrix = null;
+
+      if (mode === 'OneVanishingPoint') {
+        // 1-VP Calibration
+        if (calSettings1VP.absoluteFocalLength) {
+          if (calSettings1VP.focalLength <= 0 || sensorWidth <= 0) {
+            errors.push('Known focal length and sensor width must be positive.');
+          } else {
+            // In fSpy solver frame (width = 2 units from -1 to 1): f_solver = 2 * focalLength / sensorWidth
+            fRelative = 2.0 * (calSettings1VP.focalLength / sensorWidth);
+          }
+        } else {
+          fRelative = 2.0 * calSettings1VP.RelativeFocalLength;
+        }
+
+        // Second axis defaults to orthogonal axis according to horizon / tilt
+        const axis1 = calSettingsBase.firstVanishingPointAxis;
+        let defaultAxis2 = 'yPositive';
+        if (axis1.startsWith('y')) defaultAxis2 = 'xPositive';
+        axisMatrix = this.axisAssignmentMatrix(axis1, defaultAxis2);
+
+        if (Fu && fRelative && fRelative > 0 && axisMatrix) {
+          // Construct horizon direction from horizon line or horizontal image axis
+          const hSeg = [
+            CoordinatesUtil.imagePlaneToSolver(controlPoints1VP.horizon[0], width, height),
+            CoordinatesUtil.imagePlaneToSolver(controlPoints1VP.horizon[1], width, height)
+          ];
+          let hx = hSeg[1].x - hSeg[0].x;
+          let hy = hSeg[1].y - hSeg[0].y;
+          const hLen = Math.hypot(hx, hy) || 1;
+          hx /= hLen; hy /= hLen;
+
+          // Compute second vanishing point Fv along the horizon line such that (Fu - P) . (Fv - P) + f^2 = 0
+          const mid = MathUtil.lineSegmentMidpoint(hSeg);
+          // Line parameterized as L(t) = Fu + t * (hx, hy)
+          const dx = Fu.x - principalPoint.x;
+          const dy = Fu.y - principalPoint.y;
+          const denom = dx * hx + dy * hy;
+          if (Math.abs(denom) < 1e-6) {
+            // Vanishing point is at the principal point; construct synthetic orthogonal Fv at infinity
+            const uVec = new Vector3D(dx, dy, -fRelative).normalized();
+            const vVec = new Vector3D(hx, hy, 0).normalized();
+            const wVec = Vector3D.cross(uVec, vVec).normalized();
+            const rMat = new Matrix4x4([
+              [uVec.x, vVec.x, wVec.x, 0],
+              [uVec.y, vVec.y, wVec.y, 0],
+              [uVec.z, vVec.z, wVec.z, 0],
+              [0, 0, 0, 1]
+            ]);
+            camRotMatrix = axisMatrix.multipliedBy(rMat.invertedRigid()).invertedRigid();
+          } else {
+            const t = -(dx * dx + dy * dy + fRelative * fRelative) / denom;
+            Fv = { x: Fu.x + t * hx, y: Fu.y + t * hy };
+            const rMat = MathUtil.computeCameraRotationMatrix(Fu, Fv, fRelative, principalPoint);
+            camRotMatrix = axisMatrix.multipliedBy(rMat.invertedRigid()).invertedRigid();
+          }
+        }
+      } else {
+        // 2-VP Calibration
+        const vp2Res = this.computeVanishingPoint(controlPoints2VP.secondVanishingPoint, width, height);
+        if (vp2Res.error) errors.push(`VP 2: ${vp2Res.error}`);
+        Fv = vp2Res.vp;
+
+        axisMatrix = this.axisAssignmentMatrix(
+          calSettingsBase.firstVanishingPointAxis,
+          calSettings2VP.secondVanishingPointAxis
+        );
+        if (!axisMatrix) {
+          errors.push('Invalid axis assignment: VP 1 and VP 2 cannot be assigned to parallel world axes.');
+        }
+
+        if (ppMode === 'FromMidpoint' && Fu && Fv) {
+          const vp3Res = this.computeVanishingPoint(controlPoints2VP.thirdVanishingPoint, width, height);
+          if (vp3Res.error) {
+            errors.push(`VP 3: ${vp3Res.error}`);
+          } else {
+            Fw = vp3Res.vp;
+            principalPoint = MathUtil.triangleOrthocenter(Fu, Fv, Fw);
+          }
+        }
+
+        if (Fu && Fv && errors.length === 0) {
+          fRelative = MathUtil.computeFocalLength(Fu, Fv, principalPoint);
+          if (fRelative === null || !Number.isFinite(fRelative) || fRelative <= 1e-4) {
+            errors.push('Vanishing points and principal point do not yield a valid positive focal length ((Fu - P)·(Fv - P) >= 0). Adjust red or blue guide angles.');
+          } else {
+            const rMat = MathUtil.computeCameraRotationMatrix(Fu, Fv, fRelative, principalPoint);
+            // Map camera rotation into assigned world axes
+            camRotMatrix = axisMatrix.multipliedBy(rMat.invertedRigid()).invertedRigid();
+
+            // Compute 3rd orthogonal vanishing point Fw from column 2 of world-to-camera matrix
+            const worldToCam = camRotMatrix.invertedRigid();
+            // Third axis is whichever world axis wasn't chosen
+            const uAxis = AxisVectorMap[calSettingsBase.firstVanishingPointAxis];
+            const vAxis = AxisVectorMap[calSettings2VP.secondVanishingPointAxis];
+            const wAxis = Vector3D.cross(uAxis, vAxis);
+            const wCam = worldToCam.transformDirection(wAxis);
+            if (Math.abs(wCam.z) > 1e-6) {
+              Fw = {
+                x: principalPoint.x + fRelative * (wCam.x / -wCam.z),
+                y: principalPoint.y + fRelative * (wCam.y / -wCam.z)
+              };
+            }
+          }
+        }
+      }
+
+      if (errors.length > 0 || !fRelative || !camRotMatrix) {
+        return {
+          valid: false,
+          errors,
+          warnings,
+          cameraParameters: null,
+          vanishingPoints: { vp1: Fu, vp2: Fv, vp3: Fw },
+          principalPoint
+        };
+      }
+
+      // Compute FOVs
+      const horizontalFieldOfView = 2 * Math.atan(1 / fRelative);
+      const aspectRatio = width / height;
+      const verticalFieldOfView = 2 * Math.atan(1 / (fRelative * aspectRatio));
+      const diagonalFieldOfView = 2 * Math.atan(Math.hypot(1, 1 / aspectRatio) / fRelative);
+      const absoluteFocalLength = 0.5 * sensorWidth * fRelative;
+
+      // Compute Camera Translation & Reference Distance Scaling (Ported from solver.ts)
+      const originSolver = CoordinatesUtil.imagePlaneToSolver(controlPointsBase.origin, width, height);
+      // Ray from camera through 2D origin in camera coordinates:
+      const originRayCam = new Vector3D(
+        originSolver.x - principalPoint.x,
+        originSolver.y - principalPoint.y,
+        -fRelative
+      ).normalized();
+
+      // Default unit distance from camera center to 3D world origin = 10 units (or 1 unit before reference scale)
+      let originDistance = 5.0;
+
+      // Temporary cameraTransform with unit origin distance to evaluate reference segment
+      const buildCameraTransform = (dist) => {
+        // In camera space, world origin is at dist * originRayCam.
+        // Therefore camera center in world space is at -R * (dist * originRayCam).
+        const originCam = originRayCam.multipliedByScalar(dist);
+        const camPosWorld = camRotMatrix.transformDirection(originCam).negated();
+        const m = camRotMatrix.copy();
+        m.matrix[0][3] = camPosWorld.x;
+        m.matrix[1][3] = camPosWorld.y;
+        m.matrix[2][3] = camPosWorld.z;
+        return m;
+      };
+
+      const refAxis = calSettingsBase.referenceDistanceAxis;
+      const unitScale = UnitFactorToMeters[calSettingsBase.referenceDistanceUnit] || 1.0;
+      const targetDistanceMeters = calSettingsBase.referenceDistance * unitScale;
+
+      let cameraTransform = buildCameraTransform(originDistance);
+
+      if (refAxis !== 'None' && targetDistanceMeters > 0) {
+        const tempTransform = buildCameraTransform(1.0);
+        const worldToCam = tempTransform.invertedRigid();
+
+        if (refAxis === 'xAxis' || refAxis === 'yAxis' || refAxis === 'zAxis') {
+          const axisDirWorld = refAxis === 'xAxis'
+            ? new Vector3D(1, 0, 0)
+            : refAxis === 'yAxis'
+              ? new Vector3D(0, 1, 0)
+              : new Vector3D(0, 0, 1);
+
+          // Project unit reference points along the selected axis
+          const anchorParam = controlPointsBase.referenceDistanceAnchor || 0;
+          const handleOffsets = controlPointsBase.referenceDistanceHandleOffsets || [0.1, 0.45];
+
+          // Use the 2D screen positions along the projected axis ray from originSolver
+          const pAxisSolver = MathUtil.perspectiveProject(axisDirWorld, tempTransform, principalPoint, horizontalFieldOfView);
+          if (pAxisSolver) {
+            const dir2Dx = pAxisSolver.x - originSolver.x;
+            const dir2Dy = pAxisSolver.y - originSolver.y;
+            const dir2DLen = Math.hypot(dir2Dx, dir2Dy) || 1;
+            const ux = dir2Dx / dir2DLen;
+            const uy = dir2Dy / dir2DLen;
+
+            const h0Solver = {
+              x: originSolver.x + ux * handleOffsets[0],
+              y: originSolver.y + uy * handleOffsets[0]
+            };
+            const h1Solver = {
+              x: originSolver.x + ux * handleOffsets[1],
+              y: originSolver.y + uy * handleOffsets[1]
+            };
+
+            // Intersect camera rays through h0Solver and h1Solver with the 3D world line Origin + s * axisDirWorld
+            const intersectAxisRay = (pt2D) => {
+              const rayCam = new Vector3D(pt2D.x - principalPoint.x, pt2D.y - principalPoint.y, -fRelative).normalized();
+              const rayWorld = tempTransform.transformDirection(rayCam);
+              const camPos = new Vector3D(tempTransform.matrix[0][3], tempTransform.matrix[1][3], tempTransform.matrix[2][3]);
+              // Solve closest approach between CamPos + t * rayWorld and 0 + s * axisDirWorld
+              const w0 = camPos;
+              const a = Vector3D.dot(rayWorld, rayWorld);
+              const b = Vector3D.dot(rayWorld, axisDirWorld);
+              const c = Vector3D.dot(axisDirWorld, axisDirWorld);
+              const d = Vector3D.dot(rayWorld, w0);
+              const e = Vector3D.dot(axisDirWorld, w0);
+              const denom = a * c - b * b;
+              if (Math.abs(denom) < 1e-8) return null;
+              return (a * e - b * d) / denom;
+            };
+
+            const s0 = intersectAxisRay(h0Solver);
+            const s1 = intersectAxisRay(h1Solver);
+            if (s0 !== null && s1 !== null && Math.abs(s1 - s0) > 1e-5) {
+              const unscaledDelta = Math.abs(s1 - s0);
+              originDistance = targetDistanceMeters / unscaledDelta;
+              cameraTransform = buildCameraTransform(originDistance);
+            } else {
+              warnings.push('Reference handles are too close or near the vanishing point.');
+            }
+          }
+        } else {
+          // Plane reference mode (xyPlane, yzPlane, zxPlane)
+          const planeNormal = refAxis === 'xyPlane'
+            ? new Vector3D(0, 0, 1)
+            : refAxis === 'yzPlane'
+              ? new Vector3D(1, 0, 0)
+              : new Vector3D(0, 1, 0);
+
+          const p0Solver = CoordinatesUtil.imagePlaneToSolver(controlPointsBase.freeReferenceSegment[0], width, height);
+          const p1Solver = CoordinatesUtil.imagePlaneToSolver(controlPointsBase.freeReferenceSegment[1], width, height);
+
+          const intersectPlane = (pt2D) => {
+            const ray = MathUtil.rayFromSolverPoint(pt2D, tempTransform, principalPoint, fRelative);
+            const denom = Vector3D.dot(ray.direction, planeNormal);
+            if (Math.abs(denom) < 1e-6) return null;
+            const t = -Vector3D.dot(ray.origin, planeNormal) / denom;
+            if (t <= 0) return null;
+            return ray.origin.add(ray.direction.multipliedByScalar(t));
+          };
+
+          const w0 = intersectPlane(p0Solver);
+          const w1 = intersectPlane(p1Solver);
+          if (w0 && w1) {
+            const distUnscaled = w1.subtracted(w0).length;
+            if (distUnscaled > 1e-5) {
+              originDistance = targetDistanceMeters / distUnscaled;
+              cameraTransform = buildCameraTransform(originDistance);
+            }
+          } else {
+            warnings.push('Reference segment does not intersect the selected world plane in front of the camera.');
+          }
+        }
+      }
+
+      const viewTransform = cameraTransform.invertedRigid();
+
+      return {
+        valid: true,
+        errors,
+        warnings,
+        vanishingPoints: { vp1: Fu, vp2: Fv, vp3: Fw },
+        principalPoint,
+        cameraParameters: {
+          principalPoint,
+          viewTransform,
+          cameraTransform,
+          horizontalFieldOfView,
+          verticalFieldOfView,
+          diagonalFieldOfView,
+          relativeFocalLength: fRelative,
+          focalLength: absoluteFocalLength,
+          sensorWidth,
+          sensorHeight,
+          imageWidth: width,
+          imageHeight: height
+        }
+      };
+    }
+  };
+
+  // --------------------------------------------------------------------------
+  // 5. NATIVE .FSPY BINARY PROJECT FORMAT (Ported from project_file_format.md)
+  // --------------------------------------------------------------------------
+  const NativeFspyFormat = {
+    MAGIC: [0x66, 0x73, 0x70, 0x79], // 'f', 's', 'p', 'y'
+    VERSION: 1,
+
+    /**
+     * Serializes state object and binary image buffer into a native .fspy ArrayBuffer.
+     */
+    serialize(projectStateObj, imageUint8Array) {
+      const jsonString = JSON.stringify(projectStateObj);
+      const encoder = new TextEncoder();
+      const jsonBytes = encoder.encode(jsonString);
+      const imgBytes = imageUint8Array || new Uint8Array(0);
+
+      const totalSize = 16 + jsonBytes.byteLength + imgBytes.byteLength;
+      const buffer = new ArrayBuffer(totalSize);
+      const view = new DataView(buffer);
+      const uint8 = new Uint8Array(buffer);
+
+      // 4-byte magic 'fspy'
+      uint8.set(this.MAGIC, 0);
+      // uint32 little-endian version = 1
+      view.setUint32(4, this.VERSION, true);
+      // uint32 little-endian JSON byte length
+      view.setUint32(8, jsonBytes.byteLength, true);
+      // uint32 little-endian image byte length
+      view.setUint32(12, imgBytes.byteLength, true);
+
+      uint8.set(jsonBytes, 16);
+      uint8.set(imgBytes, 16 + jsonBytes.byteLength);
+      return buffer;
+    },
+
+    /**
+     * Parses a native .fspy binary ArrayBuffer and returns { version, state, imageBytes }.
+     */
+    deserialize(arrayBuffer) {
+      if (arrayBuffer.byteLength < 16) {
+        throw new Error('File is too small to be a valid .fspy project.');
+      }
+      const view = new DataView(arrayBuffer);
+      const uint8 = new Uint8Array(arrayBuffer);
+
+      for (let i = 0; i < 4; i++) {
+        if (uint8[i] !== this.MAGIC[i]) {
+          throw new Error('Invalid .fspy file signature (expected "fspy" header).');
+        }
+      }
+
+      const version = view.getUint32(4, true);
+      if (version !== this.VERSION) {
+        throw new Error(`Unsupported .fspy project version: ${version} (expected 1).`);
+      }
+
+      const jsonLength = view.getUint32(8, true);
+      const imageLength = view.getUint32(12, true);
+
+      if (16 + jsonLength + imageLength > arrayBuffer.byteLength) {
+        throw new Error('Corrupted .fspy file: declared payload sizes exceed file size.');
+      }
+
+      const jsonBytes = uint8.subarray(16, 16 + jsonLength);
+      const imageBytes = uint8.subarray(16 + jsonLength, 16 + jsonLength + imageLength);
+      const decoder = new TextDecoder('utf-8');
+      const state = JSON.parse(decoder.decode(jsonBytes));
+
+      return { version, state, imageBytes };
+    }
+  };
+
+  // --------------------------------------------------------------------------
+  // 6. APPLICATION STATE (Matches fSpy Redux Store Structure)
+  // --------------------------------------------------------------------------
+  const $ = id => document.getElementById(id);
+  const svg = $('svg');
+  const overlay = $('overlay');
+  const NS = 'http://www.w3.org/2000/svg';
+
+  const createDefaultState = (w = 1000, h = 662) => ({
+    globalSettings: {
+      calibrationMode: 'TwoVanishingPoints',
+      imageWidth: w,
+      imageHeight: h,
+      overlay3DGuide: 'Box',
+      imageOpacity: 1.0
+    },
+    calibrationSettingsBase: {
+      referenceDistanceAxis: 'zAxis',
+      referenceDistance: 2.0,
+      referenceDistanceUnit: 'Meters',
+      cameraDataPreset: 'fullframe',
+      customSensorWidth: 36,
+      customSensorHeight: 24,
+      firstVanishingPointAxis: 'xPositive'
+    },
+    calibrationSettings1VP: {
+      principalPointMode: 'Default',
+      absoluteFocalLength: true,
+      focalLength: 35,
+      RelativeFocalLength: 0.9
+    },
+    calibrationSettings2VP: {
+      principalPointMode: 'Default',
+      secondVanishingPointAxis: 'yPositive',
+      quadModeEnabled: false
+    },
+    controlPointsStateBase: {
+      origin: { x: 0.50, y: 0.665 },
+      principalPoint: { x: 0.50, y: 0.50 },
+      referenceDistanceAnchor: { x: 0.50, y: 0.665 },
+      referenceDistanceHandleOffsets: [0.06, 0.34],
+      freeReferenceSegment: [{ x: 0.38, y: 0.72 }, { x: 0.64, y: 0.72 }],
+      firstVanishingPoint: {
+        lineSegments: [
+          [{ x: 0.070, y: 0.181 }, { x: 0.850, y: 0.211 }],
+          [{ x: 0.080, y: 0.725 }, { x: 0.870, y: 0.597 }]
+        ]
+      }
+    },
+    controlPointsState1VP: {
+      horizon: [{ x: 0.15, y: 0.50 }, { x: 0.85, y: 0.50 }]
+    },
+    controlPointsState2VP: {
+      secondVanishingPoint: {
+        lineSegments: [
+          [{ x: 0.180, y: 0.136 }, { x: 0.785, y: 0.785 }],
+          [{ x: 0.355, y: 0.098 }, { x: 0.840, y: 0.808 }]
+        ]
+      },
+      thirdVanishingPoint: {
+        lineSegments: [
+          [{ x: 0.220, y: 0.200 }, { x: 0.205, y: 0.820 }],
+          [{ x: 0.760, y: 0.200 }, { x: 0.780, y: 0.820 }]
+        ]
+      }
+    },
+    ui: {
+      zoom: 1,
+      pan: [500, 331],
+      tool: 'guide',
+      name: 'Modern office · perspective study',
+      imageUrl: 'https://images.pexels.com/photos/8606292/pexels-photo-8606292.jpeg?auto=compress&cs=tinysrgb&w=1600',
+      imageBinary: null,
+      boxWidth: 1.6,
+      boxHeight: 1.2
+    }
+  });
+
+  let appState = createDefaultState(1000, 662);
+  let lastSolved = null;
+  let dragState = null;
+
+  //Camera sensor preset lookup
+  const SensorPresets = {
+    fullframe: [36, 24],
+    apsc_canon: [22.3, 14.9],
+    apsc_nikon: [23.5, 15.6],
+    mft: [17.3, 13.0],
+    one_inch: [13.2, 8.8]
+  };
+
+  // --------------------------------------------------------------------------
+  // 7. SVG & 3D PROJECTED WIREFRAME RENDERING
+  // --------------------------------------------------------------------------
+  function el(tag, attrs = {}) {
+    const e = document.createElementNS(NS, tag);
+    for (const [k, v] of Object.entries(attrs)) e.setAttribute(k, v);
+    overlay.appendChild(e);
+    return e;
+  }
+
+  function svgLine(a, b, color, width = 2, dashes = '', opacity = 1) {
+    return el('line', {
+      x1: a.x, y1: a.y, x2: b.x, y2: b.y,
+      stroke: color,
+      'stroke-width': width,
+      'stroke-dasharray': dashes,
+      opacity,
+      'vector-effect': 'non-scaling-stroke'
+    });
+  }
+
+  function svgCircle(p, r, color, stroke = '#fff') {
+    return el('circle', {
+      cx: p.x, cy: p.y, r,
+      fill: color,
+      stroke,
+      'stroke-width': 1.4,
+      'vector-effect': 'non-scaling-stroke'
+    });
+  }
+
+  function svgLabel(p, str, color) {
+    const e = el('text', {
+      x: p.x, y: p.y,
+      fill: color,
+      'font-family': 'Inter, sans-serif',
+      'font-size': 11,
+      'font-weight': 800,
+      'paint-order': 'stroke',
+      stroke: '#151815',
+      'stroke-width': 3.5
+    });
+    e.textContent = str;
+    return e;
+  }
+
+  function svgHandle(p, id, color, r = 5.5) {
+    const node = svgCircle(p, r, color);
+    node.setAttribute('data-drag', id);
+    const hit = svgCircle(p, 16, 'transparent', 'transparent');
+    hit.setAttribute('data-drag', id);
+  }
+
+  /**
+   * Projects a 3D world point to image pixel space using the solved camera.
+   */
+  function projectWorldToPixel(ptWorld, camParams) {
+    const w = appState.globalSettings.imageWidth;
+    const h = appState.globalSettings.imageHeight;
+    const pSolver = MathUtil.perspectiveProject(
+      ptWorld,
+      camParams.cameraTransform,
+      camParams.principalPoint,
+      camParams.horizontalFieldOfView
+    );
+    if (!pSolver) return null;
+    return CoordinatesUtil.solverToPixel(pSolver, w, h);
+  }
+
+  /**
+   * Draws a 3D world line segment projected through the calibrated camera.
+   */
+  function draw3DSegment(p0World, p1World, camParams, color, width = 1.6, dashes = '', opacity = 0.85) {
+    const a = projectWorldToPixel(p0World, camParams);
+    const b = projectWorldToPixel(p1World, camParams);
+    if (!a || !b) return;
+    svgLine(a, b, color, width, dashes, opacity);
+  }
+
+  /**
+   * Renders the genuinely camera-projected 3D floor grid, box, and world coordinate axes.
+   */
+  function renderProjected3DGuides(solveResult) {
+    if (!solveResult.valid || !solveResult.cameraParameters) return;
+    const cam = solveResult.cameraParameters;
+    const guideMode = $('guide').value;
+    const showGrid = $('showGrid').checked;
+
+    // Determine characteristic metric scale of the scene based on camera distance to origin
+    const camPos = new Vector3D(
+      cam.cameraTransform.matrix[0][3],
+      cam.cameraTransform.matrix[1][3],
+      cam.cameraTransform.matrix[2][3]
+    );
+    const sceneScale = Math.max(0.1, camPos.length * 0.22);
+    const wBox = Number($('boxWidth').value) || 1.6;
+    const hBox = Number($('boxHeight').value) || 1.2;
+    const scaleFactor = appState.calibrationSettingsBase.referenceDistanceAxis === 'None' ? sceneScale : 1.0;
+
+    if (showGrid && guideMode !== 'None') {
+      if (guideMode === 'XYGrid' || guideMode === 'YZGrid' || guideMode === 'ZXGrid') {
+        const steps = 5;
+        const extent = wBox * scaleFactor;
+        for (let i = -steps; i <= steps; i++) {
+          const u = (i / steps) * extent;
+          const isCenter = i === 0;
+          const alpha = isCenter ? 0.75 : 0.42;
+          const lw = isCenter ? 1.8 : 1.0;
+          if (guideMode === 'XYGrid') {
+            draw3DSegment(new Vector3D(u, -extent, 0), new Vector3D(u, extent, 0), cam, '#8fd1a0', lw, '', alpha);
+            draw3DSegment(new Vector3D(-extent, u, 0), new Vector3D(extent, u, 0), cam, '#8fd1a0', lw, '', alpha);
+          } else if (guideMode === 'YZGrid') {
+            draw3DSegment(new Vector3D(0, u, -extent), new Vector3D(0, u, extent), cam, '#8fd1a0', lw, '', alpha);
+            draw3DSegment(new Vector3D(0, -extent, u), new Vector3D(0, extent, u), cam, '#8fd1a0', lw, '', alpha);
+          } else if (guideMode === 'ZXGrid') {
+            draw3DSegment(new Vector3D(u, 0, -extent), new Vector3D(u, 0, extent), cam, '#8fd1a0', lw, '', alpha);
+            draw3DSegment(new Vector3D(-extent, 0, u), new Vector3D(extent, 0, u), cam, '#8fd1a0', lw, '', alpha);
+          }
+        }
+      } else if (guideMode === 'Box') {
+        const bx = wBox * 0.5 * scaleFactor;
+        const by = wBox * 0.5 * scaleFactor;
+        const bz = hBox * scaleFactor;
+
+        const base = [
+          new Vector3D(0, 0, 0),
+          new Vector3D(bx * 2, 0, 0),
+          new Vector3D(bx * 2, by * 2, 0),
+          new Vector3D(0, by * 2, 0)
+        ];
+        const top = base.map(p => new Vector3D(p.x, p.y, bz));
+
+        for (let i = 0; i < 4; i++) {
+          const next = (i + 1) % 4;
+          draw3DSegment(base[i], base[next], cam, '#8fd1a0', 1.8, '', 0.85);
+          draw3DSegment(base[i], top[i], cam, '#8fd1a0', 1.5, '', 0.75);
+          draw3DSegment(top[i], top[next], cam, '#8fd1a0', 1.5, '5 4', 0.8);
+        }
+      }
+    }
+
+    // Always draw true 3D projected World Coordinate Axes (X: Red, Y: Green, Z: Blue in fSpy/Blender convention)
+    const axisLen = 0.75 * wBox * scaleFactor;
+    const oPx = projectWorldToPixel(new Vector3D(0, 0, 0), cam);
+    const xPx = projectWorldToPixel(new Vector3D(axisLen, 0, 0), cam);
+    const yPx = projectWorldToPixel(new Vector3D(0, axisLen, 0), cam);
+    const zPx = projectWorldToPixel(new Vector3D(0, 0, axisLen), cam);
+
+    if (oPx && xPx) { svgLine(oPx, xPx, '#ed7265', 3); svgLabel({ x: xPx.x + 6, y: xPx.y - 6 }, '+X', '#ed7265'); }
+    if (oPx && yPx) { svgLine(oPx, yPx, '#8fd1a0', 3); svgLabel({ x: yPx.x + 6, y: yPx.y - 6 }, '+Y', '#8fd1a0'); }
+    if (oPx && zPx) { svgLine(oPx, zPx, '#65b4eb', 3); svgLabel({ x: zPx.x + 6, y: zPx.y - 6 }, '+Z', '#65b4eb'); }
+  }
+
+  /**
+   * Synchronizes UI controls into appState, runs the fSpy solver, and updates SVG & readouts.
+   */
+  function syncUIAndRender() {
+    const w = appState.globalSettings.imageWidth;
+    const h = appState.globalSettings.imageHeight;
+
+    // Sync controls to state
+    appState.globalSettings.calibrationMode = $('mode').value;
+    appState.calibrationSettingsBase.firstVanishingPointAxis = $('axis1').value;
+    appState.calibrationSettings2VP.secondVanishingPointAxis = $('axis2').value;
+
+    const ppMode = $('principalMode').value;
+    appState.calibrationSettings1VP.principalPointMode = ppMode === 'FromMidpoint' ? 'Default' : ppMode;
+    appState.calibrationSettings2VP.principalPointMode = ppMode;
+
+    appState.calibrationSettingsBase.customSensorWidth = Math.max(1, Number($('sensorWidth').value) || 36);
+    appState.calibrationSettingsBase.customSensorHeight = Math.max(1, Number($('sensorHeight').value) || 24);
+    appState.calibrationSettings1VP.absoluteFocalLength = $('absoluteFocalLength').value === 'true';
+
+    if (appState.calibrationSettings1VP.absoluteFocalLength) {
+      appState.calibrationSettings1VP.focalLength = Math.max(1, Number($('knownFocal').value) || 35);
+    } else {
+      appState.calibrationSettings1VP.RelativeFocalLength = Math.max(0.05, Number($('knownFocal').value) || 0.9);
+    }
+
+    appState.calibrationSettingsBase.referenceDistanceAxis = $('referenceAxis').value;
+    appState.calibrationSettingsBase.referenceDistance = Math.max(0.001, Number($('distance').value) || 2.0);
+    appState.calibrationSettingsBase.referenceDistanceUnit = $('distanceUnit').value;
+    appState.globalSettings.overlay3DGuide = $('guide').value;
+
+    // Progressive disclosure UI visibility
+    const is1VP = appState.globalSettings.calibrationMode === 'OneVanishingPoint';
+    $('oneVpFocalWrap').hidden = !is1VP;
+    $('axis2Wrap').hidden = is1VP;
+    $('focalInputLabel').textContent = appState.calibrationSettings1VP.absoluteFocalLength
+      ? 'Known Focal Length (mm)'
+      : 'Relative Focal Length';
+    $('distanceWrap').hidden = appState.calibrationSettingsBase.referenceDistanceAxis === 'None';
+    $('boxDimsWrap').hidden = $('guide').value === 'None';
+    $('viewstate').textContent = is1VP ? '1-VP CALIBRATION' : '2-VP CALIBRATION';
+    $('opacityval').textContent = $('opacity').value + '%';
+    $('dimRect').setAttribute('opacity', $('dimImage').checked ? '0.45' : '0');
+
+    // Run authoritative fSpy Solver
+    const res = Solver.solve(
+      appState.globalSettings,
+      appState.calibrationSettingsBase,
+      appState.calibrationSettings1VP,
+      appState.calibrationSettings2VP,
+      appState.controlPointsStateBase,
+      appState.controlPointsState1VP,
+      appState.controlPointsState2VP
+    );
+    lastSolved = res;
+
+    // Render SVG Overlays
+    overlay.replaceChildren();
+    overlay.setAttribute('opacity', Number($('opacity').value) / 100);
+
+    // 1. Projected 3D Guides (Floor grid, Reference Box, World Axes)
+    renderProjected3DGuides(res);
+
+    // 2. Horizon Line
+    if ($('showHorizon').checked) {
+      if (is1VP) {
+        const h0 = CoordinatesUtil.imagePlaneToPixel(appState.controlPointsState1VP.horizon[0], w, h);
+        const h1 = CoordinatesUtil.imagePlaneToPixel(appState.controlPointsState1VP.horizon[1], w, h);
+        svgLine(h0, h1, '#eac773', 2, '6 5', 0.85);
+        svgHandle(h0, 'horizon-0', '#eac773');
+        svgHandle(h1, 'horizon-1', '#eac773');
+        svgLabel({ x: (h0.x + h1.x) / 2, y: (h0.y + h1.y) / 2 - 8 }, 'HORIZON', '#eac773');
+      } else if (res.vanishingPoints?.vp1 && res.vanishingPoints?.vp2) {
+        // Compute true horizon from camera orientation or connecting horizontal VPs
+        const vp1Px = CoordinatesUtil.solverToPixel(res.vanishingPoints.vp1, w, h);
+        const vp2Px = CoordinatesUtil.solverToPixel(res.vanishingPoints.vp2, w, h);
+        const dx = vp2Px.x - vp1Px.x;
+        const dy = vp2Px.y - vp1Px.y;
+        const l = Math.hypot(dx, dy) || 1;
+        const ux = dx / l, uy = dy / l;
+        svgLine(
+          { x: vp1Px.x - ux * 5000, y: vp1Px.y - uy * 5000 },
+          { x: vp1Px.x + ux * 5000, y: vp1Px.y + uy * 5000 },
+          '#eac773', 1.3, '8 8', 0.65
+        );
+      }
+    }
+
+    // 3. Vanishing Point Guide Lines & Intersection Rays
+    if ($('showVP').checked) {
+      const renderVPFamily = (vpState, vpSolverPt, color, prefix, labelStr) => {
+        const vpPx = vpSolverPt ? CoordinatesUtil.solverToPixel(vpSolverPt, w, h) : null;
+        vpState.lineSegments.forEach((seg, idx) => {
+          const a = CoordinatesUtil.imagePlaneToPixel(seg[0], w, h);
+          const b = CoordinatesUtil.imagePlaneToPixel(seg[1], w, h);
+          const mid = { x: 0.5 * (a.x + b.x), y: 0.5 * (a.y + b.y) };
+          if (vpPx) {
+            svgLine(mid, vpPx, color, 1.1, '5 5', 0.55);
+          }
+          svgLine(a, b, '#171916', 4.6);
+          svgLine(a, b, color, 2.5);
+          svgHandle(a, `${prefix}-${idx}-0`, color);
+          svgHandle(b, `${prefix}-${idx}-1`, color);
+          svgLabel({ x: mid.x + 6, y: mid.y - 7 }, labelStr, color);
+        });
+        if (vpPx) {
+          svgCircle(vpPx, 4.5, '#171916', color);
+        }
+      };
+
+      renderVPFamily(appState.controlPointsStateBase.firstVanishingPoint, res.vanishingPoints?.vp1, '#ed7265', 'vp1', 'VP1');
+      if (!is1VP) {
+        renderVPFamily(appState.controlPointsState2VP.secondVanishingPoint, res.vanishingPoints?.vp2, '#65b4eb', 'vp2', 'VP2');
+        if (ppMode === 'FromMidpoint') {
+          renderVPFamily(appState.controlPointsState2VP.thirdVanishingPoint, res.vanishingPoints?.vp3, '#c792ea', 'vp3', 'VP3');
+        }
+      }
+    }
+
+    // 4. Reference Distance Handles
+    const refAxis = appState.calibrationSettingsBase.referenceDistanceAxis;
+    const originPx = CoordinatesUtil.imagePlaneToPixel(appState.controlPointsStateBase.origin, w, h);
+    if (refAxis !== 'None' && res.valid && res.cameraParameters) {
+      const cam = res.cameraParameters;
+      const unitLabel = `${appState.calibrationSettingsBase.referenceDistance} ${appState.calibrationSettingsBase.referenceDistanceUnit}`;
+
+      if (refAxis === 'xAxis' || refAxis === 'yAxis' || refAxis === 'zAxis') {
+        const axisVec = refAxis === 'xAxis'
+          ? new Vector3D(1, 0, 0)
+          : refAxis === 'yAxis'
+            ? new Vector3D(0, 1, 0)
+            : new Vector3D(0, 0, 1);
+
+        const pAxisSolver = MathUtil.perspectiveProject(axisVec, cam.cameraTransform, cam.principalPoint, cam.horizontalFieldOfView);
+        const originSolver = CoordinatesUtil.imagePlaneToSolver(appState.controlPointsStateBase.origin, w, h);
+        if (pAxisSolver) {
+          const dx = pAxisSolver.x - originSolver.x;
+          const dy = pAxisSolver.y - originSolver.y;
+          const dl = Math.hypot(dx, dy) || 1;
+          const ux = dx / dl, uy = dy / dl;
+          const offsets = appState.controlPointsStateBase.referenceDistanceHandleOffsets;
+          const h0Solver = { x: originSolver.x + ux * offsets[0], y: originSolver.y + uy * offsets[0] };
+          const h1Solver = { x: originSolver.x + ux * offsets[1], y: originSolver.y + uy * offsets[1] };
+          const h0Px = CoordinatesUtil.solverToPixel(h0Solver, w, h);
+          const h1Px = CoordinatesUtil.solverToPixel(h1Solver, w, h);
+
+          svgLine(h0Px, h1Px, '#efb648', 2.6, '4 3', 0.95);
+          svgHandle(h0Px, 'ref-axis-0', '#efb648', 6);
+          svgHandle(h1Px, 'ref-axis-1', '#efb648', 6);
+          svgLabel({ x: (h0Px.x + h1Px.x) / 2 + 8, y: (h0Px.y + h1Px.y) / 2 - 8 }, unitLabel, '#efb648');
+        }
+      } else {
+        const p0Px = CoordinatesUtil.imagePlaneToPixel(appState.controlPointsStateBase.freeReferenceSegment[0], w, h);
+        const p1Px = CoordinatesUtil.imagePlaneToPixel(appState.controlPointsStateBase.freeReferenceSegment[1], w, h);
+        svgLine(p0Px, p1Px, '#efb648', 2.6, '4 3', 0.95);
+        svgHandle(p0Px, 'ref-plane-0', '#efb648', 6);
+        svgHandle(p1Px, 'ref-plane-1', '#efb648', 6);
+        svgLabel({ x: (p0Px.x + p1Px.x) / 2 + 8, y: (p0Px.y + p1Px.y) / 2 - 8 }, unitLabel, '#efb648');
+      }
+    }
+
+    // 5. Principal Point Crosshair & Handle
+    const ppPx = CoordinatesUtil.solverToPixel(res.principalPoint || { x: 0, y: 0 }, w, h);
+    svgLine({ x: ppPx.x - 10, y: ppPx.y }, { x: ppPx.x + 10, y: ppPx.y }, '#f8c56d', 1.8);
+    svgLine({ x: ppPx.x, y: ppPx.y - 10 }, { x: ppPx.x, y: ppPx.y + 10 }, '#f8c56d', 1.8);
+    if (ppMode === 'Manual') {
+      svgHandle(ppPx, 'principal', '#f8c56d', 6);
+    }
+    svgLabel({ x: ppPx.x + 8, y: ppPx.y + 14 }, 'PP', '#f8c56d');
+
+    // 6. 3D World Origin Handle
+    svgHandle(originPx, 'origin', '#fff2cb', 6.5);
+
+    // 7. Update Readouts & Diagnostics
+    updateReadouts(res);
+  }
+
+  function fmt(v, d = 2) {
+    return Number.isFinite(v) ? v.toFixed(d) : '—';
+  }
+  function deg(rad, d = 2) {
+    return Number.isFinite(rad) ? (rad * 180 / Math.PI).toFixed(d) + '°' : '—';
+  }
+
+  function updateReadouts(res) {
+    const w = appState.globalSettings.imageWidth;
+    const h = appState.globalSettings.imageHeight;
+    const diagEl = $('diagBanner');
+
+    if (!res.valid || !res.cameraParameters) {
+      $('badge').textContent = 'INVALID';
+      $('badge').className = 'badge err';
+      $('statusIcon').className = 'ri-error-warning-fill warn-icon';
+      $('statustext').textContent = res.errors[0] || 'CALIBRATION FAILED';
+      diagEl.textContent = res.errors.join(' ');
+      diagEl.classList.remove('hidden');
+
+      ['focal', 'hfov', 'relFocal', 'pxFocal', 'vfov', 'ppPx', 'blenderShift', 'yaw', 'pitch', 'roll', 'quatOut', 'posx', 'posy', 'posz', 'camDist'].forEach(id => $(id).textContent = '—');
+      $('matrixBox').innerHTML = '';
+      return;
+    }
+
+    const cam = res.cameraParameters;
+    if (res.warnings.length > 0) {
+      $('badge').textContent = 'WARNING';
+      $('badge').className = 'badge warn';
+      diagEl.textContent = res.warnings.join(' ');
+      diagEl.classList.remove('hidden');
+    } else {
+      $('badge').textContent = 'SOLVED';
+      $('badge').className = 'badge';
+      diagEl.classList.add('hidden');
+    }
+    $('statusIcon').className = 'ri-checkbox-circle-fill';
+    $('statustext').textContent = 'EXACT FSPY CAMERA SOLUTION READY';
+
+    const pxFocalVal = 0.5 * w * cam.relativeFocalLength;
+    const ppPixel = CoordinatesUtil.solverToPixel(cam.principalPoint, w, h);
+    // Blender shift_x, shift_y relative to max dimension (matches fSpy-Blender importer)
+    const maxDim = Math.max(w, h);
+    const shiftX = -0.5 * cam.principalPoint.x * (w / maxDim);
+    const shiftY = -0.5 * cam.principalPoint.y * (w / maxDim);
+
+    $('focal').textContent = fmt(cam.focalLength, 2) + ' mm';
+    $('hfov').textContent = deg(cam.horizontalFieldOfView, 2);
+    $('relFocal').textContent = fmt(cam.relativeFocalLength, 4);
+    $('pxFocal').textContent = fmt(pxFocalVal, 1) + ' px';
+    $('vfov').textContent = deg(cam.verticalFieldOfView, 2);
+    $('ppPx').textContent = `${fmt(ppPixel.x, 1)}, ${fmt(ppPixel.y, 1)}`;
+    $('blenderShift').textContent = `${fmt(shiftX, 4)}, ${fmt(shiftY, 4)}`;
+
+    const euler = MathUtil.matrixToEulerXYZ(cam.cameraTransform);
+    const quat = MathUtil.matrixToQuaternion(cam.cameraTransform);
+    $('yaw').textContent = deg(euler.z, 2);
+    $('pitch').textContent = deg(euler.x, 2);
+    $('roll').textContent = deg(euler.y, 2);
+    $('quatOut').textContent = quat.map(q => q.toFixed(3)).join(', ');
+
+    const m = cam.cameraTransform.matrix;
+    const pos = new Vector3D(m[0][3], m[1][3], m[2][3]);
+    const unitSuffix = appState.calibrationSettingsBase.referenceDistanceAxis === 'None' ? ' u' : ' m';
+    $('posx').textContent = fmt(pos.x, 3) + unitSuffix;
+    $('posy').textContent = fmt(pos.y, 3) + unitSuffix;
+    $('posz').textContent = fmt(pos.z, 3) + unitSuffix;
+    $('camDist').textContent = fmt(pos.length, 3) + unitSuffix;
+
+    $('matrixBox').innerHTML = m.flat().map(v => `<span>${v.toFixed(3)}</span>`).join('');
+
+    const fmtVP = (vp) => {
+      if (!vp) return '—';
+      const p = CoordinatesUtil.solverToPixel(vp, w, h);
+      return `${fmt(p.x, 0)}, ${fmt(p.y, 0)}`;
+    };
+    $('vp1').textContent = fmtVP(res.vanishingPoints.vp1);
+    $('vp2').textContent = fmtVP(res.vanishingPoints.vp2);
+    $('vp3').textContent = fmtVP(res.vanishingPoints.vp3);
+  }
+
+  // --------------------------------------------------------------------------
+  // 8. UNIFIED VIEWPORT / COORDINATE TRANSFORMATION & INTERACTION
+  // --------------------------------------------------------------------------
+  function clientToImagePixel(e) {
+    const pt = svg.createSVGPoint();
+    pt.x = e.clientX;
+    pt.y = e.clientY;
+    const ctm = svg.getScreenCTM();
+    if (!ctm) return { x: 500, y: 331 };
+    const p = pt.matrixTransform(ctm.inverse());
+    return { x: p.x, y: p.y };
+  }
+
+  function updateViewportViewBox() {
+    const w = appState.globalSettings.imageWidth;
+    const h = appState.globalSettings.imageHeight;
+    const vw = w / appState.ui.zoom;
+    const vh = h / appState.ui.zoom;
+    const cx = Math.max(vw / 2, Math.min(w - vw / 2, appState.ui.pan[0]));
+    const cy = Math.max(vh / 2, Math.min(h - vh / 2, appState.ui.pan[1]));
+    appState.ui.pan = [cx, cy];
+    svg.setAttribute('viewBox', `${cx - vw / 2} ${cy - vh / 2} ${vw} ${vh}`);
+    $('zoomtop').textContent = $('zoomstatus').textContent = Math.round(appState.ui.zoom * 100) + '%';
+  }
+
+  function zoomBy(factor) {
+    appState.ui.zoom = Math.max(1, Math.min(12, appState.ui.zoom * factor));
+    updateViewportViewBox();
+  }
+
+  svg.addEventListener('pointerdown', e => {
+    const handleId = e.target.getAttribute('data-drag');
+    if (handleId && appState.ui.tool === 'guide') {
+      dragState = { handle: handleId, lastPx: clientToImagePixel(e) };
+      svg.setPointerCapture(e.pointerId);
+      e.preventDefault();
+    } else if (appState.ui.tool === 'pan') {
+      dragState = { handle: 'pan', lastClient: [e.clientX, e.clientY], startPan: [...appState.ui.pan] };
+      svg.setPointerCapture(e.pointerId);
+      e.preventDefault();
+    }
+  });
+
+  svg.addEventListener('pointermove', e => {
+    const w = appState.globalSettings.imageWidth;
+    const h = appState.globalSettings.imageHeight;
+    const px = clientToImagePixel(e);
+    const solPt = CoordinatesUtil.pixelToSolver(px, w, h);
+    $('cursor').textContent = `IMG: ${fmt(px.x, 0)}, ${fmt(px.y, 0)} px · SOLVER: (${fmt(solPt.x, 3)}, ${fmt(solPt.y, 3)})`;
+
+    if (!dragState) return;
+
+    if (dragState.handle === 'pan') {
+      const rect = svg.getBoundingClientRect();
+      const scale = Math.min(rect.width / w, rect.height / h) * appState.ui.zoom;
+      appState.ui.pan = [
+        dragState.startPan[0] - (e.clientX - dragState.lastClient[0]) / Math.max(1e-3, scale),
+        dragState.startPan[1] - (e.clientY - dragState.lastClient[1]) / Math.max(1e-3, scale)
+      ];
+      updateViewportViewBox();
+      return;
+    }
+
+    // Precision Shift modifier (matches fSpy Shift-drag precision)
+    const curPx = e.shiftKey
+      ? {
+          x: dragState.lastPx.x + (px.x - dragState.lastPx.x) * 0.15,
+          y: dragState.lastPx.y + (px.y - dragState.lastPx.y) * 0.15
+        }
+      : px;
+
+    const normPt = CoordinatesUtil.pixelToImagePlane(curPx, w, h);
+    const hId = dragState.handle;
+
+    if (hId === 'origin') {
+      appState.controlPointsStateBase.origin = normPt;
+    } else if (hId === 'principal') {
+      appState.controlPointsStateBase.principalPoint = normPt;
+    } else if (hId.startsWith('horizon-')) {
+      const idx = Number(hId.split('-')[1]);
+      appState.controlPointsState1VP.horizon[idx] = normPt;
+    } else if (hId.startsWith('ref-plane-')) {
+      const idx = Number(hId.split('-')[2]);
+      appState.controlPointsStateBase.freeReferenceSegment[idx] = normPt;
+    } else if (hId.startsWith('ref-axis-')) {
+      const idx = Number(hId.split('-')[2]);
+      if (lastSolved?.valid && lastSolved.cameraParameters) {
+        const cam = lastSolved.cameraParameters;
+        const refAxis = appState.calibrationSettingsBase.referenceDistanceAxis;
+        const axisVec = refAxis === 'xAxis'
+          ? new Vector3D(1, 0, 0)
+          : refAxis === 'yAxis'
+            ? new Vector3D(0, 1, 0)
+            : new Vector3D(0, 0, 1);
+        const pAxisSolver = MathUtil.perspectiveProject(axisVec, cam.cameraTransform, cam.principalPoint, cam.horizontalFieldOfView);
+        const originSolver = CoordinatesUtil.imagePlaneToSolver(appState.controlPointsStateBase.origin, w, h);
+        const curSolver = CoordinatesUtil.pixelToSolver(curPx, w, h);
+        if (pAxisSolver) {
+          const dx = pAxisSolver.x - originSolver.x;
+          const dy = pAxisSolver.y - originSolver.y;
+          const dl = Math.hypot(dx, dy) || 1;
+          const projDist = ((curSolver.x - originSolver.x) * dx + (curSolver.y - originSolver.y) * dy) / dl;
+          appState.controlPointsStateBase.referenceDistanceHandleOffsets[idx] = projDist;
+        }
+      }
+    } else if (hId.startsWith('vp')) {
+      const parts = hId.split('-');
+      const familyKey = parts[0];
+      const segIdx = Number(parts[1]);
+      const endIdx = Number(parts[2]);
+
+      const vpObj = familyKey === 'vp1'
+        ? appState.controlPointsStateBase.firstVanishingPoint
+        : familyKey === 'vp2'
+          ? appState.controlPointsState2VP.secondVanishingPoint
+          : appState.controlPointsState2VP.thirdVanishingPoint;
+
+      const oldPt = vpObj.lineSegments[segIdx][endIdx];
+      vpObj.lineSegments[segIdx][endIdx] = normPt;
+      if ($('editmode').value === 'linked') {
+        const otherIdx = 1 - endIdx;
+        vpObj.lineSegments[segIdx][otherIdx] = {
+          x: vpObj.lineSegments[segIdx][otherIdx].x + (normPt.x - oldPt.x),
+          y: vpObj.lineSegments[segIdx][otherIdx].y + (normPt.y - oldPt.y)
+        };
+      }
+    }
+
+    dragState.lastPx = curPx;
+    syncUIAndRender();
+  });
+
+  svg.addEventListener('pointerup', () => dragState = null);
+  svg.addEventListener('pointercancel', () => dragState = null);
+  svg.addEventListener('wheel', e => {
+    e.preventDefault();
+    zoomBy(e.deltaY < 0 ? 1.15 : 1 / 1.15);
+  }, { passive: false });
+
+  // --------------------------------------------------------------------------
+  // 9. UI EVENT BINDINGS & FILE IMPORT/EXPORT (.fspy, Blender .py, JSON)
+  // --------------------------------------------------------------------------
+  $('cameraPreset').addEventListener('change', () => {
+    const preset = $('cameraPreset').value;
+    if (SensorPresets[preset]) {
+      $('sensorWidth').value = SensorPresets[preset][0];
+      $('sensorHeight').value = SensorPresets[preset][1];
+    }
+    syncUIAndRender();
+  });
+
+  [
+    'mode', 'axis1', 'axis2', 'editmode', 'principalMode',
+    'sensorWidth', 'sensorHeight', 'absoluteFocalLength', 'knownFocal',
+    'referenceAxis', 'distance', 'distanceUnit', 'guide',
+    'boxWidth', 'boxHeight', 'opacity', 'showVP', 'showGrid', 'showHorizon', 'dimImage'
+  ].forEach(id => $(id).addEventListener('input', syncUIAndRender));
+
+  $('zin').onclick = () => zoomBy(1.25);
+  $('zout').onclick = () => zoomBy(0.8);
+  $('fit').onclick = $('zfit').onclick = () => {
+    appState.ui.zoom = 1;
+    appState.ui.pan = [appState.globalSettings.imageWidth / 2, appState.globalSettings.imageHeight / 2];
+    updateViewportViewBox();
+  };
+
+  function toggleSidebar(side) {
+    const panel = $(side);
+    panel.hidden = !panel.hidden;
+    $(side === 'left' ? 'lefttoggle' : 'righttoggle').classList.toggle('active', !panel.hidden);
+  }
+  $('lefttoggle').onclick = $('closeleft').onclick = () => toggleSidebar('left');
+  $('righttoggle').onclick = $('closeright').onclick = () => toggleSidebar('right');
+
+  $('guideTool').onclick = () => {
+    appState.ui.tool = 'guide';
+    $('guideTool').classList.add('active');
+    $('panTool').classList.remove('active');
+  };
+  $('panTool').onclick = () => {
+    appState.ui.tool = 'pan';
+    $('panTool').classList.add('active');
+    $('guideTool').classList.remove('active');
+  };
+
+  [['vpToggle', 'showVP'], ['gridToggle', 'showGrid'], ['horizonToggle', 'showHorizon']].forEach(([btnId, chkId]) => {
+    $(btnId).onclick = () => {
+      $(chkId).checked = !$(chkId).checked;
+      $(btnId).classList.toggle('active', $(chkId).checked);
+      syncUIAndRender();
+    };
+  });
+
+  $('fullscreen').onclick = async () => {
+    try {
+      if (document.fullscreenElement === $('app')) await document.exitFullscreen();
+      else await $('app').requestFullscreen();
+    } catch (_) {
+      $('statustext').textContent = 'FULLSCREEN BLOCKED BY BROWSER';
+    }
+  };
+
+  $('reset').onclick = () => {
+    const w = appState.globalSettings.imageWidth;
+    const h = appState.globalSettings.imageHeight;
+    const fresh = createDefaultState(w, h);
+    fresh.ui.imageUrl = appState.ui.imageUrl;
+    fresh.ui.imageBinary = appState.ui.imageBinary;
+    fresh.ui.name = appState.ui.name;
+    appState = fresh;
+    applyStateToDOM();
+    syncUIAndRender();
+  };
+
+  function applyStateToDOM() {
+    $('mode').value = appState.globalSettings.calibrationMode;
+    $('axis1').value = appState.calibrationSettingsBase.firstVanishingPointAxis;
+    $('axis2').value = appState.calibrationSettings2VP.secondVanishingPointAxis;
+    $('principalMode').value = appState.globalSettings.calibrationMode === 'OneVanishingPoint'
+      ? appState.calibrationSettings1VP.principalPointMode
+      : appState.calibrationSettings2VP.principalPointMode;
+    $('sensorWidth').value = appState.calibrationSettingsBase.customSensorWidth;
+    $('sensorHeight').value = appState.calibrationSettingsBase.customSensorHeight;
+    $('absoluteFocalLength').value = String(appState.calibrationSettings1VP.absoluteFocalLength);
+    $('knownFocal').value = appState.calibrationSettings1VP.absoluteFocalLength
+      ? appState.calibrationSettings1VP.focalLength
+      : appState.calibrationSettings1VP.RelativeFocalLength;
+    $('referenceAxis').value = appState.calibrationSettingsBase.referenceDistanceAxis;
+    $('distance').value = appState.calibrationSettingsBase.referenceDistance;
+    $('distanceUnit').value = appState.calibrationSettingsBase.referenceDistanceUnit;
+    $('guide').value = appState.globalSettings.overlay3DGuide;
+  }
+
+  function updateImageDimensions(w, h) {
+    appState.globalSettings.imageWidth = w;
+    appState.globalSettings.imageHeight = h;
+    $('cropRect').setAttribute('width', w);
+    $('cropRect').setAttribute('height', h);
+    $('bgRect').setAttribute('width', w);
+    $('bgRect').setAttribute('height', h);
+    $('dimRect').setAttribute('width', w);
+    $('dimRect').setAttribute('height', h);
+    $('image').setAttribute('width', w);
+    $('image').setAttribute('height', h);
+    $('imgdim-badge').textContent = `${w}×${h}`;
+    appState.ui.zoom = 1;
+    appState.ui.pan = [w / 2, h / 2];
+    updateViewportViewBox();
+    syncUIAndRender();
+  }
+
+  // Image Import
+  $('openImgBtn').onclick = () => $('imagefile').click();
+  $('imagefile').onchange = async e => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const arrayBuf = await file.arrayBuffer();
+    appState.ui.imageBinary = new Uint8Array(arrayBuf);
+    const url = URL.createObjectURL(file);
+    appState.ui.imageUrl = url;
+    appState.ui.name = file.name;
+    $('filename').textContent = file.name;
+    const img = new Image();
+    img.onload = () => {
+      $('image').setAttribute('href', url);
+      updateImageDimensions(img.naturalWidth || 1000, img.naturalHeight || 662);
+    };
+    img.src = url;
+  };
+
+  // Native .fspy Binary Export
+  $('exportFspyBtn').onclick = async () => {
+    let imgBytes = appState.ui.imageBinary;
+    if (!imgBytes && appState.ui.imageUrl) {
+      try {
+        const resp = await fetch(appState.ui.imageUrl);
+        const buf = await resp.arrayBuffer();
+        imgBytes = new Uint8Array(buf);
+      } catch (_) {
+        imgBytes = new Uint8Array(0);
+      }
+    }
+    const fspyStatePayload = {
+      globalSettings: appState.globalSettings,
+      calibrationSettingsBase: appState.calibrationSettingsBase,
+      calibrationSettings1VP: appState.calibrationSettings1VP,
+      calibrationSettings2VP: appState.calibrationSettings2VP,
+      controlPointsStateBase: appState.controlPointsStateBase,
+      controlPointsState1VP: appState.controlPointsState1VP,
+      controlPointsState2VP: appState.controlPointsState2VP,
+      cameraParameters: lastSolved?.cameraParameters || null
+    };
+    const binBuffer = NativeFspyFormat.serialize(fspyStatePayload, imgBytes);
+    downloadBlob(new Blob([binBuffer], { type: 'application/octet-stream' }), 'calibration-project.fspy');
+    $('statustext').textContent = 'SAVED NATIVE .FSPY BINARY PROJECT';
+  };
+
+  // Native .fspy & JSON Import
+  $('openFspyBtn').onclick = () => $('projectfile').click();
+  $('projectfile').onchange = async e => {
+    const file = e.target.files[0];
+    if (!file) return;
+    try {
+      const arrayBuf = await file.arrayBuffer();
+      const uint8 = new Uint8Array(arrayBuf);
+      const isNativeFspy = uint8.length >= 4 &&
+        uint8[0] === 0x66 && uint8[1] === 0x73 && uint8[2] === 0x70 && uint8[3] === 0x79;
+
+      if (isNativeFspy) {
+        const parsed = NativeFspyFormat.deserialize(arrayBuf);
+        const st = parsed.state;
+        if (st.globalSettings) appState.globalSettings = { ...appState.globalSettings, ...st.globalSettings };
+        if (st.calibrationSettingsBase) appState.calibrationSettingsBase = { ...appState.calibrationSettingsBase, ...st.calibrationSettingsBase };
+        if (st.calibrationSettings1VP) appState.calibrationSettings1VP = { ...appState.calibrationSettings1VP, ...st.calibrationSettings1VP };
+        if (st.calibrationSettings2VP) appState.calibrationSettings2VP = { ...appState.calibrationSettings2VP, ...st.calibrationSettings2VP };
+        if (st.controlPointsStateBase) appState.controlPointsStateBase = { ...appState.controlPointsStateBase, ...st.controlPointsStateBase };
+        if (st.controlPointsState1VP) appState.controlPointsState1VP = { ...appState.controlPointsState1VP, ...st.controlPointsState1VP };
+        if (st.controlPointsState2VP) appState.controlPointsState2VP = { ...appState.controlPointsState2VP, ...st.controlPointsState2VP };
+
+        appState.ui.name = file.name;
+        $('filename').textContent = file.name;
+
+        if (parsed.imageBytes && parsed.imageBytes.byteLength > 0) {
+          appState.ui.imageBinary = new Uint8Array(parsed.imageBytes);
+          const blob = new Blob([parsed.imageBytes]);
+          const url = URL.createObjectURL(blob);
+          appState.ui.imageUrl = url;
+          const img = new Image();
+          img.onload = () => {
+            $('image').setAttribute('href', url);
+            applyStateToDOM();
+            updateImageDimensions(img.naturalWidth || appState.globalSettings.imageWidth, img.naturalHeight || appState.globalSettings.imageHeight);
+          };
+          img.src = url;
+        } else {
+          applyStateToDOM();
+          updateImageDimensions(appState.globalSettings.imageWidth || 1000, appState.globalSettings.imageHeight || 662);
+        }
+        $('statustext').textContent = 'IMPORTED NATIVE .FSPY PROJECT';
+      } else {
+        // Fallback JSON debug format
+        const text = new TextDecoder().decode(uint8);
+        const json = JSON.parse(text);
+        if (json.globalSettings) {
+          Object.assign(appState, json);
+          applyStateToDOM();
+          updateImageDimensions(appState.globalSettings.imageWidth || 1000, appState.globalSettings.imageHeight || 662);
+          $('statustext').textContent = 'IMPORTED JSON CALIBRATION STATE';
+        }
+      }
+    } catch (err) {
+      $('statustext').textContent = 'IMPORT ERROR: ' + err.message;
+    }
+  };
+
+  // Blender Python Camera Reconstruction Script Export (Matches stuffmatic/fSpy-Blender)
+  $('exportBlenderBtn').onclick = () => {
+    if (!lastSolved?.valid || !lastSolved.cameraParameters) {
+      $('statustext').textContent = 'CANNOT EXPORT: SOLVE CAMERA FIRST';
+      return;
+    }
+    const cam = lastSolved.cameraParameters;
+    const w = cam.imageWidth;
+    const h = cam.imageHeight;
+    const maxDim = Math.max(w, h);
+    const shiftX = -0.5 * cam.principalPoint.x * (w / maxDim);
+    const shiftY = -0.5 * cam.principalPoint.y * (w / maxDim);
+    const m = cam.cameraTransform.matrix;
+
+    const pyScript = `# fSpy Blender Camera Reconstruction Script (Matches stuffmatic/fSpy-Blender)
+import bpy
+import mathutils
+
+scene = bpy.context.scene
+scene.render.resolution_x = ${w}
+scene.render.resolution_y = ${h}
+scene.render.resolution_percentage = 100
+
+cam_data = bpy.data.cameras.new(name="fSpy_Camera")
+cam_obj = bpy.data.objects.new("fSpy_Camera", cam_data)
+scene.collection.objects.link(cam_obj)
+scene.camera = cam_obj
+
+# Intrinsics & Principal Point Shift
+cam_data.type = 'PERSP'
+cam_data.lens_unit = 'FOV'
+cam_data.sensor_fit = 'HORIZONTAL'
+cam_data.sensor_width = ${cam.sensorWidth}
+cam_data.angle = ${cam.horizontalFieldOfView}
+cam_data.shift_x = ${shiftX}
+cam_data.shift_y = ${shiftY}
+
+# Extrinsics: 4x4 Camera-to-World Transformation Matrix
+cam_obj.matrix_world = mathutils.Matrix((
+    (${m[0][0]}, ${m[0][1]}, ${m[0][2]}, ${m[0][3]}),
+    (${m[1][0]}, ${m[1][1]}, ${m[1][2]}, ${m[1][3]}),
+    (${m[2][0]}, ${m[2][1]}, ${m[2][2]}, ${m[2][3]}),
+    (0.0, 0.0, 0.0, 1.0)
+))
+print("fSpy Camera successfully reconstructed.")
+`;
+    downloadBlob(new Blob([pyScript], { type: 'text/x-python' }), 'fspy_blender_camera.py');
+    $('statustext').textContent = 'EXPORTED BLENDER CAMERA SCRIPT';
+  };
+
+  $('exportJsonBtn').onclick = () => {
+    const debugJson = JSON.stringify({
+      ...appState,
+      solvedCamera: lastSolved?.cameraParameters || null
+    }, null, 2);
+    downloadBlob(new Blob([debugJson], { type: 'application/json' }), 'fspy-debug-state.json');
+  };
+
+  $('copyJsonBtn').onclick = () => {
+    if (!lastSolved?.cameraParameters) return;
+    navigator.clipboard?.writeText(JSON.stringify(lastSolved.cameraParameters, null, 2))
+      .then(() => $('statustext').textContent = 'COPIED SOLVED CAMERA PARAMETERS TO CLIPBOARD')
+      .catch(() => $('statustext').textContent = 'CLIPBOARD UNAVAILABLE');
+  };
+
+  function downloadBlob(blob, filename) {
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+  }
+
+  // Modals
+  $('helpbtn').onclick = () => $('helpModal').classList.add('shown');
+  $('closeHelp').onclick = $('doneHelp').onclick = () => $('helpModal').classList.remove('shown');
+  $('closeTest').onclick = $('doneTest').onclick = () => $('testModal').classList.remove('shown');
+
+  // --------------------------------------------------------------------------
+  // 10. AUTOMATED MATHEMATICAL PARITY & SYNTHETIC CAMERA TEST SUITE
+  // --------------------------------------------------------------------------
+  function runVerificationSuite() {
+    const results = [];
+    const assertClose = (name, actual, expected, tol = 1e-6) => {
+      const diff = Math.abs(actual - expected);
+      const pass = Number.isFinite(actual) && diff <= tol;
+      results.push({ name, pass, detail: `actual=${actual.toExponential(4)}, expected=${expected.toExponential(4)}, Δ=${diff.toExponential(2)}` });
+    };
+
+    // Test 1: Coordinate round-trip parity (Pixel <-> ImagePlane <-> Solver)
+    const ptPx = { x: 275.4, y: 412.8 };
+    const sPt = CoordinatesUtil.pixelToSolver(ptPx, 1920, 1080);
+    const backPx = CoordinatesUtil.solverToPixel(sPt, 1920, 1080);
+    assertClose('1. Coordinate System Round-Trip (1920×1080)', Math.hypot(ptPx.x - backPx.x, ptPx.y - backPx.y), 0, 1e-10);
+
+    // Test 2: Triangle Orthocenter (3rd VP Principal Point Recovery)
+    const k = { x: -1.4, y: -0.2 }, l = { x: 1.2, y: -0.3 }, m = { x: 0.1, y: 1.8 };
+    const ortho = MathUtil.triangleOrthocenter(k, l, m);
+    // Verify (k - ortho) . (l - m) == 0 and (l - ortho) . (k - m) == 0
+    const dot1 = (k.x - ortho.x) * (l.x - m.x) + (k.y - ortho.y) * (l.y - m.y);
+    const dot2 = (l.x - ortho.x) * (k.x - m.x) + (l.y - ortho.y) * (k.y - m.y);
+    assertClose('2. Orthocenter Orthogonality Residual ((k-H)·(l-m)=0)', Math.hypot(dot1, dot2), 0, 1e-10);
+
+    // Test 3: Synthetic Pinhole Camera Recovery (Known 35mm lens, Known Rotation & Pose)
+    const synW = 1600, synH = 1000, synSensorW = 36, synFocalMM = 35;
+    const expectedFRel = 2.0 * (synFocalMM / synSensorW);
+    const expectedHFov = 2 * Math.atan(1 / expectedFRel);
+    const synPP = { x: 0.08, y: -0.05 };
+
+    // Construct known orthonormal rotation matrix (Yaw 32 deg, Pitch 64 deg, Roll -8 deg)
+    const c1 = Math.cos(0.55), s1 = Math.sin(0.55);
+    const c2 = Math.cos(1.12), s2 = Math.sin(1.12);
+    const rotZ = new Matrix4x4([[c1, -s1, 0, 0], [s1, c1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]]);
+    const rotX = new Matrix4x4([[1, 0, 0, 0], [0, c2, -s2, 0], [0, s2, c2, 0], [0, 0, 0, 1]]);
+    const synCamRot = rotZ.multipliedBy(rotX);
+    const synCamTransform = synCamRot.copy();
+    synCamTransform.matrix[0][3] = 3.2;
+    synCamTransform.matrix[1][3] = -4.5;
+    synCamTransform.matrix[2][3] = 2.4;
+
+    // Project parallel X-axis lines and Y-axis lines into synthetic image
+    const proj = (x, y, z) => CoordinatesUtil.solverToImagePlane(
+      MathUtil.perspectiveProject(new Vector3D(x, y, z), synCamTransform, synPP, expectedHFov),
+      synW, synH
+    );
+
+    const synState = createDefaultState(synW, synH);
+    synState.calibrationSettings2VP.principalPointMode = 'Manual';
+    synState.controlPointsStateBase.principalPoint = CoordinatesUtil.solverToImagePlane(synPP, synW, synH);
+    synState.controlPointsStateBase.origin = proj(0, 0, 0);
+    synState.controlPointsStateBase.firstVanishingPoint.lineSegments = [
+      [proj(0, 0, 0), proj(2, 0, 0)],
+      [proj(0, 1.5, 0.5), proj(2, 1.5, 0.5)]
+    ];
+    synState.controlPointsState2VP.secondVanishingPoint.lineSegments = [
+      [proj(0, 0, 0), proj(0, 2, 0)],
+      [proj(1.2, 0, 0.4), proj(1.2, 2, 0.4)]
+    ];
+    synState.calibrationSettingsBase.referenceDistanceAxis = 'None';
+
+    const synSolved = Solver.solve(
+      synState.globalSettings,
+      synState.calibrationSettingsBase,
+      synState.calibrationSettings1VP,
+      synState.calibrationSettings2VP,
+      synState.controlPointsStateBase,
+      synState.controlPointsState1VP,
+      synState.controlPointsState2VP
+    );
+
+    assertClose('3. Synthetic 2-VP Focal Length Recovery (mm)', synSolved.cameraParameters.focalLength, synFocalMM, 1e-6);
+    assertClose('4. Synthetic 2-VP Horizontal FOV Recovery (rad)', synSolved.cameraParameters.horizontalFieldOfView, expectedHFov, 1e-7);
+
+    // Check rotation matrix parity
+    let maxRotErr = 0;
+    for (let r = 0; r < 3; r++) {
+      for (let c = 0; c < 3; c++) {
+        maxRotErr = Math.max(maxRotErr, Math.abs(synSolved.cameraParameters.cameraTransform.matrix[r][c] - synCamRot.matrix[r][c]));
+      }
+    }
+    assertClose('5. Synthetic 2-VP Rotation Matrix Elements Max Error', maxRotErr, 0, 1e-7);
+
+    // Test 6: Reprojection RMS Error of 3D Box Corners on Current Solved Scene
+    if (lastSolved?.valid && lastSolved.cameraParameters) {
+      const cam = lastSolved.cameraParameters;
+      const worldPts = [
+        new Vector3D(0, 0, 0),
+        new Vector3D(1, 0, 0),
+        new Vector3D(0, 1, 0),
+        new Vector3D(0, 0, 1)
+      ];
+      let sumSqErr = 0;
+      worldPts.forEach(pt => {
+        const p2D = MathUtil.perspectiveProject(pt, cam.cameraTransform, cam.principalPoint, cam.horizontalFieldOfView);
+        const ray = MathUtil.rayFromSolverPoint(p2D, cam.cameraTransform, cam.principalPoint, cam.relativeFocalLength);
+        const vecToPt = pt.subtracted(ray.origin).normalized();
+        const angleErr = Vector3D.cross(ray.direction, vecToPt).length;
+        sumSqErr += angleErr * angleErr;
+      });
+      const rmsRayErr = Math.sqrt(sumSqErr / worldPts.length);
+      assertClose('6. Project/Unproject Ray Collinearity RMS Error', rmsRayErr, 0, 1e-9);
+    }
+
+    // Test 7: UI Zoom/Pan Invariance
+    const beforeF = lastSolved?.cameraParameters?.focalLength || 0;
+    const savedZoom = appState.ui.zoom;
+    const savedPan = [...appState.ui.pan];
+    appState.ui.zoom = 4.3;
+    appState.ui.pan = [210, 180];
+    updateViewportViewBox();
+    syncUIAndRender();
+    const afterF = lastSolved?.cameraParameters?.focalLength || 0;
+    appState.ui.zoom = savedZoom;
+    appState.ui.pan = savedPan;
+    updateViewportViewBox();
+    syncUIAndRender();
+    assertClose('7. Viewport Zoom & Pan Calibration Invariance', afterF, beforeF, 1e-12);
+
+    // Test 8: Native .fspy Binary Round-Trip Serialization
+    const sampleImg = new Uint8Array([137, 80, 78, 71, 13, 10, 26, 10]);
+    const bin = NativeFspyFormat.serialize({ globalSettings: appState.globalSettings, focalTest: beforeF }, sampleImg);
+    const decoded = NativeFspyFormat.deserialize(bin);
+    assertClose('8. Native .fspy Binary Header & Payload Round-Trip', decoded.state.focalTest, beforeF, 1e-12);
+
+    // Render Results in Modal
+    const passCount = results.filter(r => r.pass).length;
+    $('testSummary').textContent = `${passCount} / ${results.length} Mathematical & Compatibility Checks Passed`;
+    $('testResultsList').innerHTML = results.map(r => `
+      <div class="test-row">
+        <span>${r.name}<br><small style="color:var(--muted)">${r.detail}</small></span>
+        <span class="${r.pass ? 'test-pass' : 'test-fail'}">${r.pass ? 'PASS' : 'FAIL'}</span>
+      </div>
+    `).join('');
+    $('testModal').classList.add('shown');
+  }
+
+  $('runTestsBtn').onclick = runVerificationSuite;
+
+  // Initialize application
+  applyStateToDOM();
+  updateViewportViewBox();
+  syncUIAndRender();
+})();
+</script>
+</body>
+</html>
