@@ -1,4 +1,4 @@
-# Native `.fspy` & Blender Interoperability Specification
+# Native `.fspy` Interoperability Specification
 
 ## 1. Native `.fspy` Binary Format (`version = 1`)
 
@@ -10,11 +10,11 @@ The web application reads and writes binary `.fspy` files conforming to `project
 - **Bytes `16 .. 16 + N_json`:** UTF-8 JSON string containing `globalSettings`, `calibrationSettingsBase`, `calibrationSettings1VP`, `calibrationSettings2VP`, `controlPointsStateBase`, `controlPointsState1VP`, `controlPointsState2VP`.
 - **Bytes `16 + N_json .. 16 + N_json + N_img`:** Binary image file bytes.
 
-## 2. Blender Camera Reconstruction (`stuffmatic/fSpy-Blender`)
+## 2. Exposed Camera Geometry
 
-The **Export Blender .py Script** button and `.fspy` binary export follow the exact conventions of the official `fSpy-Blender` add-on:
-- `cam_data.sensor_fit = 'HORIZONTAL'`
-- `cam_data.angle = horizontalFieldOfView`
-- Principal point lens shifts normalized by $\max(W, H)$:
-  $$\text{shift\_x} = -\frac{1}{2} P_x \frac{W}{\max(W, H)}, \quad \text{shift\_y} = -\frac{1}{2} P_y \frac{W}{\max(W, H)}$$
-- `cam_obj.matrix_world` is set directly to the $4\times 4$ `cameraTransform` matrix.
+The `.fspy` state written by this web app carries the full solved camera pose, so any consumer can reconstruct the camera without additional conventions:
+
+- The $4\times 4$ `cameraTransform` matrix in `calibrationSettingsBase` / exported camera JSON is the camera-to-world transform (camera space looks down `-Z`, matching fSpy's original implementation).
+- The principal point offset and horizontal field of view are stored per calibration settings block.
+- The **Copy Camera JSON** button exposes the solved `cameraParameters` (focal length, FOV, principal point, pose, quaternion and `cameraTransform`) for external tooling.
+
