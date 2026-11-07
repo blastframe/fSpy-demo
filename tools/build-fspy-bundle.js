@@ -148,11 +148,25 @@ function build() {
 `
   // esbuild records the resolved module path (inside a randomised temp dir) in
   // its comments and CommonJS module names. Strip that prefix so the committed
-  // bundle is byte-identical on every machine and the staleness check means
-  // "the vendored sources changed", not "the temp dir was called something else".
+  // bundle is byte-identical on every machine and the staleness check reports
+  // real source drift instead of "the temp dir had a different name".
   const raw = fs.readFileSync(path.join(tmp, 'out.js'), 'utf8')
-  const tempPrefix = /(?:\.\.\/)*tmp\/fspy-build-[^/]*\/(?:dist\/)?/g
-  const code = banner + raw.replace(tempPrefix, '')
+  const TEMP_PREFIX = /(?:[^"\s]*\/)?fspy-build-[A-Za-z0-9]+\/dist\//
+  const code =
+    banner +
+    raw
+      .split('\n')
+      .map((line) => {
+        const trimmed = line.trim()
+        const indent = line.slice(0, line.length - line.trimStart().length)
+        if (trimmed.startsWith('// ')) return indent + '// ' + trimmed.slice(3).replace(TEMP_PREFIX, '')
+        if (trimmed.startsWith('"') && trimmed.includes('fspy-build-')) {
+          const stripped = trimmed.replace(/"([^"]*)"/, (_, p) => '"' + p.replace(TEMP_PREFIX, '') + '"')
+          return indent + stripped
+        }
+        return line
+      })
+      .join('\n')
   fs.rmSync(tmp, { recursive: true, force: true })
   return code
 }
