@@ -9,24 +9,26 @@
 <style>
 :root {
   color-scheme: dark;
-  --bg: #191a1c;
-  --panel: #212226;
-  --surface: #2b2c31;
-  --surface-2: #33343a;
-  --line: #3c3d44;
-  --text: #e9eaee;
-  --muted: #9a9ca6;
-  --accent: #a8b8cc;
-  --accent-strong: #d9e2ee;
-  --red: #ef7a6f;
-  --blue: #5fb3ea;
-  --green: #6fc9a3;
-  --purple: #b98cf0;
+  /* Neutral greys (no hue) - page chrome only. Accent and semantic colours below
+     are the Signal Readout palette and are left unchanged. */
+  --bg: #1a1a1a;
+  --panel: #222222;
+  --surface: #2c2c2c;
+  --surface-2: #383838;
+  --line: #3d3d3d;
+  --line-strong: #4a4a4a;
+  --text: #ebede6;
+  --muted: #a0aa9e;
+  --amber: #efb648;
+  --red: #ed7265;
+  --blue: #65b4eb;
+  --green: #8fd1a0;
+  --purple: #c792ea;
 }
 * { box-sizing: border-box; }
 body {
   margin: 0;
-  background: #131315;
+  background: #141414;
   color: var(--text);
   font: 12px/1.45 Inter, Arial, sans-serif;
   font-variant-numeric: tabular-nums;
@@ -46,13 +48,13 @@ button, select, input { font: inherit; }
 button { cursor: pointer; border: 0; color: inherit; background: none; }
 button:hover { background: var(--surface-2); }
 button:focus-visible, select:focus-visible, input:focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--amber);
   outline-offset: 1px;
 }
 .top {
   height: 54px;
   flex: 0 0 54px;
-  background: #202125;
+  background: #242424;
   border-bottom: 1px solid var(--line);
   display: flex;
   align-items: center;
@@ -62,7 +64,7 @@ button:focus-visible, select:focus-visible, input:focus-visible {
 }
 .row { display: flex; align-items: center; gap: 6px; min-width: 0; }
 .brand { font-weight: 800; font-size: 20px; letter-spacing: -1px; white-space: nowrap; }
-.brand b { color: var(--accent); }
+.brand b { color: var(--amber); }
 .tag { font-size: 9px; letter-spacing: 1.4px; font-weight: 700; color: var(--muted); }
 .iconbtn {
   height: 34px;
@@ -73,7 +75,7 @@ button:focus-visible, select:focus-visible, input:focus-visible {
   flex: 0 0 auto;
 }
 .iconbtn i { font-size: 19px; }
-.iconbtn.active { background: var(--surface-2); color: var(--text); }
+.iconbtn.active { background: var(--surface-2); color: #ffd084; }
 .btn {
   display: inline-flex;
   align-items: center;
@@ -87,8 +89,8 @@ button:focus-visible, select:focus-visible, input:focus-visible {
   white-space: nowrap;
 }
 .btn i { font-size: 16px; }
-.primary { background: var(--accent-strong); color: #16171a; }
-.primary:hover { background: #f2f6fb; }
+.primary { background: var(--amber); color: #241d12; }
+.primary:hover { background: #ffd27a; }
 .sep { height: 22px; width: 1px; background: var(--line); margin: 0 4px; }
 .body { display: flex; flex: 1; min-height: 0; }
 .sidebar {
@@ -151,7 +153,7 @@ button:focus-visible, select:focus-visible, input:focus-visible {
   padding: 2px 14px 20px;
   overflow: auto;
   scrollbar-width: thin;
-  scrollbar-color: #4a4b53 transparent;
+  scrollbar-color: #4d4d4d transparent;
 }
 .section { padding: 14px 0; border-bottom: 1px solid var(--line); }
 .section:last-child { border: 0; }
@@ -165,7 +167,7 @@ button:focus-visible, select:focus-visible, input:focus-visible {
   text-transform: uppercase;
   margin: 0 0 11px;
 }
-.section h3 i { color: var(--accent); font-size: 16px; }
+.section h3 i { color: var(--amber); font-size: 16px; }
 .field { margin: 10px 0; }
 .field label {
   display: block;
@@ -180,30 +182,30 @@ button:focus-visible, select:focus-visible, input:focus-visible {
   height: 32px;
   width: 100%;
   border-radius: 6px;
-  border: 1px solid #43444c;
+  border: 1px solid var(--line-strong);
   color: var(--text);
-  background: #1b1c20;
+  background: #1c1c1c;
   padding: 0 8px;
 }
-.field input[type=range] { width: 100%; accent-color: var(--accent); }
+.field input[type=range] { width: 100%; accent-color: var(--amber); }
 .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
 .rowlabel { display: flex; align-items: center; justify-content: space-between; }
-.rowlabel strong { color: var(--accent); font-weight: 700; }
+.rowlabel strong { color: var(--amber); font-weight: 700; }
 .toggle {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 7px 0;
-  color: #cfd1d8;
+  color: #d5dbd0;
   gap: 10px;
   cursor: pointer;
 }
-.toggle input { accent-color: var(--accent); }
+.toggle input { accent-color: var(--amber); }
 .stage { display: flex; flex-direction: column; flex: 1; min-width: 0; }
 .toolstrip {
   height: 43px;
   flex: 0 0 43px;
-  background: #1e1f22;
+  background: #202020;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -216,8 +218,8 @@ button:focus-visible, select:focus-visible, input:focus-visible {
   min-height: 0;
   position: relative;
   overflow: hidden;
-  background-color: #17181a;
-  background-image: radial-gradient(#2e2f35 .7px, transparent .7px);
+  background-color: #161616;
+  background-image: radial-gradient(#303030 .7px, transparent .7px);
   background-size: 18px 18px;
   display: flex;
   align-items: center;
@@ -230,23 +232,23 @@ svg [data-drag]:active { cursor: grabbing; }
   position: absolute;
   top: 12px;
   left: 12px;
-  background: #1b1c20e8;
-  border: 1px solid #3c3d44;
+  background: #1c1c1ce8;
+  border: 1px solid var(--line);
   border-radius: 6px;
   padding: 7px 9px;
   font-size: 10px;
   font-weight: 800;
   pointer-events: none;
 }
-.floating i { color: var(--accent); }
+.floating i { color: var(--amber); }
 .diag-banner {
   position: absolute;
   top: 12px;
   right: 12px;
   max-width: 360px;
-  background: #33211fe8;
+  background: #2b1d1be8;
   border: 1px solid var(--red);
-  color: #ffd2cd;
+  color: #ffcfca;
   border-radius: 6px;
   padding: 8px 11px;
   font-size: 11px;
@@ -255,7 +257,7 @@ svg [data-drag]:active { cursor: grabbing; }
 }
 .diag-banner.hidden { display: none; }
 .zoomtools { position: absolute; bottom: 12px; right: 12px; display: grid; gap: 5px; }
-.zoomtools button { background: #232429cc; border: 1px solid var(--line); }
+.zoomtools button { background: #242424cc; border: 1px solid var(--line); }
 .loupe {
   position: absolute;
   top: 52px;
@@ -263,8 +265,8 @@ svg [data-drag]:active { cursor: grabbing; }
   width: 116px;
   height: 116px;
   border-radius: 50%;
-  border: 2px solid var(--accent);
-  background: #131315;
+  border: 2px solid var(--amber);
+  background: #141414;
   overflow: hidden;
   pointer-events: none;
   box-shadow: 0 6px 20px #000a;
@@ -278,16 +280,16 @@ svg [data-drag]:active { cursor: grabbing; }
   justify-content: space-between;
   align-items: center;
   padding: 0 12px;
-  background: #202125;
+  background: #242424;
   border-top: 1px solid var(--line);
   color: var(--muted);
   font-size: 10px;
   gap: 8px;
 }
 .status i { color: var(--green); }
-.status i.warn-icon { color: var(--accent); }
+.status i.warn-icon { color: var(--amber); }
 .metricgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
-.metric { background: #1b1c20; border-radius: 6px; padding: 9px 8px; }
+.metric { background: #1c1c1c; border-radius: 6px; padding: 9px 8px; }
 .metric .k { color: var(--muted); font-size: 9px; text-transform: uppercase; font-weight: 700; letter-spacing: .75px; }
 .metric .v { font-size: 17px; font-weight: 800; letter-spacing: -.4px; margin-top: 4px; }
 .readout {
@@ -300,8 +302,8 @@ svg [data-drag]:active { cursor: grabbing; }
 .readout span { color: var(--muted); }
 .readout strong { text-align: right; font-family: 'JetBrains Mono', monospace; font-size: 11px; }
 .matrix-box {
-  background: #17181b;
-  border: 1px solid #383940;
+  background: #181818;
+  border: 1px solid var(--line);
   border-radius: 6px;
   padding: 7px;
   font-family: 'JetBrains Mono', monospace;
@@ -312,12 +314,12 @@ svg [data-drag]:active { cursor: grabbing; }
   text-align: right;
   margin-top: 6px;
 }
-.matrix-box span { padding: 2px 3px; background: #202126; border-radius: 3px; }
-.badge { background: #2c3a33; color: #9fd8bb; padding: 4px 7px; font-size: 9px; font-weight: 800; border-radius: 4px; }
-.badge.neutral { background: #2e2f35; color: #c3c6d1; }
-.badge.warn { background: #3f3623; color: #ecd29a; }
-.badge.err { background: #472523; color: #ffb3ab; }
-.note { padding: 9px; background: #1b1c20; border-radius: 6px; color: var(--muted); font-size: 10px; line-height: 1.55; margin-top: 6px; }
+.matrix-box span { padding: 2px 3px; background: #212121; border-radius: 3px; }
+.badge { background: #2c2c2c; color: #9fddb0; padding: 4px 7px; font-size: 9px; font-weight: 800; border-radius: 4px; }
+.badge.neutral { background: #303030; color: #d5dbd0; }
+.badge.warn { background: #2f2a20; color: #ffd184; }
+.badge.err { background: #2e2020; color: #ffb3ab; }
+.note { padding: 9px; background: #1c1c1c; border-radius: 6px; color: var(--muted); font-size: 10px; line-height: 1.55; margin-top: 6px; }
 .foot {
   height: 28px;
   flex: 0 0 28px;
@@ -325,13 +327,13 @@ svg [data-drag]:active { cursor: grabbing; }
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #1f2023;
+  background: #202020;
   border-top: 1px solid var(--line);
   font-size: 9px;
   color: var(--muted);
   letter-spacing: .7px;
 }
-.foot a { color: var(--accent); text-decoration: none; }
+.foot a { color: var(--amber); text-decoration: none; }
 .title { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 280px; font-weight: 600; }
 .hidefile { display: none; }
 .modal {
@@ -349,9 +351,9 @@ svg [data-drag]:active { cursor: grabbing; }
   width: min(680px, 100%);
   max-height: 85vh;
   overflow: auto;
-  background: #232428;
+  background: #242424;
   padding: 20px;
-  border: 1px solid #43444c;
+  border: 1px solid var(--line-strong);
   border-radius: 8px;
   line-height: 1.6;
 }
@@ -408,7 +410,7 @@ svg [data-drag]:active { cursor: grabbing; }
       <span class="tag">SIGNAL READOUT / SOLVER ENGINE</span>
     </div>
     <div class="row">
-      <i class="ri-image-line desktop" style="color:var(--accent)"></i>
+      <i class="ri-image-line desktop" style="color:var(--amber)"></i>
       <span class="title" id="filename">Modern office · perspective study</span>
       <span class="badge neutral" id="imgdim-badge">1000×662</span>
     </div>
@@ -441,6 +443,7 @@ svg [data-drag]:active { cursor: grabbing; }
               <option value="OneVanishingPoint">1 vanishing point</option>
             </select>
           </div>
+          <label class="toggle" id="quadWrap">Quad mode (VP2 from VP1 segment ends)<input type="checkbox" id="quadMode"></label>
           <div class="field">
             <label>VP 1 Axis (<span style="color:var(--red)">Red</span>)</label>
             <select id="axis1">
@@ -485,12 +488,7 @@ svg [data-drag]:active { cursor: grabbing; }
           <div class="field">
             <label>Camera Preset / Sensor</label>
             <select id="cameraPreset">
-              <option value="custom">Custom sensor size</option>
-              <option value="fullframe" selected>35mm Full Frame (36 × 24 mm)</option>
-              <option value="apsc_canon">APS-C Canon (22.3 × 14.9 mm)</option>
-              <option value="apsc_nikon">APS-C Sony/Nikon (23.5 × 15.6 mm)</option>
-              <option value="mft">Micro Four Thirds (17.3 × 13.0 mm)</option>
-              <option value="one_inch">1-inch Sensor (13.2 × 8.8 mm)</option>
+              <option value="">Custom sensor size</option>
             </select>
           </div>
           <div class="grid2">
@@ -505,16 +503,10 @@ svg [data-drag]:active { cursor: grabbing; }
           </div>
           <div id="oneVpFocalWrap" hidden>
             <div class="field">
-              <label>1-VP Focal Specification</label>
-              <select id="absoluteFocalLength">
-                <option value="true">Focal length (mm)</option>
-                <option value="false">Relative focal length</option>
-              </select>
+              <label>Known Focal Length (mm)</label>
+              <input type="number" id="knownFocal" value="24" min="0.1" max="5000" step="0.5">
             </div>
-            <div class="field">
-              <label id="focalInputLabel">Known Focal Length (mm)</label>
-              <input type="number" id="knownFocal" value="35" min="1" max="1000" step="0.5">
-            </div>
+            <div class="note">1-VP mode takes the focal length and sensor size as given and derives the second, orthogonal vanishing point from the horizon guide. Vertical FOV is a pure readout in this mode, as in fSpy.</div>
           </div>
         </section>
 
@@ -523,29 +515,31 @@ svg [data-drag]:active { cursor: grabbing; }
           <div class="field">
             <label>Measure along</label>
             <select id="referenceAxis">
-              <option value="None">None (Unit camera distance)</option>
-              <option value="xAxis">X axis</option>
-              <option value="yAxis">Y axis</option>
-              <option value="zAxis" selected>Z axis</option>
-              <option value="xyPlane">XY plane (free direction)</option>
-              <option value="yzPlane">YZ plane (free direction)</option>
-              <option value="zxPlane">ZX plane (free direction)</option>
+              <option value="">None (default camera distance)</option>
+              <option value="xPositive">+X axis</option>
+              <option value="xNegative">-X axis</option>
+              <option value="yPositive">+Y axis</option>
+              <option value="yNegative">-Y axis</option>
+              <option value="zPositive">+Z axis</option>
+              <option value="zNegative">-Z axis</option>
             </select>
           </div>
           <div id="distanceWrap">
             <div class="grid2">
               <div class="field">
                 <label>Distance</label>
-                <input type="number" id="distance" min="0.01" value="2.0" step="0.1">
+                <input type="number" id="distance" min="0.001" value="4" step="0.1">
               </div>
               <div class="field">
                 <label>Unit</label>
                 <select id="distanceUnit">
-                  <option value="Meters" selected>Meters (m)</option>
-                  <option value="Centimeters">cm</option>
-                  <option value="Millimeters">mm</option>
-                  <option value="Feet">Feet (ft)</option>
-                  <option value="Inches">Inches (in)</option>
+                  <option value="Millimeters">Millimeters</option>
+                  <option value="Centimeters">Centimeters</option>
+                  <option value="Meters" selected>Meters</option>
+                  <option value="Kilometers">Kilometers</option>
+                  <option value="Inches">Inches</option>
+                  <option value="Feet">Feet</option>
+                  <option value="Miles">Miles</option>
                 </select>
               </div>
             </div>
@@ -557,21 +551,21 @@ svg [data-drag]:active { cursor: grabbing; }
           <div class="field">
             <label>3D Guide Overlay</label>
             <select id="guide">
-              <option value="Box" selected>3D Reference Box</option>
-              <option value="XYGrid">XY Floor Grid</option>
-              <option value="YZGrid">YZ Wall Grid</option>
-              <option value="ZXGrid">ZX Wall Grid</option>
-              <option value="None">Axes Only</option>
+              <option value="None" selected>None (axes only)</option>
+              <option value="Box">Unit cube at world origin</option>
+              <option value="XYGridFloor">XY grid (floor, normal +Z)</option>
+              <option value="YZGridFloor">YZ grid (normal +X)</option>
+              <option value="ZXGridFloor">ZX grid (normal +Y)</option>
             </select>
           </div>
           <div class="grid2" id="boxDimsWrap">
             <div class="field">
-              <label>Box X / Y</label>
-              <input type="number" id="boxWidth" min="0.1" max="50" step="0.2" value="1.6">
+              <label>Box scale (relative)</label>
+              <input type="number" id="boxWidth" min="0.05" max="20" step="0.05" value="0.3">
             </div>
             <div class="field">
-              <label>Box Z Height</label>
-              <input type="number" id="boxHeight" min="0.1" max="50" step="0.2" value="1.2">
+              <label>Grid cells</label>
+              <input type="number" id="boxHeight" min="2" max="40" step="1" value="10">
             </div>
           </div>
           <div class="field">
@@ -579,7 +573,7 @@ svg [data-drag]:active { cursor: grabbing; }
             <input type="range" id="opacity" min="15" max="100" step="5" value="90">
           </div>
           <label class="toggle">Vanishing point lines<input type="checkbox" id="showVP" checked></label>
-          <label class="toggle">3D projected wireframe<input type="checkbox" id="showGrid" checked></label>
+          <label class="toggle">3D projected guides<input type="checkbox" id="showGrid" checked></label>
           <label class="toggle">Horizon line<input type="checkbox" id="showHorizon" checked></label>
           <label class="toggle">Image dim overlay<input type="checkbox" id="dimImage"></label>
         </section>
@@ -612,9 +606,9 @@ svg [data-drag]:active { cursor: grabbing; }
           <defs>
             <clipPath id="crop"><rect id="cropRect" width="1000" height="662"/></clipPath>
           </defs>
-          <rect id="bgRect" width="1000" height="662" fill="#1e1f22"/>
+          <rect id="bgRect" width="1000" height="662" fill="#232323"/>
           <image id="image" x="0" y="0" width="1000" height="662" preserveAspectRatio="none" crossorigin="anonymous" href="https://images.pexels.com/photos/8606292/pexels-photo-8606292.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1600"/>
-          <rect id="dimRect" width="1000" height="662" fill="#0b0b0d" opacity="0" pointer-events="none"/>
+          <rect id="dimRect" width="1000" height="662" fill="#0d0d0d" opacity="0" pointer-events="none"/>
           <g id="overlay"></g>
         </svg>
         <div class="floating">
@@ -660,7 +654,9 @@ svg [data-drag]:active { cursor: grabbing; }
           <div class="readout"><span>Relative Focal (fSpy)</span><strong id="relFocal">—</strong></div>
           <div class="readout"><span>Focal Length (px)</span><strong id="pxFocal">—</strong></div>
           <div class="readout"><span>Vertical FOV</span><strong id="vfov">—</strong></div>
-          <div class="readout"><span>Principal Point (px)</span><strong id="ppPx">—</strong></div>
+          <div class="readout"><span>Sensor</span><strong id="sensorOut">—</strong></div>
+          <div class="readout"><span id="ppLabel">Principal Point (px)</span><strong id="ppPx">—</strong></div>
+          <div class="readout" id="focalMmRow"><span>Focal Length (mm)</span><strong id="focalMm">—</strong></div>
         </section>
 
         <section class="section">
@@ -669,6 +665,7 @@ svg [data-drag]:active { cursor: grabbing; }
           <div class="readout"><span>Pitch (X)</span><strong id="pitch">—</strong></div>
           <div class="readout"><span>Roll (Y)</span><strong id="roll">—</strong></div>
           <div class="readout"><span>Quaternion (w,x,y,z)</span><strong id="quatOut">—</strong></div>
+          <div class="readout"><span>Axis / Angle</span><strong id="axisAngleOut">—</strong></div>
         </section>
 
         <section class="section">
@@ -720,7 +717,7 @@ svg [data-drag]:active { cursor: grabbing; }
   <div class="modal" id="testModal">
     <div class="dialog">
       <h2><span>Automated Mathematical Parity &amp; Verification Suite</span><button id="closeTest" class="iconbtn"><i class="ri-close-line"></i></button></h2>
-      <div id="testSummary" style="margin-bottom:10px;font-weight:700;color:var(--accent)">Running tests...</div>
+      <div id="testSummary" style="margin-bottom:10px;font-weight:700;color:var(--amber)">Running tests...</div>
       <div id="testResultsList"></div>
       <div style="margin-top:14px;display:flex;justify-content:flex-end">
         <button class="btn primary" id="doneTest"><i class="ri-check-line"></i>Done</button>
@@ -732,725 +729,283 @@ svg [data-drag]:active { cursor: grabbing; }
   <input class="hidefile" id="projectfile" type="file" accept=".fspy,.json,application/json,application/octet-stream">
 </div>
 
+<!--
+  The camera solver is the *unmodified* upstream fSpy implementation
+  (perarnia/fSpy, GPL-3.0), bundled by tools/build-fspy-bundle.js.
+-->
+<script src="src/engine/fspy-engine.js"></script>
 <script>
 /**
  * ============================================================================
- * fSpy Mathematical Calibration Engine — Authentic Port of perarnia/fSpy
- * Original Author: Per Gantelius (https://github.com/perarnia/fSpy)
- * License: GNU General Public License v3.0 (GPL-3.0)
+ * fSpy web front-end
+ *
+ * Solver, math utilities, coordinate conversions and state defaults all come
+ * from the vendored original fSpy sources (see src/engine/fspy-engine.js and
+ * FSPY_SOLVER_AUDIT.md). This file only wires that engine to the UI.
+ *
+ * Upstream: https://github.com/perarnia/fSpy - Copyright (c) 2020 Per Gantelius
+ * License: GNU General Public License v3.0 - see FSPY_LICENSE.md
  * ============================================================================
  */
 (() => {
   'use strict';
 
   // --------------------------------------------------------------------------
-  // 1. LINEAR ALGEBRA & TYPES (Ported from vector-3d.ts, matrix-3x3.ts, matrix-4x4.ts, transform.ts)
+  // 1. fSpy ENGINE (unmodified upstream solver)
   // --------------------------------------------------------------------------
-  class Vector3D {
-    constructor(x = 0, y = 0, z = 0) {
-      this.x = x;
-      this.y = y;
-      this.z = z;
+  /**
+   * FSpyOriginal is the bundle produced by tools/build-fspy-bundle.js from the
+   * vendored, unmodified fSpy sources in vendor/fspy/src (upstream
+   * perarnia/fSpy, GPL-3.0, see FSPY_LICENSE.md). It exposes the *original*
+   * Solver, MathUtil, CoordinatesUtil, Transform, Vector3D and default state.
+   *
+   * Everything in this file that produces a camera parameter goes through this
+   * engine. Do not re-implement solver mathematics here.
+   */
+  const FSpy = window.FSpyOriginal;
+  if (!FSpy) throw new Error('fSpy engine bundle (src/engine/fspy-engine.js) failed to load');
+
+  const {
+    Solver: FSpySolver,
+    MathUtil: FSpyMathUtil,
+    CoordinatesUtil: FSpyCoordinatesUtil,
+    ImageCoordinateFrame,
+    Transform,
+    Vector3D,
+    cameraPresets,
+    Axis,
+    PrincipalPointMode1VP,
+    PrincipalPointMode2VP,
+    ReferenceDistanceUnit
+  } = FSpy;
+
+  // --------------------------------------------------------------------------
+  // 2. COORDINATE FRAMES
+  // --------------------------------------------------------------------------
+  /**
+   * Four frames are used throughout, and every conversion lives in this file:
+   *
+   *  screen       CSS pixels inside the <svg> element (pointer events)
+   *  viewport     mirrored stage coordinates used by control-points-panel.tsx
+   *               in the original app: the image rectangle maps to
+   *               [0, 2*width] x [0, 2*height] with the origin at the image
+   *               centre and the y axis pointing down. Only the UI uses this.
+   *  relative     normalised image coordinates [0, 1] x [0, 1], top-left
+   *               origin, y down. This is what fSpy stores in project files.
+   *  imagePlane   fSpy's aspect-aware normalised frame used by the solver:
+   *               origin at the image centre, range [-1, 1] on the long axis,
+   *               y up. See CoordinatesUtil.convert().
+   *
+   * All calibration state is stored in `relative` coordinates, so zoom, pan,
+   * viewport size, sidebar state and pixel density can never influence the
+   * solved camera: they only affect the screen <-> viewport mapping.
+   */
+  const Coordinates = {
+    /** relative -> image plane (delegates to the original fSpy implementation) */
+    relativeToImagePlane(point, width, height) {
+      return FSpyCoordinatesUtil.convert(point, ImageCoordinateFrame.Relative, ImageCoordinateFrame.ImagePlane, width, height);
+    },
+    imagePlaneToRelative(point, width, height) {
+      return FSpyCoordinatesUtil.convert(point, ImageCoordinateFrame.ImagePlane, ImageCoordinateFrame.Relative, width, height);
+    },
+    relativeToAbsolute(point, width, height) {
+      return FSpyCoordinatesUtil.convert(point, ImageCoordinateFrame.Relative, ImageCoordinateFrame.Absolute, width, height);
+    },
+    absoluteToRelative(point, width, height) {
+      return FSpyCoordinatesUtil.convert(point, ImageCoordinateFrame.Absolute, ImageCoordinateFrame.Relative, width, height);
+    },
+    imagePlaneToAbsolute(point, width, height) {
+      return FSpyCoordinatesUtil.convert(point, ImageCoordinateFrame.ImagePlane, ImageCoordinateFrame.Absolute, width, height);
+    },
+    /** relative -> mirrored viewport frame (the frame the UI draws in) */
+    relativeToViewport(point, width, height) {
+      return { x: (point.x - 0.5) * 2 * width, y: (point.y - 0.5) * 2 * height };
+    },
+    viewportToRelative(point, width, height) {
+      return { x: point.x / (2 * width) + 0.5, y: point.y / (2 * height) + 0.5 };
     }
-    copy() { return new Vector3D(this.x, this.y, this.z); }
-    get length() { return Math.hypot(this.x, this.y, this.z); }
-    add(v) { return new Vector3D(this.x + v.x, this.y + v.y, this.z + v.z); }
-    subtracted(v) { return new Vector3D(this.x - v.x, this.y - v.y, this.z - v.z); }
-    multipliedByScalar(s) { return new Vector3D(this.x * s, this.y * s, this.z * s); }
-    negated() { return new Vector3D(-this.x, -this.y, -this.z); }
-    normalized() {
-      const l = this.length;
-      return l > 0 ? new Vector3D(this.x / l, this.y / l, this.z / l) : new Vector3D(0, 0, 0);
+  };
+
+  /**
+   * Single authoritative image <-> viewport transform. The SVG viewBox is set
+   * from the view state alone; nothing here feeds back into calibration.
+   */
+  const ViewportTransform = {
+    /**
+     * Screen (CSS px, relative to the svg element) -> relative image
+     * coordinates. Uses the live CTM so any CSS scaling, zoom or pan is
+     * accounted for exactly.
+     */
+    screenToRelative(svgEl, clientX, clientY, width, height) {
+      const ctm = svgEl.getScreenCTM();
+      if (!ctm) return null;
+      const pt = svgEl.createSVGPoint();
+      pt.x = clientX;
+      pt.y = clientY;
+      const user = pt.matrixTransform(ctm.inverse());
+      return Coordinates.viewportToRelative(user, width, height);
     }
-    normalize() {
-      const l = this.length;
-      if (l > 0) { this.x /= l; this.y /= l; this.z /= l; }
-      return this;
-    }
-    static dot(a, b) { return a.x * b.x + a.y * b.y + a.z * b.z; }
-    static cross(a, b) {
+  };
+
+  // --------------------------------------------------------------------------
+  // 3. AUTHORITATIVE CAMERA MODEL
+  // --------------------------------------------------------------------------
+  /** Enumerates the fSpy project camera preset ids (upstream camera-presets.ts) */
+  const CAMERA_PRESET_ORDER = [
+    '35_mm_film',
+    'aps-c',
+    'canon_1d', 'canon_1ds', 'canon_5d', 'canon_7d', 'canon_60d', 'canon_500d', 'canon_550d', 'canon_600d', 'canon_1100d',
+    'nikon_d3200', 'nikon_d5100', 'nikon_d7000', 'nikon_d700', 'nikon_d800',
+    'sony_a6000', 'sony_a7', 'sony_a7s', 'sony_a7r',
+    'panasonic_gh4', 'olympus_omd_em5', 'fuji_x100', 'iphone_6s'
+  ].filter(id => cameraPresets[id]);
+
+  const CameraModel = {
+    /** Sensor size in mm for a given camera data block. */
+    sensorSize(cameraData) {
+      if (cameraData.presetId) {
+        const preset = cameraPresets[cameraData.presetId];
+        if (preset) return { width: preset.sensorWidth, height: preset.sensorHeight, preset };
+      }
+      return {
+        width: cameraData.customSensorWidth,
+        height: cameraData.customSensorHeight,
+        preset: null
+      };
+    },
+
+    /** True when the image aspect ratio matches the sensor (upstream helper). */
+    proportionsMatch(imageWidth, imageHeight, sensorWidth, sensorHeight) {
+      return FSpySolver.imageProportionsMatchSensor(imageWidth, imageHeight, sensorWidth, sensorHeight);
+    },
+
+    /**
+     * Absolute focal length in mm, using the exact expression from fSpy's
+     * result-panel.tsx (0.5 * sensor long/short side * relative focal length).
+     */
+    absoluteFocalLength(cameraParameters, cameraData) {
+      const sensor = this.sensorSize(cameraData);
+      const aspect = sensor.height > 0 ? sensor.width / sensor.height : 1;
+      return aspect > 1
+        ? 0.5 * sensor.width * cameraParameters.relativeFocalLength
+        : 0.5 * sensor.height * cameraParameters.relativeFocalLength;
+    },
+
+    /** Project a world point to `relative` image coordinates (upstream project()). */
+    projectPoint(worldPoint, cameraParameters) {
+      const imagePlane = FSpyMathUtil.perspectiveProject(
+        worldPoint,
+        cameraParameters.viewTransform,
+        cameraParameters.principalPoint,
+        cameraParameters.horizontalFieldOfView
+      );
+      return Coordinates.imagePlaneToRelative(imagePlane, cameraParameters.imageWidth, cameraParameters.imageHeight);
+    },
+
+    /**
+     * Camera-space direction of a `relative` image point (principal point
+     * aware, y up in image plane, camera looks down -Z).
+     */
+    imageRayDirection(relativePoint, cameraParameters) {
+      const imagePlane = Coordinates.relativeToImagePlane(relativePoint, cameraParameters.imageWidth, cameraParameters.imageHeight);
+      const f = 1 / Math.tan(0.5 * cameraParameters.horizontalFieldOfView);
       return new Vector3D(
-        a.y * b.z - a.z * b.y,
-        a.z * b.x - a.x * b.z,
-        a.x * b.y - a.y * b.x
+        imagePlane.x - cameraParameters.principalPoint.x,
+        imagePlane.y - cameraParameters.principalPoint.y,
+        -f
       );
-    }
-    toArray() { return [this.x, this.y, this.z]; }
-  }
+    },
 
-  class Matrix4x4 {
-    constructor(rows) {
-      this.matrix = rows || [
-        [1, 0, 0, 0],
-        [0, 1, 0, 0],
-        [0, 0, 1, 0],
-        [0, 0, 0, 1]
-      ];
-    }
-    static get identity() { return new Matrix4x4(); }
-    copy() {
-      return new Matrix4x4(this.matrix.map(r => [...r]));
-    }
-    multipliedBy(other) {
-      const res = Matrix4x4.identity;
-      for (let r = 0; r < 4; r++) {
-        for (let c = 0; c < 4; c++) {
-          let sum = 0;
-          for (let k = 0; k < 4; k++) sum += this.matrix[r][k] * other.matrix[k][c];
-          res.matrix[r][c] = sum;
-        }
-      }
-      return res;
-    }
-    // Rigid body inverse (orthonormal 3x3 rotation R^T + translation -R^T * t)
-    invertedRigid() {
-      const m = this.matrix;
-      const r00 = m[0][0], r01 = m[1][0], r02 = m[2][0];
-      const r10 = m[0][1], r11 = m[1][1], r12 = m[2][1];
-      const r20 = m[0][2], r21 = m[1][2], r22 = m[2][2];
-      const tx = m[0][3], ty = m[1][3], tz = m[2][3];
-      return new Matrix4x4([
-        [r00, r01, r02, -(r00 * tx + r01 * ty + r02 * tz)],
-        [r10, r11, r12, -(r10 * tx + r11 * ty + r12 * tz)],
-        [r20, r21, r22, -(r20 * tx + r21 * ty + r22 * tz)],
-        [0,   0,   0,   1]
-      ]);
-    }
-    transformVector(v) {
-      const m = this.matrix;
-      return new Vector3D(
-        m[0][0] * v.x + m[0][1] * v.y + m[0][2] * v.z + m[0][3],
-        m[1][0] * v.x + m[1][1] * v.y + m[1][2] * v.z + m[1][3],
-        m[2][0] * v.x + m[2][1] * v.y + m[2][2] * v.z + m[2][3]
-      );
-    }
-    transformDirection(v) {
-      const m = this.matrix;
-      return new Vector3D(
-        m[0][0] * v.x + m[0][1] * v.y + m[0][2] * v.z,
-        m[1][0] * v.x + m[1][1] * v.y + m[1][2] * v.z,
-        m[2][0] * v.x + m[2][1] * v.y + m[2][2] * v.z
-      );
-    }
-  }
-
-  // --------------------------------------------------------------------------
-  // 2. COORDINATE SYSTEM CONVERSIONS (Ported from src/gui/solver/coordinates-util.ts)
-  // --------------------------------------------------------------------------
-  const CoordinatesUtil = {
     /**
-     * Converts between normalized image plane coordinates [0, 1] x [0, 1] (top-left origin)
-     * and solver coordinates [-1, 1] x [-h/w, h/w] (midpoint origin, Y up)
-     * or vice versa. Matches original fSpy CoordinatesUtil.convert().
+     * Ray through a `relative` image point in world space. Returns null when
+     * the point is not in front of the camera.
      */
-    imagePlaneToSolver(point, width, height) {
-      const aspectRatio = width / height;
-      return {
-        x: 2 * point.x - 1,
-        y: (1 - 2 * point.y) / aspectRatio
-      };
-    },
-    solverToImagePlane(point, width, height) {
-      const aspectRatio = width / height;
-      return {
-        x: 0.5 * (point.x + 1),
-        y: 0.5 * (1 - aspectRatio * point.y)
-      };
-    },
-    pixelToImagePlane(px, width, height) {
-      return { x: px.x / width, y: px.y / height };
-    },
-    imagePlaneToPixel(pt, width, height) {
-      return { x: pt.x * width, y: pt.y * height };
-    },
-    pixelToSolver(px, width, height) {
-      return this.imagePlaneToSolver(this.pixelToImagePlane(px, width, height), width, height);
-    },
-    solverToPixel(pt, width, height) {
-      return this.imagePlaneToPixel(this.solverToImagePlane(pt, width, height), width, height);
+    worldRay(relativePoint, cameraParameters) {
+      const dirCam = this.imageRayDirection(relativePoint, cameraParameters);
+      const dirWorld = cameraParameters.cameraTransform.transformVector(dirCam, false);
+      dirWorld.normalize();
+      const m = cameraParameters.cameraTransform.matrix;
+      const origin = new Vector3D(m[0][3], m[1][3], m[2][3]);
+      if (dirWorld.z >= -1e-9 && Math.abs(dirWorld.z) < 1e-9) return null;
+      return { origin, direction: dirWorld };
     }
   };
 
   // --------------------------------------------------------------------------
-  // 3. MATHEMATICAL SOLVER UTILITIES (Ported from src/gui/solver/math-util.ts)
+  // 4. SOLVE ENTRY POINT (thin wrapper around the original solver)
   // --------------------------------------------------------------------------
-  const MathUtil = {
-    EPSILON: 1e-8,
+  /**
+   * Runs the original fSpy solver for the current state.
+   *
+   * The only thing this wrapper does is (a) pick solve1VP/solve2VP like the
+   * original store does, (b) supply the image dimensions exactly as the
+   * desktop app does, and (c) keep the previous result around when the current
+   * input is invalid so the viewport is not blanked out.
+   *
+   * @returns {{
+   *   valid: boolean,
+   *   errors: string[],
+   *   warnings: string[],
+   *   cameraParameters: object|null,
+   *   stale: boolean
+   * }}
+   */
+  const Calibration = {
+    lastValid: null,
 
-    lineSegmentMidpoint(segment) {
-      return {
-        x: 0.5 * (segment[0].x + segment[1].x),
-        y: 0.5 * (segment[0].y + segment[1].y)
+    solve(state) {
+      // Image dimensions live on the image state, exactly as in fSpy's store.
+      const image = {
+        width: state.image.width,
+        height: state.image.height,
+        url: state.ui.imageUrl,
+        data: null
       };
-    },
 
-    /**
-     * Port of MathUtil.lineIntersection(line1, line2)
-     */
-    lineIntersection(line1, line2) {
-      const d1x = line1[1].x - line1[0].x;
-      const d1y = line1[1].y - line1[0].y;
-      const d2x = line2[1].x - line2[0].x;
-      const d2y = line2[1].y - line2[0].y;
-
-      const denom = d1x * d2y - d1y * d2x;
-      if (Math.abs(denom) < this.EPSILON) {
-        return null;
-      }
-
-      const ax = line2[0].x - line1[0].x;
-      const ay = line2[0].y - line1[0].y;
-      const t = (ax * d2y - ay * d2x) / denom;
-
-      return {
-        x: line1[0].x + t * d1x,
-        y: line1[0].y + t * d1y
-      };
-    },
-
-    /**
-     * Port of MathUtil.triangleOrthocenter(k, l, m)
-     * Computes the orthocenter of the triangle with vertices k, l, m (the 3 vanishing points).
-     */
-    triangleOrthocenter(k, l, m) {
-      const a = k.x, b = k.y;
-      const c = l.x, d = l.y;
-      const e = m.x, f = m.y;
-
-      const N = b * c + d * e + f * a - c * f - b * e - a * d;
-      if (Math.abs(N) < this.EPSILON) {
-        return { x: 0, y: 0 };
-      }
-      const x = ((d - f) * b * b + (f - b) * d * d + (b - d) * f * f + a * c * (c - a) + c * e * (e - c) + e * a * (a - e)) / N;
-      const y = ((e - c) * a * a + (a - e) * c * c + (c - a) * e * e + b * d * (b - d) + d * f * (d - f) + f * b * (f - b)) / N;
-      return { x, y };
-    },
-
-    /**
-     * Port of MathUtil.computeFocalLength(Fu, Fv, P)
-     * Computes relative focal length f from two orthogonal vanishing points Fu, Fv and principal point P.
-     */
-    computeFocalLength(Fu, Fv, P) {
-      // Vector P -> Fu and Fv -> Fu
-      const vPFux = Fu.x - P.x, vPFuy = Fu.y - P.y;
-      const vPFvx = Fv.x - P.x, vPFvy = Fv.y - P.y;
-      const fSq = -(vPFux * vPFvx + vPFuy * vPFvy);
-      if (fSq <= 0 || !Number.isFinite(fSq)) {
-        return null;
-      }
-      return Math.sqrt(fSq);
-    },
-
-    /**
-     * Port of MathUtil.computeCameraRotationMatrix(Fu, Fv, f, P)
-     * Computes the camera rotation matrix where column 0 is along u (towards Fu),
-     * column 1 is along v (towards Fv), and column 2 is u x v.
-     */
-    computeCameraRotationMatrix(Fu, Fv, f, P) {
-      const u = new Vector3D(Fu.x - P.x, Fu.y - P.y, -f).normalized();
-      const vRaw = new Vector3D(Fv.x - P.x, Fv.y - P.y, -f);
-      // Gram-Schmidt orthogonalization to guarantee exact orthonormality
-      const vProj = vRaw.subtracted(u.multipliedByScalar(Vector3D.dot(vRaw, u)));
-      const v = vProj.normalized();
-      const w = Vector3D.cross(u, v).normalized();
-
-      return new Matrix4x4([
-        [u.x, v.x, w.x, 0],
-        [u.y, v.y, w.y, 0],
-        [u.z, v.z, w.z, 0],
-        [0,   0,   0,   1]
-      ]);
-    },
-
-    /**
-     * Port of MathUtil.perspectiveProject(point, cameraTransform, principalPoint, horizontalFieldOfView)
-     * Projects a 3D world point into 2D solver coordinates.
-     */
-    perspectiveProject(pointWorld, cameraTransform, principalPoint, horizontalFieldOfView) {
-      const worldToCam = cameraTransform.invertedRigid();
-      const pCam = worldToCam.transformVector(pointWorld);
-      // Camera looks down -Z in fSpy / OpenGL camera space
-      if (pCam.z >= -1e-5) {
-        return null; // Behind or on camera plane
-      }
-      const f = 1 / Math.tan(0.5 * horizontalFieldOfView);
-      return {
-        x: f * (pCam.x / -pCam.z) + principalPoint.x,
-        y: f * (pCam.y / -pCam.z) + principalPoint.y
-      };
-    },
-
-    /**
-     * Port of MathUtil.viewPlaneIntersection
-     * Unprojects a 2D solver coordinate onto a plane passing through planePoint with planeNormal.
-     */
-    rayFromSolverPoint(point2D, cameraTransform, principalPoint, f) {
-      const rayCam = new Vector3D(point2D.x - principalPoint.x, point2D.y - principalPoint.y, -f).normalized();
-      const rayWorld = cameraTransform.transformDirection(rayCam).normalized();
-      const camOrigin = new Vector3D(
-        cameraTransform.matrix[0][3],
-        cameraTransform.matrix[1][3],
-        cameraTransform.matrix[2][3]
-      );
-      return { origin: camOrigin, direction: rayWorld };
-    },
-
-    /**
-     * Projects a 3D world axis onto 2D solver space starting from the projected 3D origin,
-     * and finds the closest point on that 2D ray to a user handle.
-     */
-    closestPointOnProjectedAxis(handle2D, origin2D, axisVanishingPoint2D) {
-      const dx = axisVanishingPoint2D.x - origin2D.x;
-      const dy = axisVanishingPoint2D.y - origin2D.y;
-      const lenSq = dx * dx + dy * dy;
-      if (lenSq < 1e-12) return { point: origin2D, t: 0 };
-      const t = ((handle2D.x - origin2D.x) * dx + (handle2D.y - origin2D.y) * dy) / lenSq;
-      return {
-        point: { x: origin2D.x + t * dx, y: origin2D.y + t * dy },
-        t
-      };
-    },
-
-    /**
-     * Matrix to Quaternion [w, x, y, z]
-     */
-    matrixToQuaternion(m) {
-      const r = m.matrix;
-      const trace = r[0][0] + r[1][1] + r[2][2];
-      let w, x, y, z;
-      if (trace > 0) {
-        const s = 0.5 / Math.sqrt(trace + 1.0);
-        w = 0.25 / s;
-        x = (r[2][1] - r[1][2]) * s;
-        y = (r[0][2] - r[2][0]) * s;
-        z = (r[1][0] - r[0][1]) * s;
-      } else if (r[0][0] > r[1][1] && r[0][0] > r[2][2]) {
-        const s = 2.0 * Math.sqrt(1.0 + r[0][0] - r[1][1] - r[2][2]);
-        w = (r[2][1] - r[1][2]) / s;
-        x = 0.25 * s;
-        y = (r[0][1] + r[1][0]) / s;
-        z = (r[0][2] + r[2][0]) / s;
-      } else if (r[1][1] > r[2][2]) {
-        const s = 2.0 * Math.sqrt(1.0 + r[1][1] - r[0][0] - r[2][2]);
-        w = (r[0][2] - r[2][0]) / s;
-        x = (r[0][1] + r[1][0]) / s;
-        y = 0.25 * s;
-        z = (r[1][2] + r[2][1]) / s;
-      } else {
-        const s = 2.0 * Math.sqrt(1.0 + r[2][2] - r[0][0] - r[1][1]);
-        w = (r[1][0] - r[0][1]) / s;
-        x = (r[0][2] + r[2][0]) / s;
-        y = (r[1][2] + r[2][1]) / s;
-        z = 0.25 * s;
-      }
-      const len = Math.hypot(w, x, y, z) || 1;
-      return [w / len, x / len, y / len, z / len];
-    },
-
-    /**
-     * Extracts Euler angles (XYZ order, in radians) from a 4x4 rotation matrix.
-     */
-    matrixToEulerXYZ(m) {
-      const r = m.matrix;
-      const sy = Math.hypot(r[0][0], r[1][0]);
-      const singular = sy < 1e-6;
-      let x, y, z;
-      if (!singular) {
-        x = Math.atan2(r[2][1], r[2][2]);
-        y = Math.atan2(-r[2][0], sy);
-        z = Math.atan2(r[1][0], r[0][0]);
-      } else {
-        x = Math.atan2(-r[1][2], r[1][1]);
-        y = Math.atan2(-r[2][0], sy);
-        z = 0;
-      }
-      return { x, y, z };
-    }
-  };
-
-  // --------------------------------------------------------------------------
-  // 4. AUTHORITATIVE FSPY SOLVER (Ported from src/gui/solver/solver.ts)
-  // --------------------------------------------------------------------------
-  const AxisVectorMap = {
-    xPositive: new Vector3D(1, 0, 0),
-    xNegative: new Vector3D(-1, 0, 0),
-    yPositive: new Vector3D(0, 1, 0),
-    yNegative: new Vector3D(0, -1, 0),
-    zPositive: new Vector3D(0, 0, 1),
-    zNegative: new Vector3D(0, 0, -1)
-  };
-
-  const UnitFactorToMeters = {
-    Millimeters: 0.001,
-    Centimeters: 0.01,
-    Meters: 1.0,
-    Feet: 0.3048,
-    Inches: 0.0254
-  };
-
-  const Solver = {
-    /**
-     * Computes the 4x4 basis permutation matrix mapping assigned axes (axis1, axis2)
-     * to canonical world X, Y, Z axes. Matches Solver.axisAssignmentMatrix() in fSpy.
-     */
-    axisAssignmentMatrix(axis1, axis2) {
-      const u = AxisVectorMap[axis1];
-      const v = AxisVectorMap[axis2];
-      if (!u || !v) return null;
-      const w = Vector3D.cross(u, v);
-      if (w.length < 0.5) {
-        return null; // Parallel / contradictory axis assignments (e.g. +X and -X)
-      }
-      // Columns are u, v, w; transpose maps from (u,v,w) frame to world frame
-      return new Matrix4x4([
-        [u.x, u.y, u.z, 0],
-        [v.x, v.y, v.z, 0],
-        [w.x, w.y, w.z, 0],
-        [0,   0,   0,   1]
-      ]);
-    },
-
-    /**
-     * Computes vanishing point in solver coordinates from a pair of line segments
-     * stored in normalized image plane coordinates [0, 1]^2.
-     */
-    computeVanishingPoint(vpControlState, width, height) {
-      const seg1 = [
-        CoordinatesUtil.imagePlaneToSolver(vpControlState.lineSegments[0][0], width, height),
-        CoordinatesUtil.imagePlaneToSolver(vpControlState.lineSegments[0][1], width, height)
-      ];
-      const seg2 = [
-        CoordinatesUtil.imagePlaneToSolver(vpControlState.lineSegments[1][0], width, height),
-        CoordinatesUtil.imagePlaneToSolver(vpControlState.lineSegments[1][1], width, height)
-      ];
-      const len1 = Math.hypot(seg1[1].x - seg1[0].x, seg1[1].y - seg1[0].y);
-      const len2 = Math.hypot(seg2[1].x - seg2[0].x, seg2[1].y - seg2[0].y);
-      if (len1 < 1e-6 || len2 < 1e-6) {
-        return { vp: null, error: 'Degenerate vanishing-point line segment (coincident endpoints).' };
-      }
-      const vp = MathUtil.lineIntersection(seg1, seg2);
-      if (!vp) {
-        return { vp: null, error: 'Guide lines are parallel and do not intersect at a finite vanishing point.' };
-      }
-      return { vp, error: null };
-    },
-
-    /**
-     * Complete fSpy calibration entry point (1VP and 2VP).
-     */
-    solve(globalSettings, calSettingsBase, calSettings1VP, calSettings2VP, controlPointsBase, controlPoints1VP, controlPoints2VP) {
-      const warnings = [];
-      const errors = [];
-      const width = globalSettings.imageWidth;
-      const height = globalSettings.imageHeight;
-
-      if (!width || !height || width <= 0 || height <= 0) {
-        return { valid: false, errors: ['Invalid image dimensions.'], warnings, cameraParameters: null };
-      }
-
-      const mode = globalSettings.calibrationMode;
-      const vp1Res = this.computeVanishingPoint(controlPointsBase.firstVanishingPoint, width, height);
-      if (vp1Res.error) errors.push(`VP 1: ${vp1Res.error}`);
-      const Fu = vp1Res.vp;
-
-      let Fv = null;
-      let Fw = null;
-
-      // Determine Principal Point in solver space
-      let principalPoint = { x: 0, y: 0 };
-      const ppMode = mode === 'OneVanishingPoint'
-        ? calSettings1VP.principalPointMode
-        : calSettings2VP.principalPointMode;
-
-      if (ppMode === 'Manual') {
-        principalPoint = CoordinatesUtil.imagePlaneToSolver(controlPointsBase.principalPoint, width, height);
-      }
-
-      // Compute sensor size incorporating image aspect ratio (matching fSpy solver.ts)
-      let sensorWidth = calSettingsBase.customSensorWidth;
-      let sensorHeight = calSettingsBase.customSensorHeight;
-      const imageAspect = width / height;
-      const sensorAspect = sensorWidth / sensorHeight;
-      if (imageAspect >= 1) {
-        sensorHeight = sensorWidth / imageAspect;
-      } else {
-        sensorWidth = sensorHeight * imageAspect;
-      }
-
-      let fRelative = null;
-      let camRotMatrix = null;
-      let axisMatrix = null;
-
-      if (mode === 'OneVanishingPoint') {
-        // 1-VP Calibration
-        if (calSettings1VP.absoluteFocalLength) {
-          if (calSettings1VP.focalLength <= 0 || sensorWidth <= 0) {
-            errors.push('Known focal length and sensor width must be positive.');
-          } else {
-            // In fSpy solver frame (width = 2 units from -1 to 1): f_solver = 2 * focalLength / sensorWidth
-            fRelative = 2.0 * (calSettings1VP.focalLength / sensorWidth);
-          }
-        } else {
-          fRelative = 2.0 * calSettings1VP.RelativeFocalLength;
-        }
-
-        // Second axis defaults to orthogonal axis according to horizon / tilt
-        const axis1 = calSettingsBase.firstVanishingPointAxis;
-        let defaultAxis2 = 'yPositive';
-        if (axis1.startsWith('y')) defaultAxis2 = 'xPositive';
-        axisMatrix = this.axisAssignmentMatrix(axis1, defaultAxis2);
-
-        if (Fu && fRelative && fRelative > 0 && axisMatrix) {
-          // Construct horizon direction from horizon line or horizontal image axis
-          const hSeg = [
-            CoordinatesUtil.imagePlaneToSolver(controlPoints1VP.horizon[0], width, height),
-            CoordinatesUtil.imagePlaneToSolver(controlPoints1VP.horizon[1], width, height)
-          ];
-          let hx = hSeg[1].x - hSeg[0].x;
-          let hy = hSeg[1].y - hSeg[0].y;
-          const hLen = Math.hypot(hx, hy) || 1;
-          hx /= hLen; hy /= hLen;
-
-          // Compute second vanishing point Fv along the horizon line such that (Fu - P) . (Fv - P) + f^2 = 0
-          const mid = MathUtil.lineSegmentMidpoint(hSeg);
-          // Line parameterized as L(t) = Fu + t * (hx, hy)
-          const dx = Fu.x - principalPoint.x;
-          const dy = Fu.y - principalPoint.y;
-          const denom = dx * hx + dy * hy;
-          if (Math.abs(denom) < 1e-6) {
-            // Vanishing point is at the principal point; construct synthetic orthogonal Fv at infinity
-            const uVec = new Vector3D(dx, dy, -fRelative).normalized();
-            const vVec = new Vector3D(hx, hy, 0).normalized();
-            const wVec = Vector3D.cross(uVec, vVec).normalized();
-            const rMat = new Matrix4x4([
-              [uVec.x, vVec.x, wVec.x, 0],
-              [uVec.y, vVec.y, wVec.y, 0],
-              [uVec.z, vVec.z, wVec.z, 0],
-              [0, 0, 0, 1]
-            ]);
-            camRotMatrix = axisMatrix.multipliedBy(rMat.invertedRigid()).invertedRigid();
-          } else {
-            const t = -(dx * dx + dy * dy + fRelative * fRelative) / denom;
-            Fv = { x: Fu.x + t * hx, y: Fu.y + t * hy };
-            const rMat = MathUtil.computeCameraRotationMatrix(Fu, Fv, fRelative, principalPoint);
-            camRotMatrix = axisMatrix.multipliedBy(rMat.invertedRigid()).invertedRigid();
-          }
-        }
-      } else {
-        // 2-VP Calibration
-        const vp2Res = this.computeVanishingPoint(controlPoints2VP.secondVanishingPoint, width, height);
-        if (vp2Res.error) errors.push(`VP 2: ${vp2Res.error}`);
-        Fv = vp2Res.vp;
-
-        axisMatrix = this.axisAssignmentMatrix(
-          calSettingsBase.firstVanishingPointAxis,
-          calSettings2VP.secondVanishingPointAxis
+      let result;
+      if (state.globalSettings.calibrationMode === 'OneVanishingPoint') {
+        result = FSpySolver.solve1VP(
+          state.calibrationSettingsBase,
+          state.calibrationSettings1VP,
+          state.controlPointsStateBase,
+          state.controlPointsState1VP,
+          image
         );
-        if (!axisMatrix) {
-          errors.push('Invalid axis assignment: VP 1 and VP 2 cannot be assigned to parallel world axes.');
-        }
+      } else {
+        result = FSpySolver.solve2VP(
+          state.calibrationSettingsBase,
+          state.calibrationSettings2VP,
+          state.controlPointsStateBase,
+          state.controlPointsState2VP,
+          image
+        );
+      }
 
-        if (ppMode === 'FromMidpoint' && Fu && Fv) {
-          const vp3Res = this.computeVanishingPoint(controlPoints2VP.thirdVanishingPoint, width, height);
-          if (vp3Res.error) {
-            errors.push(`VP 3: ${vp3Res.error}`);
-          } else {
-            Fw = vp3Res.vp;
-            principalPoint = MathUtil.triangleOrthocenter(Fu, Fv, Fw);
-          }
-        }
+      const cameraParameters = result.cameraParameters;
+      const valid = !!cameraParameters && result.errors.length === 0;
 
-        if (Fu && Fv && errors.length === 0) {
-          fRelative = MathUtil.computeFocalLength(Fu, Fv, principalPoint);
-          if (fRelative === null || !Number.isFinite(fRelative) || fRelative <= 1e-4) {
-            errors.push('Vanishing points and principal point do not yield a valid positive focal length ((Fu - P)·(Fv - P) >= 0). Adjust red or blue guide angles.');
-          } else {
-            const rMat = MathUtil.computeCameraRotationMatrix(Fu, Fv, fRelative, principalPoint);
-            // Map camera rotation into assigned world axes
-            camRotMatrix = axisMatrix.multipliedBy(rMat.invertedRigid()).invertedRigid();
-
-            // Compute 3rd orthogonal vanishing point Fw from column 2 of world-to-camera matrix
-            const worldToCam = camRotMatrix.invertedRigid();
-            // Third axis is whichever world axis wasn't chosen
-            const uAxis = AxisVectorMap[calSettingsBase.firstVanishingPointAxis];
-            const vAxis = AxisVectorMap[calSettings2VP.secondVanishingPointAxis];
-            const wAxis = Vector3D.cross(uAxis, vAxis);
-            const wCam = worldToCam.transformDirection(wAxis);
-            if (Math.abs(wCam.z) > 1e-6) {
-              Fw = {
-                x: principalPoint.x + fRelative * (wCam.x / -wCam.z),
-                y: principalPoint.y + fRelative * (wCam.y / -wCam.z)
-              };
-            }
-          }
+      // Reject non-finite results defensively; the original solver is not
+      // expected to produce them but degenerate guides can.
+      if (valid) {
+        const m = cameraParameters.viewTransform.matrix.concat(cameraParameters.cameraTransform.matrix);
+        const finite = m.every(row => row.every(v => Number.isFinite(v)))
+          && Number.isFinite(cameraParameters.relativeFocalLength)
+          && Number.isFinite(cameraParameters.horizontalFieldOfView)
+          && Number.isFinite(cameraParameters.principalPoint.x)
+          && Number.isFinite(cameraParameters.principalPoint.y);
+        if (!finite) {
+          return { valid: false, errors: ['Solver produced a non-finite camera. Adjust the guides.'], warnings: result.warnings, cameraParameters: null, stale: true };
         }
       }
 
-      if (errors.length > 0 || !fRelative || !camRotMatrix) {
-        return {
-          valid: false,
-          errors,
-          warnings,
-          cameraParameters: null,
-          vanishingPoints: { vp1: Fu, vp2: Fv, vp3: Fw },
-          principalPoint
-        };
-      }
-
-      // Compute FOVs
-      const horizontalFieldOfView = 2 * Math.atan(1 / fRelative);
-      const aspectRatio = width / height;
-      const verticalFieldOfView = 2 * Math.atan(1 / (fRelative * aspectRatio));
-      const diagonalFieldOfView = 2 * Math.atan(Math.hypot(1, 1 / aspectRatio) / fRelative);
-      const absoluteFocalLength = 0.5 * sensorWidth * fRelative;
-
-      // Compute Camera Translation & Reference Distance Scaling (Ported from solver.ts)
-      const originSolver = CoordinatesUtil.imagePlaneToSolver(controlPointsBase.origin, width, height);
-      // Ray from camera through 2D origin in camera coordinates:
-      const originRayCam = new Vector3D(
-        originSolver.x - principalPoint.x,
-        originSolver.y - principalPoint.y,
-        -fRelative
-      ).normalized();
-
-      // Default unit distance from camera center to 3D world origin = 10 units (or 1 unit before reference scale)
-      let originDistance = 5.0;
-
-      // Temporary cameraTransform with unit origin distance to evaluate reference segment
-      const buildCameraTransform = (dist) => {
-        // In camera space, world origin is at dist * originRayCam.
-        // Therefore camera center in world space is at -R * (dist * originRayCam).
-        const originCam = originRayCam.multipliedByScalar(dist);
-        const camPosWorld = camRotMatrix.transformDirection(originCam).negated();
-        const m = camRotMatrix.copy();
-        m.matrix[0][3] = camPosWorld.x;
-        m.matrix[1][3] = camPosWorld.y;
-        m.matrix[2][3] = camPosWorld.z;
-        return m;
-      };
-
-      const refAxis = calSettingsBase.referenceDistanceAxis;
-      const unitScale = UnitFactorToMeters[calSettingsBase.referenceDistanceUnit] || 1.0;
-      const targetDistanceMeters = calSettingsBase.referenceDistance * unitScale;
-
-      let cameraTransform = buildCameraTransform(originDistance);
-
-      if (refAxis !== 'None' && targetDistanceMeters > 0) {
-        const tempTransform = buildCameraTransform(1.0);
-        const worldToCam = tempTransform.invertedRigid();
-
-        if (refAxis === 'xAxis' || refAxis === 'yAxis' || refAxis === 'zAxis') {
-          const axisDirWorld = refAxis === 'xAxis'
-            ? new Vector3D(1, 0, 0)
-            : refAxis === 'yAxis'
-              ? new Vector3D(0, 1, 0)
-              : new Vector3D(0, 0, 1);
-
-          // Project unit reference points along the selected axis
-          const anchorParam = controlPointsBase.referenceDistanceAnchor || 0;
-          const handleOffsets = controlPointsBase.referenceDistanceHandleOffsets || [0.1, 0.45];
-
-          // Use the 2D screen positions along the projected axis ray from originSolver
-          const pAxisSolver = MathUtil.perspectiveProject(axisDirWorld, tempTransform, principalPoint, horizontalFieldOfView);
-          if (pAxisSolver) {
-            const dir2Dx = pAxisSolver.x - originSolver.x;
-            const dir2Dy = pAxisSolver.y - originSolver.y;
-            const dir2DLen = Math.hypot(dir2Dx, dir2Dy) || 1;
-            const ux = dir2Dx / dir2DLen;
-            const uy = dir2Dy / dir2DLen;
-
-            const h0Solver = {
-              x: originSolver.x + ux * handleOffsets[0],
-              y: originSolver.y + uy * handleOffsets[0]
-            };
-            const h1Solver = {
-              x: originSolver.x + ux * handleOffsets[1],
-              y: originSolver.y + uy * handleOffsets[1]
-            };
-
-            // Intersect camera rays through h0Solver and h1Solver with the 3D world line Origin + s * axisDirWorld
-            const intersectAxisRay = (pt2D) => {
-              const rayCam = new Vector3D(pt2D.x - principalPoint.x, pt2D.y - principalPoint.y, -fRelative).normalized();
-              const rayWorld = tempTransform.transformDirection(rayCam);
-              const camPos = new Vector3D(tempTransform.matrix[0][3], tempTransform.matrix[1][3], tempTransform.matrix[2][3]);
-              // Solve closest approach between CamPos + t * rayWorld and 0 + s * axisDirWorld
-              const w0 = camPos;
-              const a = Vector3D.dot(rayWorld, rayWorld);
-              const b = Vector3D.dot(rayWorld, axisDirWorld);
-              const c = Vector3D.dot(axisDirWorld, axisDirWorld);
-              const d = Vector3D.dot(rayWorld, w0);
-              const e = Vector3D.dot(axisDirWorld, w0);
-              const denom = a * c - b * b;
-              if (Math.abs(denom) < 1e-8) return null;
-              return (a * e - b * d) / denom;
-            };
-
-            const s0 = intersectAxisRay(h0Solver);
-            const s1 = intersectAxisRay(h1Solver);
-            if (s0 !== null && s1 !== null && Math.abs(s1 - s0) > 1e-5) {
-              const unscaledDelta = Math.abs(s1 - s0);
-              originDistance = targetDistanceMeters / unscaledDelta;
-              cameraTransform = buildCameraTransform(originDistance);
-            } else {
-              warnings.push('Reference handles are too close or near the vanishing point.');
-            }
-          }
-        } else {
-          // Plane reference mode (xyPlane, yzPlane, zxPlane)
-          const planeNormal = refAxis === 'xyPlane'
-            ? new Vector3D(0, 0, 1)
-            : refAxis === 'yzPlane'
-              ? new Vector3D(1, 0, 0)
-              : new Vector3D(0, 1, 0);
-
-          const p0Solver = CoordinatesUtil.imagePlaneToSolver(controlPointsBase.freeReferenceSegment[0], width, height);
-          const p1Solver = CoordinatesUtil.imagePlaneToSolver(controlPointsBase.freeReferenceSegment[1], width, height);
-
-          const intersectPlane = (pt2D) => {
-            const ray = MathUtil.rayFromSolverPoint(pt2D, tempTransform, principalPoint, fRelative);
-            const denom = Vector3D.dot(ray.direction, planeNormal);
-            if (Math.abs(denom) < 1e-6) return null;
-            const t = -Vector3D.dot(ray.origin, planeNormal) / denom;
-            if (t <= 0) return null;
-            return ray.origin.add(ray.direction.multipliedByScalar(t));
-          };
-
-          const w0 = intersectPlane(p0Solver);
-          const w1 = intersectPlane(p1Solver);
-          if (w0 && w1) {
-            const distUnscaled = w1.subtracted(w0).length;
-            if (distUnscaled > 1e-5) {
-              originDistance = targetDistanceMeters / distUnscaled;
-              cameraTransform = buildCameraTransform(originDistance);
-            }
-          } else {
-            warnings.push('Reference segment does not intersect the selected world plane in front of the camera.');
-          }
-        }
-      }
-
-      const viewTransform = cameraTransform.invertedRigid();
+      if (valid) this.lastValid = cameraParameters;
 
       return {
-        valid: true,
-        errors,
-        warnings,
-        vanishingPoints: { vp1: Fu, vp2: Fv, vp3: Fw },
-        principalPoint,
-        cameraParameters: {
-          principalPoint,
-          viewTransform,
-          cameraTransform,
-          horizontalFieldOfView,
-          verticalFieldOfView,
-          diagonalFieldOfView,
-          relativeFocalLength: fRelative,
-          focalLength: absoluteFocalLength,
-          sensorWidth,
-          sensorHeight,
-          imageWidth: width,
-          imageHeight: height
-        }
+        valid,
+        errors: result.errors,
+        warnings: result.warnings,
+        cameraParameters: valid ? cameraParameters : null,
+        stale: !valid
       };
     }
   };
@@ -1528,104 +1083,63 @@ svg [data-drag]:active { cursor: grabbing; }
   };
 
   // --------------------------------------------------------------------------
-  // 6. APPLICATION STATE (Matches fSpy Redux Store Structure)
+  // 6. APPLICATION STATE (exact fSpy store shape)
   // --------------------------------------------------------------------------
   const $ = id => document.getElementById(id);
   const svg = $('svg');
   const overlay = $('overlay');
   const NS = 'http://www.w3.org/2000/svg';
 
-  const createDefaultState = (w = 1000, h = 662) => ({
-    globalSettings: {
-      calibrationMode: 'TwoVanishingPoints',
-      imageWidth: w,
-      imageHeight: h,
-      overlay3DGuide: 'Box',
-      imageOpacity: 1.0
-    },
-    calibrationSettingsBase: {
-      referenceDistanceAxis: 'zAxis',
-      referenceDistance: 2.0,
-      referenceDistanceUnit: 'Meters',
-      cameraDataPreset: 'fullframe',
-      customSensorWidth: 36,
-      customSensorHeight: 24,
-      firstVanishingPointAxis: 'xPositive'
-    },
-    calibrationSettings1VP: {
-      principalPointMode: 'Default',
-      absoluteFocalLength: true,
-      focalLength: 35,
-      RelativeFocalLength: 0.9
-    },
-    calibrationSettings2VP: {
-      principalPointMode: 'Default',
-      secondVanishingPointAxis: 'yPositive',
-      quadModeEnabled: false
-    },
-    controlPointsStateBase: {
-      origin: { x: 0.50, y: 0.665 },
-      principalPoint: { x: 0.50, y: 0.50 },
-      referenceDistanceAnchor: { x: 0.50, y: 0.665 },
-      referenceDistanceHandleOffsets: [0.06, 0.34],
-      freeReferenceSegment: [{ x: 0.38, y: 0.72 }, { x: 0.64, y: 0.72 }],
-      firstVanishingPoint: {
-        lineSegments: [
-          [{ x: 0.070, y: 0.181 }, { x: 0.850, y: 0.211 }],
-          [{ x: 0.080, y: 0.725 }, { x: 0.870, y: 0.597 }]
-        ]
-      }
-    },
-    controlPointsState1VP: {
-      horizon: [{ x: 0.15, y: 0.50 }, { x: 0.85, y: 0.50 }]
-    },
-    controlPointsState2VP: {
-      secondVanishingPoint: {
-        lineSegments: [
-          [{ x: 0.180, y: 0.136 }, { x: 0.785, y: 0.785 }],
-          [{ x: 0.355, y: 0.098 }, { x: 0.840, y: 0.808 }]
-        ]
-      },
-      thirdVanishingPoint: {
-        lineSegments: [
-          [{ x: 0.220, y: 0.200 }, { x: 0.205, y: 0.820 }],
-          [{ x: 0.760, y: 0.200 }, { x: 0.780, y: 0.820 }]
-        ]
-      }
+  /**
+   * The state object mirrors fSpy's redux store one-for-one:
+   *   globalSettings, calibrationSettingsBase/1VP/2VP,
+   *   controlPointsStateBase/1VP/2VP, image, resultDisplaySettings
+   * Every control point is stored in `relative` image coordinates, exactly as
+   * fSpy serialises them, so the project can be exported back to desktop fSpy
+   * without conversion.
+   */
+  const createDefaultState = () => ({
+    globalSettings: { calibrationMode: 'TwoVanishingPoints', overlay3DGuide: 'None', imageOpacity: 0.2 },
+    calibrationSettingsBase: JSON.parse(JSON.stringify(FSpy.defaultCalibrationSettingsBase)),
+    calibrationSettings1VP: JSON.parse(JSON.stringify(FSpy.defaultCalibrationSettings1VP)),
+    calibrationSettings2VP: JSON.parse(JSON.stringify(FSpy.defaultCalibrationSettings2VP)),
+    controlPointsStateBase: JSON.parse(JSON.stringify(FSpy.defaultControlPointsStateBase)),
+    controlPointsState1VP: JSON.parse(JSON.stringify(FSpy.defaultControlPointsState1VP)),
+    controlPointsState2VP: JSON.parse(JSON.stringify(FSpy.defaultControlPointsState2VP)),
+    image: { width: null, height: null, url: null, data: null },
+    resultDisplaySettings: {
+      fieldOfViewFormat: 'Degrees',
+      orientationFormat: 'AxisAngleDegrees',
+      principalPointFormat: 'Absolute',
+      displayAbsoluteFocalLength: false
     },
     ui: {
       zoom: 1,
-      pan: [500, 331],
+      pan: [0, 0],
       tool: 'guide',
-      name: 'Modern office · perspective study',
-      imageUrl: 'https://images.pexels.com/photos/8606292/pexels-photo-8606292.jpeg?auto=compress&cs=tinysrgb&w=1600',
-      imageBinary: null,
-      boxWidth: 1.6,
-      boxHeight: 1.2
+      name: 'fSpy example project',
+      imageUrl: 'assets/example.png',
+      imageBytes: null,
+      boxScale: 0.3,
+      gridCells: 10
     }
   });
 
-  let appState = createDefaultState(1000, 662);
+  let appState = createDefaultState();
   let lastSolved = null;
   let dragState = null;
 
-  //Camera sensor preset lookup
-  const SensorPresets = {
-    fullframe: [36, 24],
-    apsc_canon: [22.3, 14.9],
-    apsc_nikon: [23.5, 15.6],
-    mft: [17.3, 13.0],
-    one_inch: [13.2, 8.8]
-  };
+  const imageWidth = () => appState.image.width || 1;
+  const imageHeight = () => appState.image.height || 1;
 
   // --------------------------------------------------------------------------
-  // 7. SVG & 3D PROJECTED WIREFRAME RENDERING
+  // 7. SVG RENDERING (raw image pixels as user units)
   // --------------------------------------------------------------------------
   function el(tag, attrs = {}) {
-    const e = document.createElementNS(NS, tag);
-    for (const [k, v] of Object.entries(attrs)) e.setAttribute(k, v);
-    overlay.appendChild(e);
-    return e;
+    const node = document.createElementNS(NS, tag);
+    for (const [k, v] of Object.entries(attrs)) node.setAttribute(k, v);
+    overlay.appendChild(node);
+    return node;
   }
 
   function svgLine(a, b, color, width = 2, dashes = '', opacity = 1) {
@@ -1650,18 +1164,18 @@ svg [data-drag]:active { cursor: grabbing; }
   }
 
   function svgLabel(p, str, color) {
-    const e = el('text', {
+    const node = el('text', {
       x: p.x, y: p.y,
       fill: color,
       'font-family': 'Inter, sans-serif',
       'font-size': 11,
       'font-weight': 800,
       'paint-order': 'stroke',
-      stroke: '#141518',
+      stroke: '#161616',
       'stroke-width': 3.5
     });
-    e.textContent = str;
-    return e;
+    node.textContent = str;
+    return node;
   }
 
   function svgHandle(p, id, color, r = 5.5) {
@@ -1671,283 +1185,144 @@ svg [data-drag]:active { cursor: grabbing; }
     hit.setAttribute('data-drag', id);
   }
 
+  /** relative -> image pixel user units (the only frame the SVG uses) */
+  const relToPx = p => ({ x: p.x * imageWidth(), y: p.y * imageHeight() });
+  /** image plane (solver frame) -> image pixel user units */
+  const imagePlaneToPx = p => relToPx(Coordinates.imagePlaneToRelative(p, imageWidth(), imageHeight()));
+
   /**
-   * Projects a 3D world point to image pixel space using the solved camera.
+   * World-space normalisation factor, copied from fSpy's overlay-3d-panel.tsx.
+   * It keeps the 3D guides a sensible on-screen size for any camera distance
+   * or field of view.
    */
-  function projectWorldToPixel(ptWorld, camParams) {
-    const w = appState.globalSettings.imageWidth;
-    const h = appState.globalSettings.imageHeight;
-    const pSolver = MathUtil.perspectiveProject(
-      ptWorld,
-      camParams.cameraTransform,
-      camParams.principalPoint,
-      camParams.horizontalFieldOfView
-    );
-    if (!pSolver) return null;
-    return CoordinatesUtil.solverToPixel(pSolver, w, h);
+  function normalizationFactor(cam) {
+    const vt = cam.viewTransform.matrix;
+    const translation = new Vector3D(vt[0][3], vt[1][3], vt[2][3]);
+    return translation.length * Math.atan(0.5 * cam.horizontalFieldOfView);
+  }
+
+  /** Project a world point through the calibrated camera (upstream project()). */
+  function projectWorld(worldPoint, cam) {
+    const relative = CameraModel.projectPoint(worldPoint, cam);
+    if (!Number.isFinite(relative.x) || !Number.isFinite(relative.y)) return null;
+    return relToPx(relative);
+  }
+
+  function drawWorldSegment(a, b, cam, color, width, dashes = '', opacity = 0.8) {
+    const pa = projectWorld(a, cam);
+    const pb = projectWorld(b, cam);
+    if (!pa || !pb) return;
+    svgLine(pa, pb, color, width, dashes, opacity);
   }
 
   /**
-   * Draws a 3D world line segment projected through the calibrated camera.
+   * 3D guides, ported from fSpy's overlay-3d-panel.tsx: a unit cube, one of
+   * three grid planes, and the world axes. All geometry is defined in world
+   * space and projected through the solved camera transform — nothing is
+   * approximated in screen space.
    */
-  function draw3DSegment(p0World, p1World, camParams, color, width = 1.6, dashes = '', opacity = 0.85) {
-    const a = projectWorldToPixel(p0World, camParams);
-    const b = projectWorldToPixel(p1World, camParams);
-    if (!a || !b) return;
-    svgLine(a, b, color, width, dashes, opacity);
-  }
+  function renderProjectedGuides(cam) {
+    const mode = appState.globalSettings.overlay3DGuide;
+    if (!cam || mode === 'None' || !$('showGrid').checked) {
+      // axes are drawn regardless of the overlay mode, as in fSpy
+    }
+    const norm = normalizationFactor(cam);
+    if (!Number.isFinite(norm) || norm <= 0) return;
 
-  /**
-   * Renders the genuinely camera-projected 3D floor grid, box, and world coordinate axes.
-   */
-  function renderProjected3DGuides(solveResult) {
-    if (!solveResult.valid || !solveResult.cameraParameters) return;
-    const cam = solveResult.cameraParameters;
-    const guideMode = $('guide').value;
-    const showGrid = $('showGrid').checked;
-
-    // Determine characteristic metric scale of the scene based on camera distance to origin
-    const camPos = new Vector3D(
-      cam.cameraTransform.matrix[0][3],
-      cam.cameraTransform.matrix[1][3],
-      cam.cameraTransform.matrix[2][3]
-    );
-    const sceneScale = Math.max(0.1, camPos.length * 0.22);
-    const wBox = Number($('boxWidth').value) || 1.6;
-    const hBox = Number($('boxHeight').value) || 1.2;
-    const scaleFactor = appState.calibrationSettingsBase.referenceDistanceAxis === 'None' ? sceneScale : 1.0;
-
-    if (showGrid && guideMode !== 'None') {
-      if (guideMode === 'XYGrid' || guideMode === 'YZGrid' || guideMode === 'ZXGrid') {
-        const steps = 5;
-        const extent = wBox * scaleFactor;
-        for (let i = -steps; i <= steps; i++) {
-          const u = (i / steps) * extent;
-          const isCenter = i === 0;
-          const alpha = isCenter ? 0.75 : 0.42;
-          const lw = isCenter ? 1.8 : 1.0;
-          if (guideMode === 'XYGrid') {
-            draw3DSegment(new Vector3D(u, -extent, 0), new Vector3D(u, extent, 0), cam, '#8b93a1', lw, '', alpha);
-            draw3DSegment(new Vector3D(-extent, u, 0), new Vector3D(extent, u, 0), cam, '#8b93a1', lw, '', alpha);
-          } else if (guideMode === 'YZGrid') {
-            draw3DSegment(new Vector3D(0, u, -extent), new Vector3D(0, u, extent), cam, '#8b93a1', lw, '', alpha);
-            draw3DSegment(new Vector3D(0, -extent, u), new Vector3D(0, extent, u), cam, '#8b93a1', lw, '', alpha);
-          } else if (guideMode === 'ZXGrid') {
-            draw3DSegment(new Vector3D(u, 0, -extent), new Vector3D(u, 0, extent), cam, '#8b93a1', lw, '', alpha);
-            draw3DSegment(new Vector3D(-extent, 0, u), new Vector3D(extent, 0, u), cam, '#8b93a1', lw, '', alpha);
-          }
-        }
-      } else if (guideMode === 'Box') {
-        const bx = wBox * 0.5 * scaleFactor;
-        const by = wBox * 0.5 * scaleFactor;
-        const bz = hBox * scaleFactor;
-
-        const base = [
-          new Vector3D(0, 0, 0),
-          new Vector3D(bx * 2, 0, 0),
-          new Vector3D(bx * 2, by * 2, 0),
-          new Vector3D(0, by * 2, 0)
+    if ($('showGrid').checked && mode !== 'None') {
+      if (mode === 'Box') {
+        const size = appState.ui.boxScale * norm;
+        const corners = [
+          new Vector3D(-size, -size, -size), new Vector3D(size, -size, -size),
+          new Vector3D(size, size, -size), new Vector3D(-size, size, -size),
+          new Vector3D(-size, -size, size), new Vector3D(size, -size, size),
+          new Vector3D(size, size, size), new Vector3D(-size, size, size)
         ];
-        const top = base.map(p => new Vector3D(p.x, p.y, bz));
-
-        for (let i = 0; i < 4; i++) {
-          const next = (i + 1) % 4;
-          draw3DSegment(base[i], base[next], cam, '#9aa3b1', 1.8, '', 0.85);
-          draw3DSegment(base[i], top[i], cam, '#9aa3b1', 1.5, '', 0.75);
-          draw3DSegment(top[i], top[next], cam, '#9aa3b1', 1.5, '5 4', 0.8);
-        }
-      }
-    }
-
-    // Always draw true 3D projected World Coordinate Axes (X: Red, Y: Green, Z: Blue in fSpy convention)
-    const axisLen = 0.75 * wBox * scaleFactor;
-    const oPx = projectWorldToPixel(new Vector3D(0, 0, 0), cam);
-    const xPx = projectWorldToPixel(new Vector3D(axisLen, 0, 0), cam);
-    const yPx = projectWorldToPixel(new Vector3D(0, axisLen, 0), cam);
-    const zPx = projectWorldToPixel(new Vector3D(0, 0, axisLen), cam);
-
-    if (oPx && xPx) { svgLine(oPx, xPx, '#ef7a6f', 3); svgLabel({ x: xPx.x + 6, y: xPx.y - 6 }, '+X', '#ef7a6f'); }
-    if (oPx && yPx) { svgLine(oPx, yPx, '#6fc9a3', 3); svgLabel({ x: yPx.x + 6, y: yPx.y - 6 }, '+Y', '#6fc9a3'); }
-    if (oPx && zPx) { svgLine(oPx, zPx, '#5fb3ea', 3); svgLabel({ x: zPx.x + 6, y: zPx.y - 6 }, '+Z', '#5fb3ea'); }
-  }
-
-  /**
-   * Synchronizes UI controls into appState, runs the fSpy solver, and updates SVG & readouts.
-   */
-  function syncUIAndRender() {
-    const w = appState.globalSettings.imageWidth;
-    const h = appState.globalSettings.imageHeight;
-
-    // Sync controls to state
-    appState.globalSettings.calibrationMode = $('mode').value;
-    appState.calibrationSettingsBase.firstVanishingPointAxis = $('axis1').value;
-    appState.calibrationSettings2VP.secondVanishingPointAxis = $('axis2').value;
-
-    const ppMode = $('principalMode').value;
-    appState.calibrationSettings1VP.principalPointMode = ppMode === 'FromMidpoint' ? 'Default' : ppMode;
-    appState.calibrationSettings2VP.principalPointMode = ppMode;
-
-    appState.calibrationSettingsBase.customSensorWidth = Math.max(1, Number($('sensorWidth').value) || 36);
-    appState.calibrationSettingsBase.customSensorHeight = Math.max(1, Number($('sensorHeight').value) || 24);
-    appState.calibrationSettings1VP.absoluteFocalLength = $('absoluteFocalLength').value === 'true';
-
-    if (appState.calibrationSettings1VP.absoluteFocalLength) {
-      appState.calibrationSettings1VP.focalLength = Math.max(1, Number($('knownFocal').value) || 35);
-    } else {
-      appState.calibrationSettings1VP.RelativeFocalLength = Math.max(0.05, Number($('knownFocal').value) || 0.9);
-    }
-
-    appState.calibrationSettingsBase.referenceDistanceAxis = $('referenceAxis').value;
-    appState.calibrationSettingsBase.referenceDistance = Math.max(0.001, Number($('distance').value) || 2.0);
-    appState.calibrationSettingsBase.referenceDistanceUnit = $('distanceUnit').value;
-    appState.globalSettings.overlay3DGuide = $('guide').value;
-
-    // Progressive disclosure UI visibility
-    const is1VP = appState.globalSettings.calibrationMode === 'OneVanishingPoint';
-    $('oneVpFocalWrap').hidden = !is1VP;
-    $('axis2Wrap').hidden = is1VP;
-    $('focalInputLabel').textContent = appState.calibrationSettings1VP.absoluteFocalLength
-      ? 'Known Focal Length (mm)'
-      : 'Relative Focal Length';
-    $('distanceWrap').hidden = appState.calibrationSettingsBase.referenceDistanceAxis === 'None';
-    $('boxDimsWrap').hidden = $('guide').value === 'None';
-    $('viewstate').textContent = is1VP ? '1-VP CALIBRATION' : '2-VP CALIBRATION';
-    $('opacityval').textContent = $('opacity').value + '%';
-    $('dimRect').setAttribute('opacity', $('dimImage').checked ? '0.45' : '0');
-
-    // Run authoritative fSpy Solver
-    const res = Solver.solve(
-      appState.globalSettings,
-      appState.calibrationSettingsBase,
-      appState.calibrationSettings1VP,
-      appState.calibrationSettings2VP,
-      appState.controlPointsStateBase,
-      appState.controlPointsState1VP,
-      appState.controlPointsState2VP
-    );
-    lastSolved = res;
-
-    // Render SVG Overlays
-    overlay.replaceChildren();
-    overlay.setAttribute('opacity', Number($('opacity').value) / 100);
-
-    // 1. Projected 3D Guides (Floor grid, Reference Box, World Axes)
-    renderProjected3DGuides(res);
-
-    // 2. Horizon Line
-    if ($('showHorizon').checked) {
-      if (is1VP) {
-        const h0 = CoordinatesUtil.imagePlaneToPixel(appState.controlPointsState1VP.horizon[0], w, h);
-        const h1 = CoordinatesUtil.imagePlaneToPixel(appState.controlPointsState1VP.horizon[1], w, h);
-        svgLine(h0, h1, '#9aa4b6', 2, '6 5', 0.85);
-        svgHandle(h0, 'horizon-0', '#9aa4b6');
-        svgHandle(h1, 'horizon-1', '#9aa4b6');
-        svgLabel({ x: (h0.x + h1.x) / 2, y: (h0.y + h1.y) / 2 - 8 }, 'HORIZON', '#9aa4b6');
-      } else if (res.vanishingPoints?.vp1 && res.vanishingPoints?.vp2) {
-        // Compute true horizon from camera orientation or connecting horizontal VPs
-        const vp1Px = CoordinatesUtil.solverToPixel(res.vanishingPoints.vp1, w, h);
-        const vp2Px = CoordinatesUtil.solverToPixel(res.vanishingPoints.vp2, w, h);
-        const dx = vp2Px.x - vp1Px.x;
-        const dy = vp2Px.y - vp1Px.y;
-        const l = Math.hypot(dx, dy) || 1;
-        const ux = dx / l, uy = dy / l;
-        svgLine(
-          { x: vp1Px.x - ux * 5000, y: vp1Px.y - uy * 5000 },
-          { x: vp1Px.x + ux * 5000, y: vp1Px.y + uy * 5000 },
-          '#9aa4b6', 1.3, '8 8', 0.65
-        );
-      }
-    }
-
-    // 3. Vanishing Point Guide Lines & Intersection Rays
-    if ($('showVP').checked) {
-      const renderVPFamily = (vpState, vpSolverPt, color, prefix, labelStr) => {
-        const vpPx = vpSolverPt ? CoordinatesUtil.solverToPixel(vpSolverPt, w, h) : null;
-        vpState.lineSegments.forEach((seg, idx) => {
-          const a = CoordinatesUtil.imagePlaneToPixel(seg[0], w, h);
-          const b = CoordinatesUtil.imagePlaneToPixel(seg[1], w, h);
-          const mid = { x: 0.5 * (a.x + b.x), y: 0.5 * (a.y + b.y) };
-          if (vpPx) {
-            svgLine(mid, vpPx, color, 1.1, '5 5', 0.55);
-          }
-          svgLine(a, b, '#141518', 4.6);
-          svgLine(a, b, color, 2.5);
-          svgHandle(a, `${prefix}-${idx}-0`, color);
-          svgHandle(b, `${prefix}-${idx}-1`, color);
-          svgLabel({ x: mid.x + 6, y: mid.y - 7 }, labelStr, color);
-        });
-        if (vpPx) {
-          svgCircle(vpPx, 4.5, '#141518', color);
-        }
-      };
-
-      renderVPFamily(appState.controlPointsStateBase.firstVanishingPoint, res.vanishingPoints?.vp1, '#ef7a6f', 'vp1', 'VP1');
-      if (!is1VP) {
-        renderVPFamily(appState.controlPointsState2VP.secondVanishingPoint, res.vanishingPoints?.vp2, '#5fb3ea', 'vp2', 'VP2');
-        if (ppMode === 'FromMidpoint') {
-          renderVPFamily(appState.controlPointsState2VP.thirdVanishingPoint, res.vanishingPoints?.vp3, '#b98cf0', 'vp3', 'VP3');
-        }
-      }
-    }
-
-    // 4. Reference Distance Handles
-    const refAxis = appState.calibrationSettingsBase.referenceDistanceAxis;
-    const originPx = CoordinatesUtil.imagePlaneToPixel(appState.controlPointsStateBase.origin, w, h);
-    if (refAxis !== 'None' && res.valid && res.cameraParameters) {
-      const cam = res.cameraParameters;
-      const unitLabel = `${appState.calibrationSettingsBase.referenceDistance} ${appState.calibrationSettingsBase.referenceDistanceUnit}`;
-
-      if (refAxis === 'xAxis' || refAxis === 'yAxis' || refAxis === 'zAxis') {
-        const axisVec = refAxis === 'xAxis'
-          ? new Vector3D(1, 0, 0)
-          : refAxis === 'yAxis'
-            ? new Vector3D(0, 1, 0)
-            : new Vector3D(0, 0, 1);
-
-        const pAxisSolver = MathUtil.perspectiveProject(axisVec, cam.cameraTransform, cam.principalPoint, cam.horizontalFieldOfView);
-        const originSolver = CoordinatesUtil.imagePlaneToSolver(appState.controlPointsStateBase.origin, w, h);
-        if (pAxisSolver) {
-          const dx = pAxisSolver.x - originSolver.x;
-          const dy = pAxisSolver.y - originSolver.y;
-          const dl = Math.hypot(dx, dy) || 1;
-          const ux = dx / dl, uy = dy / dl;
-          const offsets = appState.controlPointsStateBase.referenceDistanceHandleOffsets;
-          const h0Solver = { x: originSolver.x + ux * offsets[0], y: originSolver.y + uy * offsets[0] };
-          const h1Solver = { x: originSolver.x + ux * offsets[1], y: originSolver.y + uy * offsets[1] };
-          const h0Px = CoordinatesUtil.solverToPixel(h0Solver, w, h);
-          const h1Px = CoordinatesUtil.solverToPixel(h1Solver, w, h);
-
-          svgLine(h0Px, h1Px, '#d3e0ef', 2.6, '4 3', 0.95);
-          svgHandle(h0Px, 'ref-axis-0', '#d3e0ef', 6);
-          svgHandle(h1Px, 'ref-axis-1', '#d3e0ef', 6);
-          svgLabel({ x: (h0Px.x + h1Px.x) / 2 + 8, y: (h0Px.y + h1Px.y) / 2 - 8 }, unitLabel, '#d3e0ef');
+        const edges = [
+          [0, 1], [1, 2], [2, 3], [3, 0],
+          [4, 5], [5, 6], [6, 7], [7, 4],
+          [0, 4], [1, 5], [2, 6], [3, 7]
+        ];
+        for (const [ia, ib] of edges) {
+          drawWorldSegment(corners[ia], corners[ib], cam, '#8fd1a0', 1.1, '', 0.55);
         }
       } else {
-        const p0Px = CoordinatesUtil.imagePlaneToPixel(appState.controlPointsStateBase.freeReferenceSegment[0], w, h);
-        const p1Px = CoordinatesUtil.imagePlaneToPixel(appState.controlPointsStateBase.freeReferenceSegment[1], w, h);
-        svgLine(p0Px, p1Px, '#d3e0ef', 2.6, '4 3', 0.95);
-        svgHandle(p0Px, 'ref-plane-0', '#d3e0ef', 6);
-        svgHandle(p1Px, 'ref-plane-1', '#d3e0ef', 6);
-        svgLabel({ x: (p0Px.x + p1Px.x) / 2 + 8, y: (p0Px.y + p1Px.y) / 2 - 8 }, unitLabel, '#d3e0ef');
+        const cellCount = Math.max(1, Math.round(appState.ui.gridCells));
+        const cellSize = 0.15 * norm;
+        const min = -0.5 * cellCount * cellSize;
+        const max = min + cellCount * cellSize;
+        const gridPoint = (u, v) => {
+          if (mode === 'XYGridFloor') return new Vector3D(u, v, 0);
+          if (mode === 'YZGridFloor') return new Vector3D(0, u, v);
+          return new Vector3D(u, 0, v); // ZXGridFloor
+        };
+        for (let i = 0; i <= cellCount; i++) {
+          const pos = min + i * cellSize;
+          drawWorldSegment(gridPoint(min, pos), gridPoint(max, pos), cam, '#8fd1a0', 0.8, '', 0.45);
+          drawWorldSegment(gridPoint(pos, min), gridPoint(pos, max), cam, '#8fd1a0', 0.8, '', 0.45);
+        }
       }
     }
 
-    // 5. Principal Point Crosshair & Handle
-    const ppPx = CoordinatesUtil.solverToPixel(res.principalPoint || { x: 0, y: 0 }, w, h);
-    svgLine({ x: ppPx.x - 10, y: ppPx.y }, { x: ppPx.x + 10, y: ppPx.y }, '#e9eaee', 1.8);
-    svgLine({ x: ppPx.x, y: ppPx.y - 10 }, { x: ppPx.x, y: ppPx.y + 10 }, '#e9eaee', 1.8);
-    if (ppMode === 'Manual') {
-      svgHandle(ppPx, 'principal', '#e9eaee', 6);
+    // World axes (fSpy axis colours: X red, Y green, Z blue)
+    const axisLength = 0.3 * norm;
+    const refAxis = appState.calibrationSettingsBase.referenceDistanceAxis;
+    const originPx = projectWorld(new Vector3D(), cam);
+    const axes = [
+      { axis: 'x', dir: new Vector3D(axisLength, 0, 0), label: '+X', color: '#ed7265' },
+      { axis: 'y', dir: new Vector3D(0, axisLength, 0), label: '+Y', color: '#8fd1a0' },
+      { axis: 'z', dir: new Vector3D(0, 0, axisLength), label: '+Z', color: '#65b4eb' }
+    ];
+    for (const ax of axes) {
+      const endPx = projectWorld(ax.dir, cam);
+      if (!originPx || !endPx) continue;
+      const isRef = !!refAxis && refAxis.startsWith(ax.axis);
+      svgLine(originPx, endPx, ax.color, isRef ? 2.6 : 1.6, isRef ? '' : '', isRef ? 1 : 0.85);
+      svgLabel({ x: endPx.x + 6, y: endPx.y - 6 }, ax.label, ax.color);
     }
-    svgLabel({ x: ppPx.x + 8, y: ppPx.y + 14 }, 'PP', '#e9eaee');
-
-    // 6. 3D World Origin Handle
-    svgHandle(originPx, 'origin', '#ffffff', 6.5);
-
-    // 7. Update Readouts & Diagnostics
-    updateReadouts(res);
   }
 
+  /** Vanishing point guides: two draggable segments per family. */
+  function renderVanishingPointFamily(controlState, vpImagePlane, color, prefix, label) {
+    if (!controlState) return;
+    const vpPx = vpImagePlane && Number.isFinite(vpImagePlane.x) && Number.isFinite(vpImagePlane.y)
+      ? imagePlaneToPx(vpImagePlane)
+      : null;
+    controlState.lineSegments.forEach((seg, idx) => {
+      const a = relToPx(seg[0]);
+      const b = relToPx(seg[1]);
+      if (vpPx) svgLine({ x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 }, vpPx, color, 1, '5 5', 0.5);
+      svgLine(a, b, '#171717', 4.6);
+      svgLine(a, b, color, 2.5);
+      svgHandle(a, `${prefix}-${idx}-0`, color);
+      svgHandle(b, `${prefix}-${idx}-1`, color);
+      svgLabel({ x: (a.x + b.x) / 2 + 6, y: (a.y + b.y) / 2 - 7 }, label, color);
+    });
+    if (vpPx) svgCircle(vpPx, 4.5, '#171717', color);
+  }
+
+  /** Reference-distance handles, positioned exactly as the solver does. */
+  function referenceHandlePositions(cam) {
+    const axis = appState.calibrationSettingsBase.referenceDistanceAxis;
+    if (!axis || !cam) return null;
+    try {
+      const positions = FSpySolver.referenceDistanceHandlesRelativePositions(
+        appState.controlPointsStateBase,
+        axis,
+        cam.vanishingPoints,
+        cam.vanishingPointAxes,
+        imageWidth(),
+        imageHeight()
+      );
+      return positions;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  // --------------------------------------------------------------------------
+  // 8. SOLVE + RENDER PIPELINE
+  // --------------------------------------------------------------------------
   function fmt(v, d = 2) {
     return Number.isFinite(v) ? v.toFixed(d) : '—';
   }
@@ -1955,25 +1330,153 @@ svg [data-drag]:active { cursor: grabbing; }
     return Number.isFinite(rad) ? (rad * 180 / Math.PI).toFixed(d) + '°' : '—';
   }
 
-  function updateReadouts(res) {
-    const w = appState.globalSettings.imageWidth;
-    const h = appState.globalSettings.imageHeight;
-    const diagEl = $('diagBanner');
+  /**
+   * Runs the original solver once per state change and repaints. This is the
+   * only place that produces camera parameters.
+   */
+  function solveAndRender() {
+    const res = Calibration.solve(appState);
+    lastSolved = res;
+    repaint(res);
+    return res;
+  }
 
-    if (!res.valid || !res.cameraParameters) {
+  function repaint(res) {
+    const w = imageWidth();
+    const h = imageHeight();
+    overlay.replaceChildren();
+    overlay.setAttribute('opacity', Number($('opacity').value) / 100);
+
+    const is1VP = appState.globalSettings.calibrationMode === 'OneVanishingPoint';
+    const cam = res.cameraParameters;
+    const ppMode = is1VP
+      ? appState.calibrationSettings1VP.principalPointMode
+      : appState.calibrationSettings2VP.principalPointMode;
+
+    if (cam) renderProjectedGuides(cam);
+
+    // --- horizon guide (1-VP only; fSpy has no horizon control in 2-VP mode)
+    if (is1VP && $('showHorizon').checked) {
+      const h0 = relToPx(appState.controlPointsState1VP.horizon[0]);
+      const h1 = relToPx(appState.controlPointsState1VP.horizon[1]);
+      svgLine(h0, h1, '#eac773', 1.6, '6 5', 0.85);
+      svgHandle(h0, 'horizon-0', '#eac773');
+      svgHandle(h1, 'horizon-1', '#eac773');
+      svgLabel({ x: (h0.x + h1.x) / 2, y: (h0.y + h1.y) / 2 - 8 }, 'HORIZON', '#eac773');
+    }
+
+    // --- vanishing point guides
+    if ($('showVP').checked) {
+      renderVanishingPointFamily(
+        appState.controlPointsStateBase.firstVanishingPoint,
+        cam ? cam.vanishingPoints[0] : null,
+        '#ed7265', 'vp1', 'VP1'
+      );
+      if (!is1VP) {
+        // in quad mode VP2 is derived from VP1's segment endpoints, so its own
+        // guides are not shown (or editable)
+        if (!appState.calibrationSettings2VP.quadModeEnabled) {
+          renderVanishingPointFamily(
+            appState.controlPointsState2VP.secondVanishingPoint,
+            cam ? cam.vanishingPoints[1] : null,
+            '#65b4eb', 'vp2', 'VP2'
+          );
+        }
+        if (ppMode === 'FromThirdVanishingPoint') {
+          renderVanishingPointFamily(
+            appState.controlPointsState2VP.thirdVanishingPoint,
+            cam ? cam.vanishingPoints[2] : null,
+            '#c792ea', 'vp3', 'VP3'
+          );
+        }
+      }
+      // Derived second VP in 1-VP mode (computed by the solver, not draggable)
+      if (is1VP && cam) {
+        const derived = imagePlaneToPx(cam.vanishingPoints[1]);
+        svgCircle(derived, 5.5, 'transparent', '#65b4eb');
+        svgLabel({ x: derived.x + 8, y: derived.y + 4 }, 'VP2 (derived)', '#65b4eb');
+      }
+    }
+
+    // --- reference distance handles
+    if (appState.calibrationSettingsBase.referenceDistanceAxis && cam) {
+      const handles = referenceHandlePositions(cam);
+      if (handles) {
+        const a = relToPx(handles[0]);
+        const b = relToPx(handles[1]);
+        const label = `${appState.calibrationSettingsBase.referenceDistance} ${appState.calibrationSettingsBase.referenceDistanceUnit}`;
+        svgLine(a, b, '#efb648', 2.6, '4 3', 0.95);
+        svgHandle(a, 'ref-0', '#efb648', 6);
+        svgHandle(b, 'ref-1', '#efb648', 6);
+        svgLabel({ x: (a.x + b.x) / 2 + 8, y: (a.y + b.y) / 2 - 8 }, label, '#efb648');
+        // anchor (world origin of the measurement)
+        const anchor = relToPx(appState.controlPointsStateBase.referenceDistanceAnchor);
+        svgCircle(anchor, 3, '#efb648', '#efb648');
+      }
+    }
+
+    // --- principal point
+    const ppPx = cam ? imagePlaneToPx(cam.principalPoint) : relToPx(appState.controlPointsStateBase.principalPoint);
+    svgLine({ x: ppPx.x - 10, y: ppPx.y }, { x: ppPx.x + 10, y: ppPx.y }, '#f8c56d', 1.8);
+    svgLine({ x: ppPx.x, y: ppPx.y - 10 }, { x: ppPx.x, y: ppPx.y + 10 }, '#f8c56d', 1.8);
+    if (ppMode === 'Manual') svgHandle(ppPx, 'principal', '#f8c56d', 6);
+    svgLabel({ x: ppPx.x + 8, y: ppPx.y + 14 }, 'PP', '#f8c56d');
+
+    // --- world origin
+    svgHandle(relToPx(appState.controlPointsStateBase.origin), 'origin', '#fff2cb', 6.5);
+
+    $('dimRect').setAttribute('opacity', $('dimImage').checked ? String(1 - appState.globalSettings.imageOpacity) : '0');
+    updateReadouts(res);
+  }
+
+  /** Derive Euler angles from the authoritative camera transform (XYZ order). */
+  function eulerFromTransform(transform) {
+    const r = transform.matrix;
+    const sy = Math.hypot(r[0][0], r[1][0]);
+    const singular = sy < 1e-8;
+    if (!singular) {
+      return { x: Math.atan2(r[2][1], r[2][2]), y: Math.atan2(-r[2][0], sy), z: Math.atan2(r[1][0], r[0][0]) };
+    }
+    return { x: Math.atan2(-r[1][2], r[1][1]), y: Math.atan2(-r[2][0], sy), z: 0 };
+  }
+
+  /**
+   * Quaternion of a rotation transform. Uses fSpy's MathUtil.matrixToQuaternion
+   * and falls back to the axis-angle form for the 180 degree singularity where
+   * that formula divides by a zero scalar part.
+   */
+  function quaternionFromTransform(transform) {
+    const q = FSpyMathUtil.matrixToQuaternion(transform);
+    if (q.every(v => Number.isFinite(v)) && Math.hypot(q[0], q[1], q[2], q[3]) > 1e-6) {
+      return [q[3], q[0], q[1], q[2]]; // fSpy order is [x, y, z, w]
+    }
+    const [x, y, z, angle] = FSpyMathUtil.matrixToAxisAngle(transform);
+    const s = Math.sin(angle / 2);
+    return [Math.cos(angle / 2), x * s, y * s, z * s];
+  }
+
+  function updateReadouts(res) {
+    const w = imageWidth();
+    const h = imageHeight();
+    const diagEl = $('diagBanner');
+    const cam = res.cameraParameters;
+    const is1VP = appState.globalSettings.calibrationMode === 'OneVanishingPoint';
+    const resetIds = ['focal', 'hfov', 'relFocal', 'pxFocal', 'vfov', 'sensorOut', 'ppPx', 'focalMm',
+      'yaw', 'pitch', 'roll', 'quatOut', 'axisAngleOut', 'posx', 'posy', 'posz', 'camDist',
+      'vp1', 'vp2', 'vp3'];
+
+    if (!cam) {
       $('badge').textContent = 'INVALID';
       $('badge').className = 'badge err';
       $('statusIcon').className = 'ri-error-warning-fill warn-icon';
-      $('statustext').textContent = res.errors[0] || 'CALIBRATION FAILED';
+      $('statustext').textContent = res.errors[0] || 'NO CAMERA SOLUTION';
       diagEl.textContent = res.errors.join(' ');
       diagEl.classList.remove('hidden');
-
-      ['focal', 'hfov', 'relFocal', 'pxFocal', 'vfov', 'ppPx', 'yaw', 'pitch', 'roll', 'quatOut', 'posx', 'posy', 'posz', 'camDist'].forEach(id => $(id).textContent = '—');
+      resetIds.forEach(id => { if ($(id)) $(id).textContent = '—'; });
       $('matrixBox').innerHTML = '';
       return;
     }
 
-    const cam = res.cameraParameters;
     if (res.warnings.length > 0) {
       $('badge').textContent = 'WARNING';
       $('badge').className = 'badge warn';
@@ -1985,229 +1488,312 @@ svg [data-drag]:active { cursor: grabbing; }
       diagEl.classList.add('hidden');
     }
     $('statusIcon').className = 'ri-checkbox-circle-fill';
-    $('statustext').textContent = 'EXACT FSPY CAMERA SOLUTION READY';
+    $('statustext').textContent = 'FSPY SOLVER · ' + (is1VP ? '1-VP' : '2-VP') + ' CAMERA SOLUTION';
 
-    const pxFocalVal = 0.5 * w * cam.relativeFocalLength;
-    const ppPixel = CoordinatesUtil.solverToPixel(cam.principalPoint, w, h);
-    $('focal').textContent = fmt(cam.focalLength, 2) + ' mm';
+    const cameraData = appState.calibrationSettingsBase.cameraData;
+    const sensor = CameraModel.sensorSize(cameraData);
+    const focalMm = CameraModel.absoluteFocalLength(cam, cameraData);
+    const ppAbs = Coordinates.imagePlaneToAbsolute(cam.principalPoint, w, h);
+
+    $('focal').textContent = is1VP ? 'given' : fmt(focalMm, 2) + ' mm';
     $('hfov').textContent = deg(cam.horizontalFieldOfView, 2);
-    $('relFocal').textContent = fmt(cam.relativeFocalLength, 4);
-    $('pxFocal').textContent = fmt(pxFocalVal, 1) + ' px';
+    $('relFocal').textContent = fmt(cam.relativeFocalLength, 5);
+    $('pxFocal').textContent = fmt(0.5 * w * cam.relativeFocalLength, 1) + ' px';
     $('vfov').textContent = deg(cam.verticalFieldOfView, 2);
-    $('ppPx').textContent = `${fmt(ppPixel.x, 1)}, ${fmt(ppPixel.y, 1)}`;
+    $('sensorOut').textContent = `${fmt(sensor.width, 1)} × ${fmt(sensor.height, 1)} mm`;
+    $('ppPx').textContent = `${fmt(ppAbs.x, 1)}, ${fmt(ppAbs.y, 1)}`;
+    $('focalMm').textContent = fmt(focalMm, 3) + ' mm';
+    $('focalMmRow').hidden = is1VP;
 
-    const euler = MathUtil.matrixToEulerXYZ(cam.cameraTransform);
-    const quat = MathUtil.matrixToQuaternion(cam.cameraTransform);
+    const euler = eulerFromTransform(cam.cameraTransform);
     $('yaw').textContent = deg(euler.z, 2);
     $('pitch').textContent = deg(euler.x, 2);
     $('roll').textContent = deg(euler.y, 2);
-    $('quatOut').textContent = quat.map(q => q.toFixed(3)).join(', ');
+    $('quatOut').textContent = quaternionFromTransform(cam.cameraTransform).map(v => v.toFixed(3)).join(', ');
+
+    const axisAngle = FSpyMathUtil.matrixToAxisAngle(cam.cameraTransform);
+    $('axisAngleOut').textContent = axisAngle.every(v => Number.isFinite(v))
+      ? `${axisAngle.slice(0, 3).map(v => v.toFixed(2)).join(', ')} @ ${deg(axisAngle[3], 2)}`
+      : '—';
 
     const m = cam.cameraTransform.matrix;
-    const pos = new Vector3D(m[0][3], m[1][3], m[2][3]);
-    const unitSuffix = appState.calibrationSettingsBase.referenceDistanceAxis === 'None' ? ' u' : ' m';
-    $('posx').textContent = fmt(pos.x, 3) + unitSuffix;
-    $('posy').textContent = fmt(pos.y, 3) + unitSuffix;
-    $('posz').textContent = fmt(pos.z, 3) + unitSuffix;
-    $('camDist').textContent = fmt(pos.length, 3) + unitSuffix;
+    const camPos = new Vector3D(m[0][3], m[1][3], m[2][3]);
+    const unit = appState.calibrationSettingsBase.referenceDistanceUnit || '';
+    const suffix = appState.calibrationSettingsBase.referenceDistanceAxis ? ` ${unit}` : ' (default)';
+    $('posx').textContent = fmt(camPos.x, 3) + suffix;
+    $('posy').textContent = fmt(camPos.y, 3) + suffix;
+    $('posz').textContent = fmt(camPos.z, 3) + suffix;
+    $('camDist').textContent = fmt(camPos.length, 3) + suffix;
+    $('matrixBox').innerHTML = m.flat().map(v => `<span>${Number.isFinite(v) ? v.toFixed(3) : '—'}</span>`).join('');
 
-    $('matrixBox').innerHTML = m.flat().map(v => `<span>${v.toFixed(3)}</span>`).join('');
-
-    const fmtVP = (vp) => {
-      if (!vp) return '—';
-      const p = CoordinatesUtil.solverToPixel(vp, w, h);
-      return `${fmt(p.x, 0)}, ${fmt(p.y, 0)}`;
+    const vpById = (vp) => {
+      if (!vp || !Number.isFinite(vp.x) || !Number.isFinite(vp.y)) return '—';
+      const px = imagePlaneToPx(vp);
+      return `${fmt(px.x, 0)}, ${fmt(px.y, 0)}`;
     };
-    $('vp1').textContent = fmtVP(res.vanishingPoints.vp1);
-    $('vp2').textContent = fmtVP(res.vanishingPoints.vp2);
-    $('vp3').textContent = fmtVP(res.vanishingPoints.vp3);
+    $('vp1').textContent = vpById(cam.vanishingPoints[0]);
+    $('vp2').textContent = vpById(cam.vanishingPoints[1]);
+    $('vp3').textContent = vpById(cam.vanishingPoints[2]);
+    $('viewstate').textContent = is1VP ? '1-VP MODE' : '2-VP MODE';
+  }
+
+  /**
+   * Copies every control widget into the fSpy state object, then solves.
+   * Widgets only ever write into the fSpy state model - no derived values are
+   * stored, so nothing can drift out of sync with the solver.
+   */
+  function syncStateFromUI() {
+    const cameraPresetId = $('cameraPreset').value;
+    appState.globalSettings.calibrationMode = $('mode').value;
+    appState.globalSettings.overlay3DGuide = $('guide').value;
+
+    appState.calibrationSettingsBase.firstVanishingPointAxis = $('axis1').value;
+    appState.calibrationSettingsBase.secondVanishingPointAxis = $('axis2').value;
+    appState.calibrationSettings2VP.quadModeEnabled = $('quadMode').checked;
+
+    const ppMode = $('principalMode').value;
+    appState.calibrationSettings1VP.principalPointMode = ppMode === 'Manual' ? 'Manual' : 'Default';
+    appState.calibrationSettings2VP.principalPointMode = ppMode;
+
+    appState.calibrationSettingsBase.cameraData = {
+      presetId: cameraPresetId || null,
+      presetData: cameraPresetId ? cameraPresets[cameraPresetId] || null : null,
+      customSensorWidth: Math.max(0.1, Number($('sensorWidth').value) || 36),
+      customSensorHeight: Math.max(0.1, Number($('sensorHeight').value) || 24)
+    };
+
+    appState.calibrationSettings1VP.absoluteFocalLength = Math.max(0.1, Number($('knownFocal').value) || 24);
+
+    const refAxis = $('referenceAxis').value;
+    appState.calibrationSettingsBase.referenceDistanceAxis = refAxis || null;
+    appState.calibrationSettingsBase.referenceDistance = Math.max(0.001, Number($('distance').value) || 4);
+    appState.calibrationSettingsBase.referenceDistanceUnit = $('distanceUnit').value;
+
+    appState.ui.boxScale = Math.max(0.05, Number($('boxWidth').value) || 0.3);
+    appState.ui.gridCells = Math.max(1, Math.round(Number($('boxHeight').value) || 10));
+
+    // Progressive disclosure
+    const is1VP = appState.globalSettings.calibrationMode === 'OneVanishingPoint';
+    $('oneVpFocalWrap').hidden = !is1VP;
+    $('quadWrap').hidden = is1VP;
+    $('axis2Wrap').hidden = is1VP;
+    $('distanceWrap').hidden = !appState.calibrationSettingsBase.referenceDistanceAxis;
+    $('boxDimsWrap').hidden = appState.globalSettings.overlay3DGuide === 'None';
+    $('horizonToggle').hidden = !is1VP;
+    $('opacityval').textContent = $('opacity').value + '%';
+    $('viewstate').textContent = is1VP ? '1-VP MODE' : '2-VP MODE';
+    // The third vanishing point guide only exists in 2-VP FromThirdVanishingPoint mode
+    $('principalMode').querySelector('option[value="FromMidpoint"]').hidden = is1VP;
+    if (is1VP && $('principalMode').value === 'FromMidpoint') {
+      $('principalMode').value = 'Default';
+      appState.calibrationSettings2VP.principalPointMode = 'Default';
+    }
+  }
+
+  function renderAll() {
+    syncStateFromUI();
+    return solveAndRender();
   }
 
   // --------------------------------------------------------------------------
-  // 8. UNIFIED VIEWPORT / COORDINATE TRANSFORMATION & INTERACTION
+  // 9. VIEWPORT: zoom / pan / pointer interaction
   // --------------------------------------------------------------------------
-  function clientToImagePixel(e) {
-    const pt = svg.createSVGPoint();
-    pt.x = e.clientX;
-    pt.y = e.clientY;
-    const ctm = svg.getScreenCTM();
-    if (!ctm) return { x: 500, y: 331 };
-    const p = pt.matrixTransform(ctm.inverse());
-    return { x: p.x, y: p.y };
-  }
-
   function updateViewportViewBox() {
-    const w = appState.globalSettings.imageWidth;
-    const h = appState.globalSettings.imageHeight;
+    const w = imageWidth();
+    const h = imageHeight();
     const vw = w / appState.ui.zoom;
     const vh = h / appState.ui.zoom;
-    const cx = Math.max(vw / 2, Math.min(w - vw / 2, appState.ui.pan[0]));
-    const cy = Math.max(vh / 2, Math.min(h - vh / 2, appState.ui.pan[1]));
+    const cx = Math.max(vw / 2, Math.min(w - vw / 2, appState.ui.pan[0] || w / 2));
+    const cy = Math.max(vh / 2, Math.min(h - vh / 2, appState.ui.pan[1] || h / 2));
     appState.ui.pan = [cx, cy];
     svg.setAttribute('viewBox', `${cx - vw / 2} ${cy - vh / 2} ${vw} ${vh}`);
     $('zoomtop').textContent = $('zoomstatus').textContent = Math.round(appState.ui.zoom * 100) + '%';
   }
 
   function zoomBy(factor) {
-    appState.ui.zoom = Math.max(1, Math.min(12, appState.ui.zoom * factor));
+    appState.ui.zoom = Math.max(1, Math.min(24, appState.ui.zoom * factor));
     updateViewportViewBox();
   }
 
-  svg.addEventListener('pointerdown', e => {
-    const handleId = e.target.getAttribute('data-drag');
+  function clientToImagePixel(event) {
+    const ctm = svg.getScreenCTM();
+    if (!ctm) return { x: 0, y: 0 };
+    const pt = svg.createSVGPoint();
+    pt.x = event.clientX;
+    pt.y = event.clientY;
+    const user = pt.matrixTransform(ctm.inverse());
+    return { x: user.x, y: user.y };
+  }
+
+  /** Image pixel (SVG user units) -> relative image coordinates. */
+  function pixelToRelative(px) {
+    return { x: px.x / imageWidth(), y: px.y / imageHeight() };
+  }
+
+  function setReferenceHandleOffset(index, targetRelative) {
+    const cp = appState.controlPointsStateBase;
+    const anchor = cp.referenceDistanceAnchor;
+    const cam = lastSolved && lastSolved.cameraParameters;
+    if (!cam) return;
+    const vpIndex = FSpySolver.vanishingPointIndexForAxis(
+      appState.calibrationSettingsBase.referenceDistanceAxis,
+      cam.vanishingPointAxes
+    );
+    const vpRelative = Coordinates.imagePlaneToRelative(cam.vanishingPoints[vpIndex], imageWidth(), imageHeight());
+    const dir = { x: vpRelative.x - anchor.x, y: vpRelative.y - anchor.y };
+    const len = Math.hypot(dir.x, dir.y) || 1;
+    const ux = dir.x / len;
+    const uy = dir.y / len;
+    // fSpy stores the offset as a signed distance along the unit vector from
+    // the anchor towards the vanishing point, in relative image coordinates.
+    cp.referenceDistanceHandleOffsets[index] = (targetRelative.x - anchor.x) * ux + (targetRelative.y - anchor.y) * uy;
+  }
+
+  svg.addEventListener('pointerdown', event => {
+    const handleId = event.target.getAttribute('data-drag');
     if (handleId && appState.ui.tool === 'guide') {
-      dragState = { handle: handleId, lastPx: clientToImagePixel(e) };
-      svg.setPointerCapture(e.pointerId);
-      e.preventDefault();
+      dragState = { handle: handleId, lastPixel: clientToImagePixel(event) };
+      svg.setPointerCapture(event.pointerId);
+      event.preventDefault();
     } else if (appState.ui.tool === 'pan') {
-      dragState = { handle: 'pan', lastClient: [e.clientX, e.clientY], startPan: [...appState.ui.pan] };
-      svg.setPointerCapture(e.pointerId);
-      e.preventDefault();
+      dragState = { handle: 'pan', lastPixel: clientToImagePixel(event) };
+      svg.setPointerCapture(event.pointerId);
+      event.preventDefault();
     }
   });
 
-  svg.addEventListener('pointermove', e => {
-    const w = appState.globalSettings.imageWidth;
-    const h = appState.globalSettings.imageHeight;
-    const px = clientToImagePixel(e);
-    const solPt = CoordinatesUtil.pixelToSolver(px, w, h);
-    $('cursor').textContent = `IMG: ${fmt(px.x, 0)}, ${fmt(px.y, 0)} px · SOLVER: (${fmt(solPt.x, 3)}, ${fmt(solPt.y, 3)})`;
+  svg.addEventListener('pointermove', event => {
+    const w = imageWidth();
+    const h = imageHeight();
+    const px = clientToImagePixel(event);
+    const rel = pixelToRelative(px);
+    const ip = Coordinates.relativeToImagePlane(rel, w, h);
+    $('cursor').textContent = `IMG: ${fmt(px.x, 0)}, ${fmt(px.y, 0)} px · PLANE: (${fmt(ip.x, 3)}, ${fmt(ip.y, 3)})`;
 
     if (!dragState) return;
 
     if (dragState.handle === 'pan') {
-      const rect = svg.getBoundingClientRect();
-      const scale = Math.min(rect.width / w, rect.height / h) * appState.ui.zoom;
       appState.ui.pan = [
-        dragState.startPan[0] - (e.clientX - dragState.lastClient[0]) / Math.max(1e-3, scale),
-        dragState.startPan[1] - (e.clientY - dragState.lastClient[1]) / Math.max(1e-3, scale)
+        appState.ui.pan[0] - (px.x - dragState.lastPixel.x),
+        appState.ui.pan[1] - (px.y - dragState.lastPixel.y)
       ];
+      dragState.lastPixel = px;
       updateViewportViewBox();
       return;
     }
 
-    // Precision Shift modifier (matches fSpy Shift-drag precision)
-    const curPx = e.shiftKey
-      ? {
-          x: dragState.lastPx.x + (px.x - dragState.lastPx.x) * 0.15,
-          y: dragState.lastPx.y + (px.y - dragState.lastPx.y) * 0.15
-        }
-      : px;
+    // Shift-drag = precision (fSpy behaviour)
+    let target = px;
+    if (event.shiftKey) {
+      target = {
+        x: dragState.lastPixel.x + (px.x - dragState.lastPixel.x) * 0.15,
+        y: dragState.lastPixel.y + (px.y - dragState.lastPixel.y) * 0.15
+      };
+    }
+    const nextRelative = pixelToRelative(target);
+    const id = dragState.handle;
+    const cp = appState.controlPointsStateBase;
 
-    const normPt = CoordinatesUtil.pixelToImagePlane(curPx, w, h);
-    const hId = dragState.handle;
-
-    if (hId === 'origin') {
-      appState.controlPointsStateBase.origin = normPt;
-    } else if (hId === 'principal') {
-      appState.controlPointsStateBase.principalPoint = normPt;
-    } else if (hId.startsWith('horizon-')) {
-      const idx = Number(hId.split('-')[1]);
-      appState.controlPointsState1VP.horizon[idx] = normPt;
-    } else if (hId.startsWith('ref-plane-')) {
-      const idx = Number(hId.split('-')[2]);
-      appState.controlPointsStateBase.freeReferenceSegment[idx] = normPt;
-    } else if (hId.startsWith('ref-axis-')) {
-      const idx = Number(hId.split('-')[2]);
-      if (lastSolved?.valid && lastSolved.cameraParameters) {
-        const cam = lastSolved.cameraParameters;
-        const refAxis = appState.calibrationSettingsBase.referenceDistanceAxis;
-        const axisVec = refAxis === 'xAxis'
-          ? new Vector3D(1, 0, 0)
-          : refAxis === 'yAxis'
-            ? new Vector3D(0, 1, 0)
-            : new Vector3D(0, 0, 1);
-        const pAxisSolver = MathUtil.perspectiveProject(axisVec, cam.cameraTransform, cam.principalPoint, cam.horizontalFieldOfView);
-        const originSolver = CoordinatesUtil.imagePlaneToSolver(appState.controlPointsStateBase.origin, w, h);
-        const curSolver = CoordinatesUtil.pixelToSolver(curPx, w, h);
-        if (pAxisSolver) {
-          const dx = pAxisSolver.x - originSolver.x;
-          const dy = pAxisSolver.y - originSolver.y;
-          const dl = Math.hypot(dx, dy) || 1;
-          const projDist = ((curSolver.x - originSolver.x) * dx + (curSolver.y - originSolver.y) * dy) / dl;
-          appState.controlPointsStateBase.referenceDistanceHandleOffsets[idx] = projDist;
-        }
-      }
-    } else if (hId.startsWith('vp')) {
-      const parts = hId.split('-');
-      const familyKey = parts[0];
-      const segIdx = Number(parts[1]);
-      const endIdx = Number(parts[2]);
-
-      const vpObj = familyKey === 'vp1'
-        ? appState.controlPointsStateBase.firstVanishingPoint
-        : familyKey === 'vp2'
+    if (id === 'origin') {
+      cp.origin = nextRelative;
+      // fSpy ties the reference-distance anchor to the origin when the
+      // anchor control is disabled (Constants.referenceDistanceAnchorEnabled)
+      cp.referenceDistanceAnchor = { ...nextRelative };
+    } else if (id === 'principal') {
+      cp.principalPoint = nextRelative;
+    } else if (id.startsWith('horizon-')) {
+      appState.controlPointsState1VP.horizon[Number(id.split('-')[1])] = nextRelative;
+    } else if (id.startsWith('ref-')) {
+      setReferenceHandleOffset(Number(id.split('-')[1]), nextRelative);
+    } else if (id.startsWith('vp1') || id.startsWith('vp2') || id.startsWith('vp3')) {
+      const [family, segIdx, endIdx] = id.split('-');
+      const vpState = family === 'vp1'
+        ? cp.firstVanishingPoint
+        : family === 'vp2'
           ? appState.controlPointsState2VP.secondVanishingPoint
           : appState.controlPointsState2VP.thirdVanishingPoint;
-
-      const oldPt = vpObj.lineSegments[segIdx][endIdx];
-      vpObj.lineSegments[segIdx][endIdx] = normPt;
+      const segment = vpState.lineSegments[Number(segIdx)];
+      const oldPoint = segment[Number(endIdx)];
+      segment[Number(endIdx)] = nextRelative;
       if ($('editmode').value === 'linked') {
-        const otherIdx = 1 - endIdx;
-        vpObj.lineSegments[segIdx][otherIdx] = {
-          x: vpObj.lineSegments[segIdx][otherIdx].x + (normPt.x - oldPt.x),
-          y: vpObj.lineSegments[segIdx][otherIdx].y + (normPt.y - oldPt.y)
+        const other = segment[1 - Number(endIdx)];
+        segment[1 - Number(endIdx)] = {
+          x: other.x + (nextRelative.x - oldPoint.x),
+          y: other.y + (nextRelative.y - oldPoint.y)
         };
       }
     }
 
-    dragState.lastPx = curPx;
-    syncUIAndRender();
+    dragState.lastPixel = target;
+    solveAndRender();
   });
 
-  svg.addEventListener('pointerup', () => dragState = null);
-  svg.addEventListener('pointercancel', () => dragState = null);
-  svg.addEventListener('wheel', e => {
-    e.preventDefault();
-    zoomBy(e.deltaY < 0 ? 1.15 : 1 / 1.15);
+  svg.addEventListener('pointerup', () => { dragState = null; });
+  svg.addEventListener('pointercancel', () => { dragState = null; });
+  svg.addEventListener('wheel', event => {
+    event.preventDefault();
+    zoomBy(event.deltaY < 0 ? 1.15 : 1 / 1.15);
   }, { passive: false });
 
   // --------------------------------------------------------------------------
-  // 9. UI EVENT BINDINGS & FILE IMPORT/EXPORT (.fspy, JSON)
+  // 10. UI BINDINGS
   // --------------------------------------------------------------------------
+  function populateCameraPresets() {
+    const select = $('cameraPreset');
+    select.replaceChildren();
+    const custom = document.createElement('option');
+    custom.value = '';
+    custom.textContent = 'Custom sensor size';
+    select.appendChild(custom);
+    CAMERA_PRESET_ORDER.forEach(id => {
+      const preset = cameraPresets[id];
+      const option = document.createElement('option');
+      option.value = id;
+      option.textContent = `${preset.displayName} (${preset.sensorWidth} × ${preset.sensorHeight} mm)`;
+      select.appendChild(option);
+    });
+  }
+
   $('cameraPreset').addEventListener('change', () => {
-    const preset = $('cameraPreset').value;
-    if (SensorPresets[preset]) {
-      $('sensorWidth').value = SensorPresets[preset][0];
-      $('sensorHeight').value = SensorPresets[preset][1];
+    const preset = cameraPresets[$('cameraPreset').value];
+    if (preset) {
+      $('sensorWidth').value = preset.sensorWidth;
+      $('sensorHeight').value = preset.sensorHeight;
+      if (preset.focalLength && appState.globalSettings.calibrationMode === 'OneVanishingPoint') {
+        $('knownFocal').value = preset.focalLength;
+      }
     }
-    syncUIAndRender();
+    renderAll();
   });
 
   [
-    'mode', 'axis1', 'axis2', 'editmode', 'principalMode',
-    'sensorWidth', 'sensorHeight', 'absoluteFocalLength', 'knownFocal',
+    'mode', 'axis1', 'axis2', 'editmode', 'principalMode', 'quadMode',
+    'sensorWidth', 'sensorHeight', 'knownFocal',
     'referenceAxis', 'distance', 'distanceUnit', 'guide',
-    'boxWidth', 'boxHeight', 'opacity', 'showVP', 'showGrid', 'showHorizon', 'dimImage'
-  ].forEach(id => $(id).addEventListener('input', syncUIAndRender));
+    'boxWidth', 'boxHeight', 'opacity', 'showVP', 'showGrid', 'showHorizon'
+  ].forEach(id => $(id).addEventListener('input', renderAll));
+
+  $('dimImage').addEventListener('input', renderAll);
 
   $('zin').onclick = () => zoomBy(1.25);
-  $('zout').onclick = () => zoomBy(0.8);
+  $('zout').onclick = () => zoomBy(1 / 1.25);
   $('fit').onclick = $('zfit').onclick = () => {
     appState.ui.zoom = 1;
-    appState.ui.pan = [appState.globalSettings.imageWidth / 2, appState.globalSettings.imageHeight / 2];
+    appState.ui.pan = [imageWidth() / 2, imageHeight() / 2];
     updateViewportViewBox();
   };
 
-  // Panels stay in the DOM and animate their width open/closed so the stage
-  // reflows smoothly instead of jumping.
+  // Animated collapsible panels (layout only - never touches calibration)
   function setSidebar(side, open) {
     const panel = $(side);
-    if (open) {
-      panel.classList.remove('collapsed');
-      panel.removeAttribute('aria-hidden');
-    } else {
-      panel.classList.add('collapsed');
-      panel.setAttribute('aria-hidden', 'true');
-    }
+    panel.classList.toggle('collapsed', !open);
+    if (open) panel.removeAttribute('aria-hidden');
+    else panel.setAttribute('aria-hidden', 'true');
     const toggleBtn = $(side === 'left' ? 'lefttoggle' : 'righttoggle');
     toggleBtn.classList.toggle('active', open);
     toggleBtn.setAttribute('aria-expanded', String(open));
   }
-
-  function toggleSidebar(side) {
-    setSidebar(side, $(side).classList.contains('collapsed'));
-  }
+  const toggleSidebar = side => setSidebar(side, $(side).classList.contains('collapsed'));
   $('lefttoggle').onclick = $('closeleft').onclick = () => toggleSidebar('left');
   $('righttoggle').onclick = $('closeright').onclick = () => toggleSidebar('right');
 
@@ -2226,7 +1812,7 @@ svg [data-drag]:active { cursor: grabbing; }
     $(btnId).onclick = () => {
       $(chkId).checked = !$(chkId).checked;
       $(btnId).classList.toggle('active', $(chkId).checked);
-      syncUIAndRender();
+      renderAll();
     };
   });
 
@@ -2240,86 +1826,100 @@ svg [data-drag]:active { cursor: grabbing; }
   };
 
   $('reset').onclick = () => {
-    const w = appState.globalSettings.imageWidth;
-    const h = appState.globalSettings.imageHeight;
-    const fresh = createDefaultState(w, h);
-    fresh.ui.imageUrl = appState.ui.imageUrl;
-    fresh.ui.imageBinary = appState.ui.imageBinary;
-    fresh.ui.name = appState.ui.name;
-    appState = fresh;
+    const keepImage = { ...appState.image };
+    const keepUi = { ...appState.ui };
+    appState = createDefaultState();
+    appState.image = keepImage;
+    appState.ui = { ...keepUi, zoom: 1, pan: [(keepImage.width || 1) / 2, (keepImage.height || 1) / 2] };
     applyStateToDOM();
-    syncUIAndRender();
+    renderAll();
   };
 
+  /**
+   * Pushes the fSpy state into the widgets. Every value written here comes
+   * straight from the store, so importing a project cannot leave a control
+   * showing a stale default.
+   */
   function applyStateToDOM() {
+    const base = appState.calibrationSettingsBase;
+    const cameraData = base.cameraData || { presetId: null, customSensorWidth: 36, customSensorHeight: 24 };
     $('mode').value = appState.globalSettings.calibrationMode;
-    $('axis1').value = appState.calibrationSettingsBase.firstVanishingPointAxis;
-    $('axis2').value = appState.calibrationSettings2VP.secondVanishingPointAxis;
-    $('principalMode').value = appState.globalSettings.calibrationMode === 'OneVanishingPoint'
+    $('axis1').value = base.firstVanishingPointAxis;
+    $('axis2').value = appState.calibrationSettingsBase.secondVanishingPointAxis;
+    $('quadMode').checked = !!appState.calibrationSettings2VP.quadModeEnabled;
+
+    const is1VP = appState.globalSettings.calibrationMode === 'OneVanishingPoint';
+    $('principalMode').value = is1VP
       ? appState.calibrationSettings1VP.principalPointMode
       : appState.calibrationSettings2VP.principalPointMode;
-    $('sensorWidth').value = appState.calibrationSettingsBase.customSensorWidth;
-    $('sensorHeight').value = appState.calibrationSettingsBase.customSensorHeight;
-    $('absoluteFocalLength').value = String(appState.calibrationSettings1VP.absoluteFocalLength);
-    $('knownFocal').value = appState.calibrationSettings1VP.absoluteFocalLength
-      ? appState.calibrationSettings1VP.focalLength
-      : appState.calibrationSettings1VP.RelativeFocalLength;
-    $('referenceAxis').value = appState.calibrationSettingsBase.referenceDistanceAxis;
-    $('distance').value = appState.calibrationSettingsBase.referenceDistance;
-    $('distanceUnit').value = appState.calibrationSettingsBase.referenceDistanceUnit;
+
+    $('cameraPreset').value = cameraData.presetId || '';
+    $('sensorWidth').value = cameraData.customSensorWidth;
+    $('sensorHeight').value = cameraData.customSensorHeight;
+    $('knownFocal').value = appState.calibrationSettings1VP.absoluteFocalLength;
+
+    $('referenceAxis').value = base.referenceDistanceAxis || '';
+    $('distance').value = base.referenceDistance;
+    $('distanceUnit').value = base.referenceDistanceUnit;
     $('guide').value = appState.globalSettings.overlay3DGuide;
+    $('boxWidth').value = appState.ui.boxScale;
+    $('boxHeight').value = appState.ui.gridCells;
+    $('filename').textContent = appState.ui.name;
   }
 
-  function updateImageDimensions(w, h) {
-    appState.globalSettings.imageWidth = w;
-    appState.globalSettings.imageHeight = h;
-    $('cropRect').setAttribute('width', w);
-    $('cropRect').setAttribute('height', h);
-    $('bgRect').setAttribute('width', w);
-    $('bgRect').setAttribute('height', h);
-    $('dimRect').setAttribute('width', w);
-    $('dimRect').setAttribute('height', h);
-    $('image').setAttribute('width', w);
-    $('image').setAttribute('height', h);
+  /** Resizes the SVG/document to the loaded image; never touches calibration. */
+  function applyImageDimensions(w, h) {
+    appState.image.width = w;
+    appState.image.height = h;
+    ['cropRect', 'bgRect', 'dimRect', 'image'].forEach(id => {
+      $(id).setAttribute('width', w);
+      $(id).setAttribute('height', h);
+    });
     $('imgdim-badge').textContent = `${w}×${h}`;
     appState.ui.zoom = 1;
     appState.ui.pan = [w / 2, h / 2];
     updateViewportViewBox();
-    syncUIAndRender();
   }
 
-  // Image Import
-  $('openImgBtn').onclick = () => $('imagefile').click();
-  $('imagefile').onchange = async e => {
-    const file = e.target.files[0];
-    if (!file) return;
-    const arrayBuf = await file.arrayBuffer();
-    appState.ui.imageBinary = new Uint8Array(arrayBuf);
-    const url = URL.createObjectURL(file);
+  function loadImageFromUrl(url, name, width, height) {
     appState.ui.imageUrl = url;
-    appState.ui.name = file.name;
-    $('filename').textContent = file.name;
-    const img = new Image();
-    img.onload = () => {
-      $('image').setAttribute('href', url);
-      updateImageDimensions(img.naturalWidth || 1000, img.naturalHeight || 662);
-    };
-    img.src = url;
+    if (name) appState.ui.name = name;
+    $('image').setAttribute('href', url);
+    applyImageDimensions(width, height);
+    applyStateToDOM();
+    solveAndRender();
+  }
+
+  function readImageSize(blobUrl) {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => resolve({ width: img.naturalWidth, height: img.naturalHeight });
+      img.onerror = () => reject(new Error('Image could not be decoded'));
+      img.src = blobUrl;
+    });
+  }
+
+  // --- image import
+  $('openImgBtn').onclick = () => $('imagefile').click();
+  $('imagefile').onchange = async event => {
+    const file = event.target.files[0];
+    if (!file) return;
+    const bytes = new Uint8Array(await file.arrayBuffer());
+    const url = URL.createObjectURL(file);
+    try {
+      const size = await readImageSize(url);
+      appState.ui.imageBytes = bytes;
+      loadImageFromUrl(url, file.name, size.width, size.height);
+      $('statustext').textContent = 'IMAGE LOADED';
+    } catch (err) {
+      $('statustext').textContent = 'IMAGE IMPORT FAILED: ' + err.message;
+    }
+    event.target.value = '';
   };
 
-  // Native .fspy Binary Export
-  $('exportFspyBtn').onclick = async () => {
-    let imgBytes = appState.ui.imageBinary;
-    if (!imgBytes && appState.ui.imageUrl) {
-      try {
-        const resp = await fetch(appState.ui.imageUrl);
-        const buf = await resp.arrayBuffer();
-        imgBytes = new Uint8Array(buf);
-      } catch (_) {
-        imgBytes = new Uint8Array(0);
-      }
-    }
-    const fspyStatePayload = {
+  // --- native .fspy export (byte-compatible with desktop fSpy)
+  function projectStateForSave() {
+    return {
       globalSettings: appState.globalSettings,
       calibrationSettingsBase: appState.calibrationSettingsBase,
       calibrationSettings1VP: appState.calibrationSettings1VP,
@@ -2327,245 +1927,552 @@ svg [data-drag]:active { cursor: grabbing; }
       controlPointsStateBase: appState.controlPointsStateBase,
       controlPointsState1VP: appState.controlPointsState1VP,
       controlPointsState2VP: appState.controlPointsState2VP,
-      cameraParameters: lastSolved?.cameraParameters || null
+      cameraParameters: lastSolved && lastSolved.cameraParameters ? lastSolved.cameraParameters : null,
+      resultDisplaySettings: appState.resultDisplaySettings
     };
-    const binBuffer = NativeFspyFormat.serialize(fspyStatePayload, imgBytes);
-    downloadBlob(new Blob([binBuffer], { type: 'application/octet-stream' }), 'calibration-project.fspy');
-    $('statustext').textContent = 'SAVED NATIVE .FSPY BINARY PROJECT';
+  }
+
+  $('exportFspyBtn').onclick = async () => {
+    let imageBytes = appState.ui.imageBytes;
+    if (!imageBytes && appState.ui.imageUrl) {
+      try {
+        const response = await fetch(appState.ui.imageUrl);
+        imageBytes = new Uint8Array(await response.arrayBuffer());
+      } catch (_) {
+        imageBytes = null;
+      }
+    }
+    const buffer = NativeFspyFormat.serialize(projectStateForSave(), imageBytes);
+    const base = (appState.ui.name || 'project').replace(/\.[^.]+$/, '');
+    downloadBlob(new Blob([buffer], { type: 'application/octet-stream' }), `${base}.fspy`);
+    $('statustext').textContent = 'SAVED NATIVE .FSPY PROJECT';
   };
 
-  // Native .fspy & JSON Import
+  // --- native .fspy import
+  /**
+   * Loads a project (native .fspy or the debug JSON) into the store.
+   * Used by the import button and by boot().
+   */
+  async function importProjectBuffer(buffer, fileName) {
+    const bytes = new Uint8Array(buffer);
+    const isNative = bytes.length >= 4 && bytes[0] === 0x66 && bytes[1] === 0x73 && bytes[2] === 0x70 && bytes[3] === 0x79;
+    const parsed = isNative ? NativeFspyFormat.deserialize(buffer) : { state: JSON.parse(new TextDecoder().decode(bytes)), imageBytes: null };
+    const state = parsed.state;
+    if (!state.globalSettings) throw new Error('project state has no globalSettings');
+
+    // Merge over the defaults so older/partial projects still load, and keep
+    // unknown keys intact so a round trip does not lose data.
+    const defaults = createDefaultState();
+    appState.globalSettings = { ...defaults.globalSettings, ...state.globalSettings };
+    appState.calibrationSettingsBase = { ...defaults.calibrationSettingsBase, ...state.calibrationSettingsBase };
+    appState.calibrationSettingsBase.cameraData = {
+      ...defaults.calibrationSettingsBase.cameraData,
+      ...(state.calibrationSettingsBase.cameraData || {})
+    };
+    appState.calibrationSettings1VP = { ...defaults.calibrationSettings1VP, ...state.calibrationSettings1VP };
+    appState.calibrationSettings2VP = { ...defaults.calibrationSettings2VP, ...state.calibrationSettings2VP };
+    appState.controlPointsStateBase = { ...defaults.controlPointsStateBase, ...state.controlPointsStateBase };
+    appState.controlPointsState1VP = { ...defaults.controlPointsState1VP, ...state.controlPointsState1VP };
+    appState.controlPointsState2VP = { ...defaults.controlPointsState2VP, ...state.controlPointsState2VP };
+    appState.resultDisplaySettings = { ...defaults.resultDisplaySettings, ...(state.resultDisplaySettings || {}) };
+    appState.ui.name = fileName || appState.ui.name;
+
+    // Desktop fSpy migrates Yards -> Feet on load.
+    if (String(appState.calibrationSettingsBase.referenceDistanceUnit) === 'Yards') {
+      appState.calibrationSettingsBase.referenceDistanceUnit = 'Feet';
+      appState.calibrationSettingsBase.referenceDistance *= 3;
+    }
+    // Drop camera presets this build does not know about.
+    const presetId = appState.calibrationSettingsBase.cameraData.presetId;
+    if (presetId && !cameraPresets[presetId]) appState.calibrationSettingsBase.cameraData.presetId = null;
+
+    $('filename').textContent = appState.ui.name;
+    const imageBytes = parsed.imageBytes;
+    if (imageBytes && imageBytes.byteLength > 0) {
+      const copy = imageBytes.slice();
+      const url = URL.createObjectURL(new Blob([copy]));
+      const size = await readImageSize(url);
+      appState.ui.imageBytes = copy;
+      loadImageFromUrl(url, fileName, size.width, size.height);
+    } else {
+      applyStateToDOM();
+      solveAndRender();
+    }
+    return isNative;
+  }
+
   $('openFspyBtn').onclick = () => $('projectfile').click();
-  $('projectfile').onchange = async e => {
-    const file = e.target.files[0];
+  $('projectfile').onchange = async event => {
+    const file = event.target.files[0];
     if (!file) return;
     try {
-      const arrayBuf = await file.arrayBuffer();
-      const uint8 = new Uint8Array(arrayBuf);
-      const isNativeFspy = uint8.length >= 4 &&
-        uint8[0] === 0x66 && uint8[1] === 0x73 && uint8[2] === 0x70 && uint8[3] === 0x79;
-
-      if (isNativeFspy) {
-        const parsed = NativeFspyFormat.deserialize(arrayBuf);
-        const st = parsed.state;
-        if (st.globalSettings) appState.globalSettings = { ...appState.globalSettings, ...st.globalSettings };
-        if (st.calibrationSettingsBase) appState.calibrationSettingsBase = { ...appState.calibrationSettingsBase, ...st.calibrationSettingsBase };
-        if (st.calibrationSettings1VP) appState.calibrationSettings1VP = { ...appState.calibrationSettings1VP, ...st.calibrationSettings1VP };
-        if (st.calibrationSettings2VP) appState.calibrationSettings2VP = { ...appState.calibrationSettings2VP, ...st.calibrationSettings2VP };
-        if (st.controlPointsStateBase) appState.controlPointsStateBase = { ...appState.controlPointsStateBase, ...st.controlPointsStateBase };
-        if (st.controlPointsState1VP) appState.controlPointsState1VP = { ...appState.controlPointsState1VP, ...st.controlPointsState1VP };
-        if (st.controlPointsState2VP) appState.controlPointsState2VP = { ...appState.controlPointsState2VP, ...st.controlPointsState2VP };
-
-        appState.ui.name = file.name;
-        $('filename').textContent = file.name;
-
-        if (parsed.imageBytes && parsed.imageBytes.byteLength > 0) {
-          appState.ui.imageBinary = new Uint8Array(parsed.imageBytes);
-          const blob = new Blob([parsed.imageBytes]);
-          const url = URL.createObjectURL(blob);
-          appState.ui.imageUrl = url;
-          const img = new Image();
-          img.onload = () => {
-            $('image').setAttribute('href', url);
-            applyStateToDOM();
-            updateImageDimensions(img.naturalWidth || appState.globalSettings.imageWidth, img.naturalHeight || appState.globalSettings.imageHeight);
-          };
-          img.src = url;
-        } else {
-          applyStateToDOM();
-          updateImageDimensions(appState.globalSettings.imageWidth || 1000, appState.globalSettings.imageHeight || 662);
-        }
-        $('statustext').textContent = 'IMPORTED NATIVE .FSPY PROJECT';
-      } else {
-        // Fallback JSON debug format
-        const text = new TextDecoder().decode(uint8);
-        const json = JSON.parse(text);
-        if (json.globalSettings) {
-          Object.assign(appState, json);
-          applyStateToDOM();
-          updateImageDimensions(appState.globalSettings.imageWidth || 1000, appState.globalSettings.imageHeight || 662);
-          $('statustext').textContent = 'IMPORTED JSON CALIBRATION STATE';
-        }
-      }
+      const isNative = await importProjectBuffer(await file.arrayBuffer(), file.name);
+      $('statustext').textContent = isNative ? 'IMPORTED NATIVE .FSPY PROJECT' : 'IMPORTED JSON PROJECT STATE';
     } catch (err) {
-      $('statustext').textContent = 'IMPORT ERROR: ' + err.message;
+      $('statustext').textContent = 'IMPORT FAILED: ' + err.message;
     }
+    event.target.value = '';
   };
 
   $('exportJsonBtn').onclick = () => {
-    const debugJson = JSON.stringify({
-      ...appState,
-      solvedCamera: lastSolved?.cameraParameters || null
-    }, null, 2);
-    downloadBlob(new Blob([debugJson], { type: 'application/json' }), 'fspy-debug-state.json');
+    const payload = {
+      ...projectStateForSave(),
+      metadata: {
+        solvedBy: 'perarnia/fSpy solver, vendored unmodified',
+        upstreamCommit: appState._upstreamCommit || null
+      }
+    };
+    downloadBlob(new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' }), 'fspy-web-state.json');
   };
 
   $('copyJsonBtn').onclick = () => {
-    if (!lastSolved?.cameraParameters) return;
-    navigator.clipboard?.writeText(JSON.stringify(lastSolved.cameraParameters, null, 2))
-      .then(() => $('statustext').textContent = 'COPIED SOLVED CAMERA PARAMETERS TO CLIPBOARD')
-      .catch(() => $('statustext').textContent = 'CLIPBOARD UNAVAILABLE');
+    const cam = lastSolved && lastSolved.cameraParameters;
+    if (!cam) {
+      $('statustext').textContent = 'NO CAMERA SOLUTION TO COPY';
+      return;
+    }
+    navigator.clipboard
+      ?.writeText(JSON.stringify(cam, null, 2))
+      .then(() => { $('statustext').textContent = 'COPIED SOLVED CAMERA PARAMETERS'; })
+      .catch(() => { $('statustext').textContent = 'CLIPBOARD UNAVAILABLE'; });
   };
 
   function downloadBlob(blob, filename) {
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    setTimeout(() => URL.revokeObjectURL(link.href), 2000);
   }
 
-  // Modals
   $('helpbtn').onclick = () => $('helpModal').classList.add('shown');
   $('closeHelp').onclick = $('doneHelp').onclick = () => $('helpModal').classList.remove('shown');
   $('closeTest').onclick = $('doneTest').onclick = () => $('testModal').classList.remove('shown');
 
   // --------------------------------------------------------------------------
-  // 10. AUTOMATED MATHEMATICAL PARITY & SYNTHETIC CAMERA TEST SUITE
+  // 11. IN-APP PARITY SUITE
   // --------------------------------------------------------------------------
-  function runVerificationSuite() {
-    const results = [];
-    const assertClose = (name, actual, expected, tol = 1e-6) => {
-      const diff = Math.abs(actual - expected);
-      const pass = Number.isFinite(actual) && diff <= tol;
-      results.push({ name, pass, detail: `actual=${actual.toExponential(4)}, expected=${expected.toExponential(4)}, Δ=${diff.toExponential(2)}` });
-    };
+  /**
+   * Runs the solver against reference projects whose expected output was
+   * produced by the *original* fSpy solver (tests/fixtures/oracle.json, see
+   * FSPY_PARITY_TESTS.md). Because the engine here is the original solver, a
+   * mismatch means the state plumbing or the fixture is wrong - which is
+   * exactly what this widget is meant to catch.
+   */
+  async function runVerificationSuite() {
+    const rows = [];
+    const add = (name, pass, detail) => rows.push({ name, pass, detail });
+    const close = (a, b, tol) => Number.isFinite(a) && Number.isFinite(b) && Math.abs(a - b) <= tol;
 
-    // Test 1: Coordinate round-trip parity (Pixel <-> ImagePlane <-> Solver)
-    const ptPx = { x: 275.4, y: 412.8 };
-    const sPt = CoordinatesUtil.pixelToSolver(ptPx, 1920, 1080);
-    const backPx = CoordinatesUtil.solverToPixel(sPt, 1920, 1080);
-    assertClose('1. Coordinate System Round-Trip (1920×1080)', Math.hypot(ptPx.x - backPx.x, ptPx.y - backPx.y), 0, 1e-10);
+    let oracle = null;
+    try {
+      const response = await fetch('tests/fixtures/oracle.json');
+      oracle = await response.json();
+    } catch (_) {
+      add('0. Reference fixtures reachable', false, 'Could not load tests/fixtures/oracle.json - serve the folder over HTTP.');
+    }
 
-    // Test 2: Triangle Orthocenter (3rd VP Principal Point Recovery)
-    const k = { x: -1.4, y: -0.2 }, l = { x: 1.2, y: -0.3 }, m = { x: 0.1, y: 1.8 };
-    const ortho = MathUtil.triangleOrthocenter(k, l, m);
-    // Verify (k - ortho) . (l - m) == 0 and (l - ortho) . (k - m) == 0
-    const dot1 = (k.x - ortho.x) * (l.x - m.x) + (k.y - ortho.y) * (l.y - m.y);
-    const dot2 = (l.x - ortho.x) * (k.x - m.x) + (l.y - ortho.y) * (k.y - m.y);
-    assertClose('2. Orthocenter Orthogonality Residual ((k-H)·(l-m)=0)', Math.hypot(dot1, dot2), 0, 1e-10);
+    if (oracle) {
+      const matrixError = (a, b) => {
+        let worst = 0;
+        for (let r = 0; r < 4; r++) {
+          for (let c = 0; c < 4; c++) worst = Math.max(worst, Math.abs(a[r][c] - b[r][c]));
+        }
+        return worst;
+      };
 
-    // Test 3: Synthetic Pinhole Camera Recovery (Known 35mm lens, Known Rotation & Pose)
-    const synW = 1600, synH = 1000, synSensorW = 36, synFocalMM = 35;
-    const expectedFRel = 2.0 * (synFocalMM / synSensorW);
-    const expectedHFov = 2 * Math.atan(1 / expectedFRel);
-    const synPP = { x: 0.08, y: -0.05 };
+      for (const [fileName, expected] of Object.entries(oracle)) {
+        let state;
+        try {
+          const response = await fetch('tests/fixtures/' + encodeURIComponent(fileName));
+          const buffer = await response.arrayBuffer();
+          state = NativeFspyFormat.deserialize(buffer).state;
+        } catch (err) {
+          add(`${fileName}: fixture load`, false, err.message);
+          continue;
+        }
 
-    // Construct known orthonormal rotation matrix (Yaw 32 deg, Pitch 64 deg, Roll -8 deg)
-    const c1 = Math.cos(0.55), s1 = Math.sin(0.55);
-    const c2 = Math.cos(1.12), s2 = Math.sin(1.12);
-    const rotZ = new Matrix4x4([[c1, -s1, 0, 0], [s1, c1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]]);
-    const rotX = new Matrix4x4([[1, 0, 0, 0], [0, c2, -s2, 0], [0, s2, c2, 0], [0, 0, 0, 1]]);
-    const synCamRot = rotZ.multipliedBy(rotX);
-    const synCamTransform = synCamRot.copy();
-    synCamTransform.matrix[0][3] = 3.2;
-    synCamTransform.matrix[1][3] = -4.5;
-    synCamTransform.matrix[2][3] = 2.4;
+        const image = {
+          width: expected.image.w,
+          height: expected.image.h,
+          url: null,
+          data: null
+        };
+        const budget = { base: state.calibrationSettingsBase, s1: state.calibrationSettings1VP, s2: state.calibrationSettings2VP };
+        const solved = state.globalSettings.calibrationMode === 'OneVanishingPoint'
+          ? FSpySolver.solve1VP(budget.base, budget.s1, state.controlPointsStateBase, state.controlPointsState1VP, image)
+          : FSpySolver.solve2VP(budget.base, budget.s2, state.controlPointsStateBase, state.controlPointsState2VP, image);
 
-    // Project parallel X-axis lines and Y-axis lines into synthetic image
-    const proj = (x, y, z) => CoordinatesUtil.solverToImagePlane(
-      MathUtil.perspectiveProject(new Vector3D(x, y, z), synCamTransform, synPP, expectedHFov),
-      synW, synH
-    );
-
-    const synState = createDefaultState(synW, synH);
-    synState.calibrationSettings2VP.principalPointMode = 'Manual';
-    synState.controlPointsStateBase.principalPoint = CoordinatesUtil.solverToImagePlane(synPP, synW, synH);
-    synState.controlPointsStateBase.origin = proj(0, 0, 0);
-    synState.controlPointsStateBase.firstVanishingPoint.lineSegments = [
-      [proj(0, 0, 0), proj(2, 0, 0)],
-      [proj(0, 1.5, 0.5), proj(2, 1.5, 0.5)]
-    ];
-    synState.controlPointsState2VP.secondVanishingPoint.lineSegments = [
-      [proj(0, 0, 0), proj(0, 2, 0)],
-      [proj(1.2, 0, 0.4), proj(1.2, 2, 0.4)]
-    ];
-    synState.calibrationSettingsBase.referenceDistanceAxis = 'None';
-
-    const synSolved = Solver.solve(
-      synState.globalSettings,
-      synState.calibrationSettingsBase,
-      synState.calibrationSettings1VP,
-      synState.calibrationSettings2VP,
-      synState.controlPointsStateBase,
-      synState.controlPointsState1VP,
-      synState.controlPointsState2VP
-    );
-
-    assertClose('3. Synthetic 2-VP Focal Length Recovery (mm)', synSolved.cameraParameters.focalLength, synFocalMM, 1e-6);
-    assertClose('4. Synthetic 2-VP Horizontal FOV Recovery (rad)', synSolved.cameraParameters.horizontalFieldOfView, expectedHFov, 1e-7);
-
-    // Check rotation matrix parity
-    let maxRotErr = 0;
-    for (let r = 0; r < 3; r++) {
-      for (let c = 0; c < 3; c++) {
-        maxRotErr = Math.max(maxRotErr, Math.abs(synSolved.cameraParameters.cameraTransform.matrix[r][c] - synCamRot.matrix[r][c]));
+        const exp = expected.cameraParameters;
+        if (!exp || !solved.cameraParameters) {
+          add(`${fileName}: ${expected.cameraParameters ? 'unexpected' : 'expected'} failure preserved`,
+            (exp === null) === (solved.cameraParameters === null),
+            solved.errors.join('; ') || 'camera solved');
+          continue;
+        }
+        const cam = solved.cameraParameters;
+        const fErr = Math.abs(cam.relativeFocalLength - exp.relativeFocalLength);
+        const hErr = Math.abs(cam.horizontalFieldOfView - exp.horizontalFieldOfView);
+        const ppErr = Math.max(
+          Math.abs(cam.principalPoint.x - exp.principalPoint.x),
+          Math.abs(cam.principalPoint.y - exp.principalPoint.y)
+        );
+        const vtErr = matrixError(cam.viewTransform.matrix, exp.viewTransform);
+        const ctErr = matrixError(cam.cameraTransform.matrix, exp.cameraTransform);
+        const axisOk = cam.vanishingPointAxes.join() === exp.vanishingPointAxes.join();
+        add(
+          `${fileName}`,
+          fErr < 1e-12 && hErr < 1e-12 && ppErr < 1e-12 && vtErr < 1e-12 && ctErr < 1e-12 && axisOk,
+          `Δf=${fErr.toExponential(1)} Δhfov=${hErr.toExponential(1)} Δpp=${ppErr.toExponential(1)} ` +
+          `Δview=${vtErr.toExponential(1)} Δcam=${ctErr.toExponential(1)} axes=${axisOk ? 'exact' : 'DIFFER'}`
+        );
       }
     }
-    assertClose('5. Synthetic 2-VP Rotation Matrix Elements Max Error', maxRotErr, 0, 1e-7);
 
-    // Test 6: Reprojection RMS Error of 3D Box Corners on Current Solved Scene
-    if (lastSolved?.valid && lastSolved.cameraParameters) {
-      const cam = lastSolved.cameraParameters;
-      const worldPts = [
-        new Vector3D(0, 0, 0),
-        new Vector3D(1, 0, 0),
-        new Vector3D(0, 1, 0),
-        new Vector3D(0, 0, 1)
-      ];
-      let sumSqErr = 0;
-      worldPts.forEach(pt => {
-        const p2D = MathUtil.perspectiveProject(pt, cam.cameraTransform, cam.principalPoint, cam.horizontalFieldOfView);
-        const ray = MathUtil.rayFromSolverPoint(p2D, cam.cameraTransform, cam.principalPoint, cam.relativeFocalLength);
-        const vecToPt = pt.subtracted(ray.origin).normalized();
-        const angleErr = Vector3D.cross(ray.direction, vecToPt).length;
-        sumSqErr += angleErr * angleErr;
-      });
-      const rmsRayErr = Math.sqrt(sumSqErr / worldPts.length);
-      assertClose('6. Project/Unproject Ray Collinearity RMS Error', rmsRayErr, 0, 1e-9);
+    // --- coordinate frame round trips
+    {
+      const w = 1731, h = 923;
+      const rel = { x: 0.317, y: 0.742 };
+      const ip = Coordinates.relativeToImagePlane(rel, w, h);
+      const back = Coordinates.imagePlaneToRelative(ip, w, h);
+      add('Coordinate round trip: relative -> image plane -> relative',
+        close(back.x, rel.x, 1e-15) && close(back.y, rel.y, 1e-15),
+        `Δ=(${Math.abs(back.x - rel.x).toExponential(1)}, ${Math.abs(back.y - rel.y).toExponential(1)})`);
+
+      const vp = Coordinates.relativeToViewport(rel, w, h);
+      const backRel = Coordinates.viewportToRelative(vp, w, h);
+      add('Coordinate round trip: relative -> mirrored viewport -> relative',
+        close(backRel.x, rel.x, 1e-15) && close(backRel.y, rel.y, 1e-15), 'exact');
+
+      const abs = Coordinates.relativeToAbsolute(rel, w, h);
+      add('Coordinate round trip: relative -> absolute pixels',
+        close(abs.x, rel.x * w, 1e-12) && close(abs.y, rel.y * h, 1e-12), `${abs.x.toFixed(3)}, ${abs.y.toFixed(3)} px`);
     }
 
-    // Test 7: UI Zoom/Pan Invariance
-    const beforeF = lastSolved?.cameraParameters?.focalLength || 0;
-    const savedZoom = appState.ui.zoom;
-    const savedPan = [...appState.ui.pan];
-    appState.ui.zoom = 4.3;
-    appState.ui.pan = [210, 180];
-    updateViewportViewBox();
-    syncUIAndRender();
-    const afterF = lastSolved?.cameraParameters?.focalLength || 0;
-    appState.ui.zoom = savedZoom;
-    appState.ui.pan = savedPan;
-    updateViewportViewBox();
-    syncUIAndRender();
-    assertClose('7. Viewport Zoom & Pan Calibration Invariance', afterF, beforeF, 1e-12);
+    // --- synthetic camera recovery (independent of the fixtures)
+    {
+      // A vanishing-point calibration fixes focal length, principal point and
+      // rotation but leaves the direction along each axis and the absolute
+      // scale undetermined; the translation is then fixed by the world-origin
+      // constraint (and, if set, the reference distance). The assertions below
+      // only cover invariants that actually hold.
+      //
+      // NOTE: a camera whose optical axis is exactly aligned with one of the
+      // calibration axes puts that vanishing point at infinity; fSpy reports
+      // "Failed to compute vanishing point" for such edits, so the synthetic
+      // camera includes a small roll (0.25 rad) as a real photo would.
+      const w = 1600, h = 1000;
+      const sensorWidth = 36;
+      const focalMm = 35;
+      const relFocal = 2 * focalMm / sensorWidth;      // fSpy: relative focal = 2 f / sensor long side
+      const hfov = 2 * Math.atan(1 / relFocal);
+      const pp = { x: 0.08, y: -0.05 };                 // image plane coordinates
 
-    // Test 8: Native .fspy Binary Round-Trip Serialization
-    const sampleImg = new Uint8Array([137, 80, 78, 71, 13, 10, 26, 10]);
-    const bin = NativeFspyFormat.serialize({ globalSettings: appState.globalSettings, focalTest: beforeF }, sampleImg);
-    const decoded = NativeFspyFormat.deserialize(bin);
-    assertClose('8. Native .fspy Binary Header & Payload Round-Trip', decoded.state.focalTest, beforeF, 1e-12);
+      const rotationView = Transform.rotation(0.25, 0, 0, 1)
+        .leftMultiplied(Transform.rotation(1.115, 1, 0, 0))
+        .leftMultiplied(Transform.rotation(0.55, 0, 0, 1));
+      const view = new Transform();                     // p_cam = R p_world + t
+      for (let r = 0; r < 3; r++) {
+        for (let c = 0; c < 3; c++) view.matrix[r][c] = rotationView.matrix[r][c];
+      }
+      view.matrix[0][3] = 0.6;
+      view.matrix[1][3] = -0.4;
+      view.matrix[2][3] = -6;
 
-    // Render Results in Modal
-    const passCount = results.filter(r => r.pass).length;
-    $('testSummary').textContent = `${passCount} / ${results.length} Mathematical & Compatibility Checks Passed`;
-    $('testResultsList').innerHTML = results.map(r => `
+      const P = (x, y, z) => new Vector3D(x, y, z);
+      const projectToRelative = world =>
+        Coordinates.imagePlaneToRelative(FSpyMathUtil.perspectiveProject(world, view, pp, hfov), w, h);
+
+      // Two parallel world segments for each of the three axes.
+      const guideSets = {
+        xPositive: [
+          [projectToRelative(P(0.4, -0.3, 2)), projectToRelative(P(2.4, -0.3, 2))],
+          [projectToRelative(P(0.4, 0.9, 3.5)), projectToRelative(P(2.4, 0.9, 3.5))]
+        ],
+        yPositive: [
+          [projectToRelative(P(-1.2, 0.2, 2.5)), projectToRelative(P(-1.2, 2.2, 2.5))],
+          [projectToRelative(P(0.9, 0.2, 4)), projectToRelative(P(0.9, 2.2, 4))]
+        ],
+        zPositive: [
+          [projectToRelative(P(-1.2, -0.3, 2)), projectToRelative(P(-1.2, -0.3, 4.5))],
+          [projectToRelative(P(0.9, 1.2, 2)), projectToRelative(P(0.9, 1.2, 4.5))]
+        ]
+      };
+      const originRelative = projectToRelative(P(0, 0, 0));
+
+      const buildState = (axis1, axis2, referenceAxis) => {
+        const state = createDefaultState();
+        state.calibrationSettingsBase.firstVanishingPointAxis = axis1;
+        state.calibrationSettingsBase.secondVanishingPointAxis = axis2;
+        state.calibrationSettingsBase.referenceDistanceAxis = referenceAxis;
+        state.calibrationSettingsBase.referenceDistance = 3;
+        state.calibrationSettings2VP.principalPointMode = 'Manual';
+        state.controlPointsStateBase.principalPoint = Coordinates.imagePlaneToRelative(pp, w, h);
+        state.controlPointsStateBase.origin = originRelative;
+        state.controlPointsStateBase.referenceDistanceAnchor = originRelative;
+        state.controlPointsStateBase.firstVanishingPoint.lineSegments = guideSets[axis1];
+        state.controlPointsState2VP.secondVanishingPoint.lineSegments = guideSets[axis2];
+        return state;
+      };
+      const solveWith = state => FSpySolver.solve2VP(
+        state.calibrationSettingsBase,
+        state.calibrationSettings2VP,
+        state.controlPointsStateBase,
+        state.controlPointsState2VP,
+        { width: w, height: h, url: null, data: null }
+      );
+      const originPixelError = camera => {
+        const reprojected = CameraModel.projectPoint(new Vector3D(0, 0, 0), camera);
+        return Math.hypot((reprojected.x - originRelative.x) * w, (reprojected.y - originRelative.y) * h);
+      };
+
+      // all three orthogonal axis pairings, not just X/Y
+      for (const [axis1, axis2] of [['xPositive', 'yPositive'], ['xPositive', 'zPositive'], ['yPositive', 'zPositive']]) {
+        const label = `${axis1}/${axis2}`;
+        const solved = solveWith(buildState(axis1, axis2, null));
+        const cam = solved.cameraParameters;
+        if (!cam) {
+          add(`Synthetic 2-VP ${label}: solver returns a camera`, false, solved.errors.join('; '));
+          continue;
+        }
+        add(`Synthetic 2-VP ${label}: focal length + FOV recovered`,
+          Math.abs(cam.relativeFocalLength - relFocal) < 1e-9 && Math.abs(cam.horizontalFieldOfView - hfov) < 1e-9,
+          `f=${cam.relativeFocalLength.toFixed(9)} (expected ${relFocal.toFixed(9)}), hfov=${cam.horizontalFieldOfView.toFixed(9)}`);
+
+        const R = cam.viewTransform.matrix;
+        let orthoErr = 0;
+        for (let i = 0; i < 3; i++) {
+          for (let j = 0; j < 3; j++) {
+            const dot = R[0][i] * R[0][j] + R[1][i] * R[1][j] + R[2][i] * R[2][j];
+            orthoErr = Math.max(orthoErr, Math.abs(dot - (i === j ? 1 : 0)));
+          }
+        }
+        add(`Synthetic 2-VP ${label}: rotation orthonormal, det +1`,
+          orthoErr < 1e-12 && Math.abs(cam.viewTransform.determinant - 1) < 1e-12,
+          `max |RᵀR−I|=${orthoErr.toExponential(2)}, det=${cam.viewTransform.determinant.toFixed(12)}`);
+
+        const toImagePlane = seg => [Coordinates.relativeToImagePlane(seg[0], w, h), Coordinates.relativeToImagePlane(seg[1], w, h)];
+        const expected = [
+          FSpyMathUtil.lineIntersection(toImagePlane(guideSets[axis1][0]), toImagePlane(guideSets[axis1][1])),
+          FSpyMathUtil.lineIntersection(toImagePlane(guideSets[axis2][0]), toImagePlane(guideSets[axis2][1]))
+        ];
+        const vpErr = Math.max(
+          Math.hypot(cam.vanishingPoints[0].x - expected[0].x, cam.vanishingPoints[0].y - expected[0].y),
+          Math.hypot(cam.vanishingPoints[1].x - expected[1].x, cam.vanishingPoints[1].y - expected[1].y)
+        );
+        add(`Synthetic 2-VP ${label}: VPs equal their guide intersections`,
+          vpErr < 1e-12, `max |ΔVP|=${vpErr.toExponential(2)} image-plane units (1 unit = ${w / 2} px)`);
+
+        add(`Synthetic 2-VP ${label}: axis assignment preserved`,
+          cam.vanishingPointAxes[0] === axis1 && cam.vanishingPointAxes[1] === axis2,
+          `axes=[${cam.vanishingPointAxes.join(', ')}]`);
+
+        const originErr = originPixelError(cam);
+        add(`Synthetic 2-VP ${label}: world origin reprojects onto its guide`,
+          originErr < 1e-6, `pixel error=${originErr.toExponential(2)} px`);
+
+        // reference distance rescales translation only
+        const refSolved = solveWith(buildState(axis1, axis2, axis1));
+        const refCam = refSolved.cameraParameters;
+        if (!refCam) {
+          add(`Synthetic 2-VP ${label}: reference distance solve`, false, refSolved.errors.join('; '));
+        } else {
+          let rotDiff = 0;
+          for (let r = 0; r < 3; r++) {
+            for (let c = 0; c < 3; c++) rotDiff = Math.max(rotDiff, Math.abs(refCam.viewTransform.matrix[r][c] - R[r][c]));
+          }
+          const t0 = Math.hypot(R[0][3], R[1][3], R[2][3]);
+          const t1 = Math.hypot(refCam.viewTransform.matrix[0][3], refCam.viewTransform.matrix[1][3], refCam.viewTransform.matrix[2][3]);
+          const refOriginErr = originPixelError(refCam);
+          add(`Synthetic 2-VP ${label}: reference distance rescales translation only`,
+            refOriginErr < 1e-6 && rotDiff < 1e-12
+              && Math.abs(refCam.relativeFocalLength - cam.relativeFocalLength) < 1e-12,
+            `translation ×${(t1 / t0).toFixed(4)}, rotation Δ=${rotDiff.toExponential(1)}, origin error=${refOriginErr.toExponential(2)} px`);
+        }
+      }
+
+      // --- 1-VP: focal length + sensor come from the settings; the second
+      // vanishing point is derived from the horizon direction.
+      const oneVpState = createDefaultState();
+      oneVpState.globalSettings.calibrationMode = 'OneVanishingPoint';
+      oneVpState.calibrationSettingsBase.referenceDistanceAxis = null;
+      oneVpState.calibrationSettingsBase.cameraData = {
+        presetId: null, presetData: null, customSensorWidth: sensorWidth, customSensorHeight: 24
+      };
+      oneVpState.calibrationSettings1VP.absoluteFocalLength = focalMm;
+      // Manual principal point so the synthetic camera's off-centre principal
+      // point is part of the input (Default mode implies the image midpoint).
+      oneVpState.calibrationSettings1VP.principalPointMode = 'Manual';
+      oneVpState.controlPointsStateBase.principalPoint = Coordinates.imagePlaneToRelative(pp, w, h);
+      oneVpState.controlPointsStateBase.origin = originRelative;
+      oneVpState.controlPointsStateBase.referenceDistanceAnchor = originRelative;
+      oneVpState.controlPointsStateBase.firstVanishingPoint.lineSegments = guideSets.xPositive;
+      oneVpState.controlPointsState1VP.horizon = [{ x: 0.12, y: 0.5 }, { x: 0.88, y: 0.5 }];
+      const oneVp = FSpySolver.solve1VP(
+        oneVpState.calibrationSettingsBase,
+        oneVpState.calibrationSettings1VP,
+        oneVpState.controlPointsStateBase,
+        oneVpState.controlPointsState1VP,
+        { width: w, height: h, url: null, data: null }
+      );
+      const oneCam = oneVp.cameraParameters;
+      if (!oneCam) {
+        add('Synthetic 1-VP: solver returns a camera', false, oneVp.errors.join('; '));
+      } else {
+        add('Synthetic 1-VP: relative focal from focal length + sensor',
+          Math.abs(oneCam.relativeFocalLength - relFocal) < 1e-12,
+          `f=${oneCam.relativeFocalLength.toFixed(9)} expected=${relFocal.toFixed(9)}`);
+        const fu = oneCam.vanishingPoints[0];
+        const fv = oneCam.vanishingPoints[1];
+        const residual = (fu.x - oneCam.principalPoint.x) * (fv.x - oneCam.principalPoint.x)
+          + (fu.y - oneCam.principalPoint.y) * (fv.y - oneCam.principalPoint.y)
+          + oneCam.relativeFocalLength * oneCam.relativeFocalLength;
+        add('Synthetic 1-VP: derived second VP satisfies the orthogonality equation',
+          Math.abs(residual) < 1e-9, `residual=${residual.toExponential(2)}`);
+        const oneOriginErr = originPixelError(oneCam);
+        add('Synthetic 1-VP: world origin reprojects onto its guide',
+          oneOriginErr < 1e-6, `pixel error=${oneOriginErr.toExponential(2)} px`);
+      }
+    }
+
+    // --- UI invariance: zoom/pan/sidebars must not change the solution
+    {
+      const snapshot = res => JSON.stringify({
+        cameraParameters: res.cameraParameters,
+        errors: res.errors,
+        warnings: res.warnings
+      });
+      const before = lastSolved ? snapshot(lastSolved) : null;
+      const zoom = appState.ui.zoom;
+      const pan = [...appState.ui.pan];
+      appState.ui.zoom = 7.3;
+      appState.ui.pan = [123, 456];
+      updateViewportViewBox();
+      setSidebar('left', false);
+      setSidebar('right', false);
+      const mid = solveAndRender();
+      appState.ui.zoom = zoom;
+      appState.ui.pan = pan;
+      updateViewportViewBox();
+      setSidebar('left', true);
+      setSidebar('right', true);
+      const after = solveAndRender();
+      const same = before !== null && snapshot(mid) === before && snapshot(after) === before;
+      add('Zoom / pan / sidebar invariance', same,
+        same ? 'identical camera JSON before, during and after' : 'solution changed with view state');
+    }
+
+    // --- native .fspy serialisation round trip
+    {
+      const imageBytes = new Uint8Array([0x89, 0x50, 0x4e, 0x47, 1, 2, 3, 4]);
+      const payload = projectStateForSave();
+      const buffer = NativeFspyFormat.serialize(payload, imageBytes);
+      const parsed = NativeFspyFormat.deserialize(buffer);
+      const sameState = JSON.stringify(parsed.state) === JSON.stringify(payload);
+      const sameImage = parsed.imageBytes.length === imageBytes.length
+        && parsed.imageBytes.every((v, i) => v === imageBytes[i]);
+      add('Native .fspy write -> read round trip', sameState && sameImage && parsed.version === 1,
+        `state=${sameState ? 'identical' : 'differs'}, image=${sameImage ? 'identical' : 'differs'}, version=${parsed.version}`);
+    }
+
+    const passCount = rows.filter(r => r.pass).length;
+    $('testSummary').textContent = `${passCount} / ${rows.length} parity checks passed`;
+    $('testResultsList').innerHTML = rows.map(r => `
       <div class="test-row">
         <span>${r.name}<br><small style="color:var(--muted)">${r.detail}</small></span>
         <span class="${r.pass ? 'test-pass' : 'test-fail'}">${r.pass ? 'PASS' : 'FAIL'}</span>
-      </div>
-    `).join('');
+      </div>`).join('');
     $('testModal').classList.add('shown');
   }
 
-  $('runTestsBtn').onclick = runVerificationSuite;
+  $('runTestsBtn').onclick = () => {
+    $('testModal').classList.add('shown');
+    $('testSummary').textContent = 'Running parity checks…';
+    $('testResultsList').innerHTML = '';
+    runVerificationSuite().catch(err => {
+      $('testSummary').textContent = 'Verification crashed: ' + err.message;
+    });
+  };
 
-  // Initialize application
-  applyStateToDOM();
-  updateViewportViewBox();
-  syncUIAndRender();
+  // --------------------------------------------------------------------------
+  // 12. BOOT
+  // --------------------------------------------------------------------------
+  /**
+   * Boots on the example project that ships with fSpy (assets/example.fspy,
+   * embedded image included) so the app opens on a real calibration, exactly
+   * like the desktop app's start screen. Falls back to the built-in defaults
+   * when the file cannot be fetched (e.g. opened from file://).
+   */
+  /**
+   * Small programmatic surface (used by tests/run-tests.js and handy for
+   * automation). It only exposes what the UI itself uses - no extra maths.
+   */
+  window.FSpyWeb = {
+    getState: () => JSON.parse(JSON.stringify({
+      globalSettings: appState.globalSettings,
+      calibrationSettingsBase: appState.calibrationSettingsBase,
+      calibrationSettings1VP: appState.calibrationSettings1VP,
+      calibrationSettings2VP: appState.calibrationSettings2VP,
+      controlPointsStateBase: appState.controlPointsStateBase,
+      controlPointsState1VP: appState.controlPointsState1VP,
+      controlPointsState2VP: appState.controlPointsState2VP,
+      image: { width: appState.image.width, height: appState.image.height }
+    })),
+    solve: () => solveAndRender(),
+    /** re-render after mutating state through setControlPoint/setSettings */
+    render: () => solveAndRender(),
+    setControlPoint: (keyPath, value) => {
+      const parts = keyPath.split('.');
+      let target = appState;
+      for (let i = 0; i < parts.length - 1; i++) target = target[parts[i]];
+      target[parts[parts.length - 1]] = value;
+      solveAndRender();
+    },
+    setSettings: (keyPath, value) => {
+      const parts = keyPath.split('.');
+      let target = appState;
+      for (let i = 0; i < parts.length - 1; i++) target = target[parts[i]];
+      target[parts[parts.length - 1]] = value;
+      applyStateToDOM();
+      solveAndRender();
+    },
+    setView: (zoom, pan) => {
+      appState.ui.zoom = zoom;
+      appState.ui.pan = pan;
+      updateViewportViewBox();
+    },
+    exportProjectBuffer: async () => {
+      let imageBytes = appState.ui.imageBytes;
+      if (!imageBytes && appState.ui.imageUrl) {
+        try {
+          imageBytes = new Uint8Array(await (await fetch(appState.ui.imageUrl)).arrayBuffer());
+        } catch (_) {
+          imageBytes = null;
+        }
+      }
+      return NativeFspyFormat.serialize(projectStateForSave(), imageBytes);
+    },
+    importProjectBuffer: (buffer, name) => importProjectBuffer(buffer, name || 'test.fspy'),
+    engine: FSpy
+  };
+
+  async function boot() {
+    populateCameraPresets();
+    applyStateToDOM();
+    applyImageDimensions(993, 577);
+    try {
+      const response = await fetch('assets/example.fspy');
+      if (!response.ok) throw new Error('HTTP ' + response.status);
+      await importProjectBuffer(await response.arrayBuffer(), 'example.fspy');
+      $('statustext').textContent = 'FSPY SOLVER LOADED · EXAMPLE PROJECT';
+    } catch (err) {
+      solveAndRender();
+      $('statustext').textContent = 'FSPY SOLVER LOADED · DEFAULT STATE';
+    }
+  }
+  boot();
 })();
 </script>
 </body>
