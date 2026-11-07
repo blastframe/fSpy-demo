@@ -17,7 +17,7 @@ var FSpyOriginal = (() => {
 
   // types/calibration-settings.js
   var require_calibration_settings = __commonJS({
-    "calibration-settings.js"(exports) {
+    "types/calibration-settings.js"(exports) {
       "use strict";
       Object.defineProperty(exports, "__esModule", { value: true });
       exports.ReferenceDistanceUnit = exports.Axis = exports.PrincipalPointMode2VP = exports.PrincipalPointMode1VP = void 0;
@@ -57,7 +57,7 @@ var FSpyOriginal = (() => {
 
   // solver/vector-3d.js
   var require_vector_3d = __commonJS({
-    "vector-3d.js"(exports) {
+    "solver/vector-3d.js"(exports) {
       "use strict";
       Object.defineProperty(exports, "__esModule", { value: true });
       var Vector3D = class _Vector3D {
@@ -162,7 +162,7 @@ var FSpyOriginal = (() => {
 
   // solver/aabb-ops.js
   var require_aabb_ops = __commonJS({
-    "aabb-ops.js"(exports) {
+    "solver/aabb-ops.js"(exports) {
       "use strict";
       Object.defineProperty(exports, "__esModule", { value: true });
       var AABBOps = class {
@@ -272,7 +272,7 @@ var FSpyOriginal = (() => {
 
   // solver/transform.js
   var require_transform = __commonJS({
-    "transform.js"(exports) {
+    "solver/transform.js"(exports) {
       "use strict";
       var __importDefault = exports && exports.__importDefault || function(mod) {
         return mod && mod.__esModule ? mod : { "default": mod };
@@ -658,7 +658,7 @@ var FSpyOriginal = (() => {
 
   // solver/math-util.js
   var require_math_util = __commonJS({
-    "math-util.js"(exports) {
+    "solver/math-util.js"(exports) {
       "use strict";
       var __importDefault = exports && exports.__importDefault || function(mod) {
         return mod && mod.__esModule ? mod : { "default": mod };
@@ -863,7 +863,7 @@ var FSpyOriginal = (() => {
 
   // solver/coordinates-util.js
   var require_coordinates_util = __commonJS({
-    "coordinates-util.js"(exports) {
+    "solver/coordinates-util.js"(exports) {
       "use strict";
       Object.defineProperty(exports, "__esModule", { value: true });
       exports.ImageCoordinateFrame = void 0;
@@ -969,7 +969,7 @@ var FSpyOriginal = (() => {
 
   // defaults/solver-result.js
   var require_solver_result = __commonJS({
-    "solver-result.js"(exports) {
+    "defaults/solver-result.js"(exports) {
       "use strict";
       Object.defineProperty(exports, "__esModule", { value: true });
       exports.defaultSolverResult = void 0;
@@ -983,7 +983,7 @@ var FSpyOriginal = (() => {
 
   // solver/camera-presets.js
   var require_camera_presets = __commonJS({
-    "camera-presets.js"(exports) {
+    "solver/camera-presets.js"(exports) {
       "use strict";
       Object.defineProperty(exports, "__esModule", { value: true });
       exports.cameraPresets = void 0;
@@ -1125,7 +1125,7 @@ var FSpyOriginal = (() => {
 
   // strings/strings.js
   var require_strings = __commonJS({
-    "strings.js"(exports) {
+    "strings/strings.js"(exports) {
       "use strict";
       Object.defineProperty(exports, "__esModule", { value: true });
       var strings = {
@@ -1139,7 +1139,7 @@ var FSpyOriginal = (() => {
 
   // solver/solver.js
   var require_solver = __commonJS({
-    "solver.js"(exports) {
+    "solver/solver.js"(exports) {
       "use strict";
       var __createBinding = exports && exports.__createBinding || (Object.create ? function(o, m, k, k2) {
         if (k2 === void 0) k2 = k;
@@ -1620,7 +1620,7 @@ var FSpyOriginal = (() => {
 
   // defaults/calibration-settings.js
   var require_calibration_settings2 = __commonJS({
-    "calibration-settings.js"(exports) {
+    "defaults/calibration-settings.js"(exports) {
       "use strict";
       Object.defineProperty(exports, "__esModule", { value: true });
       exports.defaultCalibrationSettings2VP = exports.defaultCalibrationSettings1VP = exports.defaultCalibrationSettingsBase = void 0;
@@ -1663,7 +1663,7 @@ var FSpyOriginal = (() => {
 
   // defaults/control-points-state.js
   var require_control_points_state = __commonJS({
-    "control-points-state.js"(exports) {
+    "defaults/control-points-state.js"(exports) {
       "use strict";
       var __importDefault = exports && exports.__importDefault || function(mod) {
         return mod && mod.__esModule ? mod : { "default": mod };

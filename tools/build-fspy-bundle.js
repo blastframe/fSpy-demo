@@ -146,14 +146,13 @@ function build() {
  * see FSPY_LICENSE.md. Rebuild with: node tools/build-fspy-bundle.js
  */
 `
-  // esbuild stamps absolute temp paths into module comments; strip them so the
-  // committed bundle is byte-stable across machines and rebuilds.
+  // esbuild records the resolved module path (inside a randomised temp dir) in
+  // its comments and CommonJS module names. Strip that prefix so the committed
+  // bundle is byte-identical on every machine and the staleness check means
+  // "the vendored sources changed", not "the temp dir was called something else".
   const raw = fs.readFileSync(path.join(tmp, 'out.js'), 'utf8')
-  const code = banner + raw
-    .split('\n')
-    .map(line => line.replace(/^\s*\/\/ .*fspy-build-[^/]*\/(dist\/)?/, '  // '))
-    .map(line => line.replace(/"\.\.\/\.\.\/\.\.\/tmp\/fspy-build-[^"]*\/(dist\/)?/g, '"'))
-    .join('\n')
+  const tempPrefix = /(?:\.\.\/)*tmp\/fspy-build-[^/]*\/(?:dist\/)?/g
+  const code = banner + raw.replace(tempPrefix, '')
   fs.rmSync(tmp, { recursive: true, force: true })
   return code
 }
